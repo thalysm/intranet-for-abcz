@@ -40,6 +40,10 @@
           class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
           Empréstimos
         </a>
+        <a routerLink="/requests" routerLinkActive="text-primary font-semibold"
+          class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+          Solicitações
+        </a>
 
         @if (isAdmin) {
         <a routerLink="/admin" routerLinkActive="text-amber-800 font-semibold"
@@ -99,9 +103,13 @@
         class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
         Prestação de Contas
       </a>
-      <a href="https://nasdede.com.br/emprestimos" target="_blank" (click)="mobileMenuOpen = false"
+      <a routerLink="/loan-simulation" (click)="mobileMenuOpen = false"
         class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
         Empréstimos
+      </a>
+      <a routerLink="/requests" (click)="mobileMenuOpen = false"
+        class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+        Solicitações
       </a>
 
       @if (isAdmin) {

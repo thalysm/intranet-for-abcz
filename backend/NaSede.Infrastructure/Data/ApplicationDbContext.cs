@@ -20,6 +20,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<MarketplaceItem> MarketplaceItems { get; set; }
     public DbSet<Benefit> Benefits { get; set; }
     public DbSet<LoanSimulation> LoanSimulations { get; set; }
+    public DbSet<Request> Requests { get; set; }
+    public DbSet<RequestType> RequestTypes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -173,6 +175,32 @@ public class ApplicationDbContext : DbContext
             entity.Ignore(e => e.TotalAmount);
             entity.Ignore(e => e.MaxAllowedLoan);
             entity.Ignore(e => e.IsValidLoan);
+        });
+
+        // RequestType configuration
+        modelBuilder.Entity<RequestType>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+            entity.HasIndex(e => e.Name).IsUnique();
+        });
+
+        // Request configuration
+        modelBuilder.Entity<Request>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Status).IsRequired();
+            entity.Property(e => e.Response).HasMaxLength(1000);
+            
+            entity.HasOne(e => e.Type)
+                .WithMany(t => t.Requests)
+                .HasForeignKey(e => e.TypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            entity.HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

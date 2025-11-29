@@ -1,0 +1,430 @@
+<div class="min-h-screen bg-secondary">
+  <app-navbar></app-navbar>
+
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">
+          Pipeline de Solicitações
+        </h1>
+        <p class="text-gray-600 mt-2">
+          Gerencie todas as solicitações dos associados por status
+        </p>
+      </div>
+      <button (click)="openTypeModal()" class="btn-primary">+ Novo Tipo</button>
+    </div>
+
+    <!-- Loading State -->
+    <div
+      *ngIf="isLoading"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+    >
+      <div *ngFor="let i of [1, 2, 3, 4]" class="animate-pulse">
+        <div class="bg-white rounded-lg p-4 shadow-sm border">
+          <div class="h-4 bg-gray-200 rounded mb-4"></div>
+          <div class="space-y-3">
+            <div class="h-20 bg-gray-100 rounded"></div>
+            <div class="h-20 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pipeline Columns -->
+    <div
+      *ngIf="!isLoading"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+    >
+      <!-- Solicitações em Aberto -->
+      <div class="bg-white rounded-lg shadow-sm border">
+        <div class="px-4 py-3 border-b bg-orange-50">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold text-gray-900">Em Aberto</h3>
+            <span
+              class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs font-medium"
+            >
+              {{ requestsPipeline.pending.length }}
+            </span>
+          </div>
+        </div>
+        <div class="p-4 space-y-3 min-h-[400px] max-h-[600px] overflow-y-auto">
+          <div
+            *ngFor="let request of requestsPipeline.pending"
+            class="bg-gray-50 rounded-lg p-3 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer"
+            (click)="openStatusModal(request)"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-medium text-sm text-gray-900 truncate">
+                {{ request.typeName }}
+              </h4>
+              <span
+                class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-medium"
+              >
+                Pendente
+              </span>
+            </div>
+            <p class="text-xs text-gray-600 mb-2">{{ request.userName }}</p>
+            <p class="text-xs text-gray-500">
+              {{ formatDate(request.createdAt) }}
+            </p>
+          </div>
+
+          <div
+            *ngIf="requestsPipeline.pending.length === 0"
+            class="text-center py-8 text-gray-400"
+          >
+            <svg
+              class="mx-auto h-8 w-8 mb-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            <p class="text-sm">Nenhuma solicitação em aberto</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Em Andamento -->
+      <div class="bg-white rounded-lg shadow-sm border">
+        <div class="px-4 py-3 border-b bg-blue-50">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold text-gray-900">Em Andamento</h3>
+            <span
+              class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium"
+            >
+              {{ requestsPipeline.inProgress.length }}
+            </span>
+          </div>
+        </div>
+        <div class="p-4 space-y-3 min-h-[400px] max-h-[600px] overflow-y-auto">
+          <div
+            *ngFor="let request of requestsPipeline.inProgress"
+            class="bg-gray-50 rounded-lg p-3 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer"
+            (click)="openStatusModal(request)"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-medium text-sm text-gray-900 truncate">
+                {{ request.typeName }}
+              </h4>
+              <span
+                class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium"
+              >
+                Em Progresso
+              </span>
+            </div>
+            <p class="text-xs text-gray-600 mb-2">{{ request.userName }}</p>
+            <p class="text-xs text-gray-500">
+              {{ formatDate(request.createdAt) }}
+            </p>
+            <div *ngIf="request.updatedAt" class="text-xs text-gray-500 mt-1">
+              Atualizado: {{ formatDate(request.updatedAt) }}
+            </div>
+          </div>
+
+          <div
+            *ngIf="requestsPipeline.inProgress.length === 0"
+            class="text-center py-8 text-gray-400"
+          >
+            <svg
+              class="mx-auto h-8 w-8 mb-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <p class="text-sm">Nenhuma solicitação em andamento</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aprovadas -->
+      <div class="bg-white rounded-lg shadow-sm border">
+        <div class="px-4 py-3 border-b bg-green-50">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold text-gray-900">Aprovadas</h3>
+            <span
+              class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium"
+            >
+              {{ requestsPipeline.approved.length }}
+            </span>
+          </div>
+        </div>
+        <div class="p-4 space-y-3 min-h-[400px] max-h-[600px] overflow-y-auto">
+          <div
+            *ngFor="let request of requestsPipeline.approved"
+            class="bg-gray-50 rounded-lg p-3 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer"
+            (click)="openStatusModal(request)"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-medium text-sm text-gray-900 truncate">
+                {{ request.typeName }}
+              </h4>
+              <span
+                class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium"
+              >
+                Aprovada
+              </span>
+            </div>
+            <p class="text-xs text-gray-600 mb-2">{{ request.userName }}</p>
+            <p class="text-xs text-gray-500">
+              {{ formatDate(request.createdAt) }}
+            </p>
+            <div
+              *ngIf="request.response"
+              class="text-xs text-gray-600 mt-2 p-2 bg-green-50 rounded border-l-2 border-green-200"
+            >
+              {{ request.response }}
+            </div>
+          </div>
+
+          <div
+            *ngIf="requestsPipeline.approved.length === 0"
+            class="text-center py-8 text-gray-400"
+          >
+            <svg
+              class="mx-auto h-8 w-8 mb-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <p class="text-sm">Nenhuma solicitação aprovada</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reprovadas -->
+      <div class="bg-white rounded-lg shadow-sm border">
+        <div class="px-4 py-3 border-b bg-red-50">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold text-gray-900">Reprovadas</h3>
+            <span
+              class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium"
+            >
+              {{ requestsPipeline.rejected.length }}
+            </span>
+          </div>
+        </div>
+        <div class="p-4 space-y-3 min-h-[400px] max-h-[600px] overflow-y-auto">
+          <div
+            *ngFor="let request of requestsPipeline.rejected"
+            class="bg-gray-50 rounded-lg p-3 border border-gray-200 hover:shadow-sm transition-shadow cursor-pointer"
+            (click)="openStatusModal(request)"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-medium text-sm text-gray-900 truncate">
+                {{ request.typeName }}
+              </h4>
+              <span
+                class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-medium"
+              >
+                Reprovada
+              </span>
+            </div>
+            <p class="text-xs text-gray-600 mb-2">{{ request.userName }}</p>
+            <p class="text-xs text-gray-500">
+              {{ formatDate(request.createdAt) }}
+            </p>
+            <div
+              *ngIf="request.response"
+              class="text-xs text-gray-600 mt-2 p-2 bg-red-50 rounded border-l-2 border-red-200"
+            >
+              {{ request.response }}
+            </div>
+          </div>
+
+          <div
+            *ngIf="requestsPipeline.rejected.length === 0"
+            class="text-center py-8 text-gray-400"
+          >
+            <svg
+              class="mx-auto h-8 w-8 mb-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <p class="text-sm">Nenhuma solicitação reprovada</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para Alterar Status -->
+<app-modal
+  [isOpen]="showStatusModal"
+  [title]="'Alterar Status'"
+  [description]="
+    'Gerencie o status da solicitação de ' + selectedRequest?.userName
+  "
+  [size]="'lg'"
+  [primaryButtonText]="'Atualizar Status'"
+  [secondaryButtonText]="'Cancelar'"
+  [primaryButtonDisabled]="!isStatusFormValid"
+  (primaryAction)="onStatusSubmit()"
+  (secondaryAction)="closeStatusModal()"
+  (closeModal)="closeStatusModal()"
+>
+  <form [formGroup]="statusForm" class="space-y-4">
+    <div class="bg-gray-50 rounded-lg p-4 border">
+      <div class="flex items-center justify-between mb-2">
+        <h4 class="font-medium text-gray-900">
+          {{ selectedRequest?.typeName }}
+        </h4>
+        <span
+          [class]="getStatusColor(selectedRequest?.status || 0)"
+          class="px-2 py-1 rounded-full text-xs font-medium"
+        >
+          {{ getStatusText(selectedRequest?.status || 0) }}
+        </span>
+      </div>
+      <p class="text-sm text-gray-600">
+        Solicitante: {{ selectedRequest?.userName }}
+      </p>
+      <p class="text-xs text-gray-500">
+        Criado em: {{ formatDate(selectedRequest?.createdAt || "") }}
+      </p>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        Novo Status *
+      </label>
+      <select
+        formControlName="status"
+        class="w-full px-4 py-3 border border-stone-200 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-stone-800 bg-white"
+      >
+        <option value="" disabled>Selecione um status</option>
+        <option
+          *ngFor="let option of getStatusOptions()"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        Resposta/Justificativa
+        <span *ngIf="statusForm.value.status == 3" class="text-red-500">*</span>
+      </label>
+      <textarea
+        formControlName="response"
+        rows="4"
+        class="input-field resize-none"
+        placeholder="Digite uma resposta ou justificativa para esta solicitação..."
+      >
+      </textarea>
+      <p *ngIf="statusForm.value.status == 3" class="text-xs text-red-500 mt-1">
+        <svg
+          class="inline h-3 w-3 mr-1"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        Justificativa é obrigatória para reprovações
+      </p>
+    </div>
+  </form>
+</app-modal>
+
+<!-- Modal para Criar Tipo -->
+<app-modal
+  [isOpen]="showTypeModal"
+  [title]="'Novo Tipo de Solicitação'"
+  [description]="'Crie um novo tipo de solicitação para os associados'"
+  [size]="'md'"
+  [primaryButtonText]="'Criar Tipo'"
+  [secondaryButtonText]="'Cancelar'"
+  [primaryButtonDisabled]="typeForm.invalid"
+  (primaryAction)="onTypeSubmit()"
+  (secondaryAction)="closeTypeModal()"
+  (closeModal)="closeTypeModal()"
+>
+  <form [formGroup]="typeForm" class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        Nome do Tipo *
+      </label>
+      <input
+        type="text"
+        formControlName="name"
+        class="input-field"
+        placeholder="Ex: Carteirinha, Declaração, Financiamento..."
+      />
+    </div>
+
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="flex items-start">
+        <svg
+          class="h-5 w-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        <div>
+          <h4 class="text-sm font-medium text-blue-800">Tipos existentes</h4>
+          <div class="mt-1 text-sm text-blue-700">
+            <div *ngIf="requestTypes.length === 0" class="text-blue-600">
+              Nenhum tipo cadastrado ainda
+            </div>
+            <div *ngIf="requestTypes.length > 0" class="space-y-1">
+              <div *ngFor="let type of requestTypes" class="flex items-center">
+                <svg
+                  class="h-3 w-3 text-blue-500 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                {{ type.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-modal>
