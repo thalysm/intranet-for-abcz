@@ -71,6 +71,7 @@
               }
             </div>
 
+            @if (!isMyItem(item)) {
             <a [href]="getWhatsAppLink(item.contactInfo)" target="_blank"
               class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium text-sm group/link">
               <span>Contatar</span>
@@ -80,6 +81,7 @@
                 </path>
               </svg>
             </a>
+            }
           </div>
         </div>
       </div>
