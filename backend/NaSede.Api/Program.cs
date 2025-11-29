@@ -116,11 +116,47 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Ensure database is created
+// Ensure database is created and Benefits table exists
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await dbContext.Database.EnsureCreatedAsync();
+    
+    try
+    {
+        await dbContext.Database.EnsureCreatedAsync();
+        
+        // Check if Benefits table exists and create it if not
+        var connection = dbContext.Database.GetDbConnection();
+        await connection.OpenAsync();
+        
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+            CREATE TABLE IF NOT EXISTS ""Benefits"" (
+                ""Id"" uuid NOT NULL,
+                ""Name"" character varying(200) NOT NULL,
+                ""Description"" text NOT NULL,
+                ""IsActive"" boolean NOT NULL DEFAULT true,
+                ""ImageUrl"" character varying(500),
+                ""ButtonAction"" character varying(500),
+                ""CreatedAt"" timestamp with time zone NOT NULL,
+                ""UpdatedAt"" timestamp with time zone,
+                ""CreatedByUserId"" uuid NOT NULL,
+                CONSTRAINT ""PK_Benefits"" PRIMARY KEY (""Id""),
+                CONSTRAINT ""FK_Benefits_Users_CreatedByUserId"" FOREIGN KEY (""CreatedByUserId"") REFERENCES ""Users"" (""Id"") ON DELETE RESTRICT
+            );
+            
+            CREATE INDEX IF NOT EXISTS ""IX_Benefits_CreatedByUserId"" ON ""Benefits"" (""CreatedByUserId"");
+        ";
+        
+        await command.ExecuteNonQueryAsync();
+        await connection.CloseAsync();
+        
+        Console.WriteLine("✅ Database and Benefits table created successfully!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Error creating database/table: {ex.Message}");
+    }
 }
 
 app.Run();
