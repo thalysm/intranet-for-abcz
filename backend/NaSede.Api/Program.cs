@@ -85,6 +85,7 @@ builder.Services.AddAuthorization();
 // Register services
 builder.Services.AddScoped<ITwilioService, TwilioService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // CORS configuration
 builder.Services.AddCors(options =>
@@ -110,8 +111,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
-app.UseCors("AllowAngular");
+// app.UseHttpsRedirection();
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

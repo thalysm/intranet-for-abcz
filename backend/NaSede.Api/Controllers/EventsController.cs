@@ -109,7 +109,7 @@ public class EventsController : ControllerBase
             Id = Guid.NewGuid(),
             Title = request.Title,
             Description = request.Description,
-            EventDate = request.EventDate,
+            EventDate = request.EventDate.ToUniversalTime(),
             Location = request.Location,
             CreatedByUserId = userId,
             CreatedAt = DateTime.UtcNow
@@ -197,7 +197,7 @@ public class EventsController : ControllerBase
 
         eventEntity.Title = request.Title;
         eventEntity.Description = request.Description;
-        eventEntity.EventDate = request.EventDate;
+        eventEntity.EventDate = request.EventDate.ToUniversalTime();
         eventEntity.Location = request.Location;
 
         await _context.SaveChangesAsync();
