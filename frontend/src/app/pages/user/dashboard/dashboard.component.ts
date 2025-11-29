@@ -21,7 +21,6 @@ export class DashboardComponent implements OnInit {
   }
 
   newsList: any[] = []
-  commentInputs: { [key: string]: string } = {}
 
   ngOnInit(): void {
     this.loadNews()
@@ -31,18 +30,6 @@ export class DashboardComponent implements OnInit {
     this.apiService.get<any[]>("/news").subscribe({
       next: (data) => (this.newsList = data),
       error: (err) => console.error("Error loading news:", err),
-    })
-  }
-
-  addComment(newsId: string, content: string): void {
-    if (!content || content.trim() === "") return
-
-    this.apiService.post(`/news/${newsId}/comments`, { content }).subscribe({
-      next: () => {
-        this.commentInputs[newsId] = ""
-        this.loadNews()
-      },
-      error: (err) => console.error("Error adding comment:", err),
     })
   }
 }
