@@ -91,3 +91,4 @@ _ReSharper.*/
 /backend/bin/
 /backend/obj/
 appsettings-env.json
+backend/NaSede.Api/appsettings.json
