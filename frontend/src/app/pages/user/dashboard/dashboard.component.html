@@ -30,6 +30,12 @@
         class="px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap">
         Benefícios
       </button>
+      <button (click)="activeTab = 'loans'" [class.bg-primary]="activeTab === 'loans'"
+        [class.text-white]="activeTab === 'loans'" [class.bg-white]="activeTab !== 'loans'"
+        [class.text-gray-700]="activeTab !== 'loans'"
+        class="px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap">
+        Empréstimos
+      </button>
       <button (click)="activeTab = 'marketplace'" [class.bg-primary]="activeTab === 'marketplace'"
         [class.text-white]="activeTab === 'marketplace'" [class.bg-white]="activeTab !== 'marketplace'"
         [class.text-gray-700]="activeTab !== 'marketplace'"
@@ -218,6 +224,76 @@
           </div>
           <h3 class="text-lg font-medium text-gray-900 mb-2">Nenhum benefício disponível</h3>
           <p class="text-gray-500">No momento não há benefícios ativos para visualização.</p>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+    <!-- Loans Tab -->
+    @if (activeTab === 'loans') {
+    <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">Simulação de Empréstimo</h2>
+          <p class="text-gray-600">Simule empréstimos e veja seu histórico de simulações</p>
+        </div>
+        <a routerLink="/loan-simulation" class="btn-primary">
+          Nova Simulação
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (simulation of loanSimulations; track simulation.id) {
+        <div class="card">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-gray-900 mb-1">
+                {{ (simulation.loanAmount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}
+              </h3>
+              <p class="text-sm text-gray-600">em {{ simulation.numberInstallments }}x</p>
+            </div>
+            <span [class]="simulation.isValidLoan ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'" 
+                  class="px-2 py-1 rounded-full text-xs font-medium">
+              {{ simulation.isValidLoan ? 'Aprovada' : 'Negada' }}
+            </span>
+          </div>
+
+          <div class="space-y-2 mb-4">
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Parcela:</span>
+              <span class="font-medium">{{ (simulation.installmentValue).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Total:</span>
+              <span class="font-medium">{{ (simulation.totalAmount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Juros:</span>
+              <span class="font-medium">{{ (simulation.interestRate * 100).toFixed(1) }}% a.m.</span>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-gray-200">
+            <p class="text-xs text-gray-500">
+              {{ simulation.createdAt | date:'dd/MM/yyyy HH:mm' }}
+            </p>
+          </div>
+        </div>
+        }
+
+        @if (loanSimulations.length === 0) {
+        <div class="col-span-full card text-center py-12">
+          <div class="mb-4">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">Nenhuma simulação realizada</h3>
+          <p class="text-gray-500 mb-4">Comece simulando seu primeiro empréstimo</p>
+          <a routerLink="/loan-simulation" class="btn-primary">
+            Simular Empréstimo
+          </a>
         </div>
         }
       </div>
