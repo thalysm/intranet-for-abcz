@@ -1,36 +1,185 @@
-<div class="min-h-screen bg-secondary">
+<div class="min-h-screen bg-stone-50">
   <app-navbar></app-navbar>
-  
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">Marketplace</h1>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="container mx-auto px-4 py-12">
+    <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-12">
+      <div>
+        <h1 class="text-4xl font-serif font-bold text-stone-800 mb-4">Marketplace</h1>
+        <p class="text-stone-600 text-lg max-w-2xl">
+          Compre e venda produtos e serviços entre associados.
+        </p>
+      </div>
+      <button (click)="openMarketplaceModal()"
+        class="w-full md:w-auto px-6 py-3 bg-primary text-white rounded-sm hover:bg-primary/90 transition-colors font-medium flex items-center justify-center gap-2 shadow-sm">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Criar Anúncio
+      </button>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       @for (item of items; track item.id) {
-        <div class="card">
+      <div
+        class="bg-white border border-stone-200 rounded-sm overflow-hidden hover:shadow-lg transition-all duration-200 flex flex-col group">
+        <div class="relative h-56 overflow-hidden bg-stone-100">
           @if (item.imageUrl) {
-            <img [src]="item.imageUrl" alt="{{ item.title }}" class="w-full h-48 object-cover rounded-lg mb-4">
+          <img [src]="item.imageUrl" alt="{{ item.title }}"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
           } @else {
-            <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-              <span class="text-gray-400 text-4xl">📦</span>
-            </div>
+          <div class="w-full h-full flex items-center justify-center text-stone-300">
+            <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+              </path>
+            </svg>
+          </div>
           }
-          
-          <h3 class="text-lg font-bold text-gray-900 mb-2">{{ item.title }}</h3>
-          <p class="text-gray-700 mb-3 text-sm">{{ item.description }}</p>
-          
-          <div class="flex justify-between items-center pt-3 border-t border-gray-200">
-            <span class="text-2xl font-bold text-primary">
+
+          <!-- Type Badge -->
+          <div class="absolute top-4 left-4">
+            <span
+              class="px-3 py-1 bg-white/90 backdrop-blur-sm text-stone-800 text-xs font-bold uppercase tracking-wide rounded-sm shadow-sm">
+              {{ item.type === 0 ? 'Produto' : 'Serviço' }}
+            </span>
+          </div>
+
+          <!-- Price Badge -->
+          <div class="absolute bottom-4 right-4">
+            <span class="px-3 py-1 bg-primary text-white font-bold rounded-sm shadow-sm">
               R$ {{ item.price.toFixed(2) }}
             </span>
-            <a 
-              [href]="getWhatsAppLink(item.contactInfo)" 
-              target="_blank"
-              class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium">
-              Contatar
+          </div>
+        </div>
+
+        <div class="p-6 flex-grow flex flex-col">
+          <h3 class="text-xl font-bold text-stone-800 mb-2 leading-tight">{{ item.title }}</h3>
+          <p class="text-stone-600 text-sm mb-4 line-clamp-2 flex-grow">{{ item.description }}</p>
+
+          <div class="flex items-center justify-between pt-4 border-t border-stone-100 mt-auto">
+            <div class="flex gap-2">
+              @if (isMyItem(item)) {
+              <button (click)="deleteMarketplaceItem(item.id)"
+                class="p-2 text-stone-400 hover:text-red-600 transition-colors rounded-sm hover:bg-red-50"
+                title="Excluir">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                  </path>
+                </svg>
+              </button>
+              }
+            </div>
+
+            <a [href]="getWhatsAppLink(item.contactInfo)" target="_blank"
+              class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium text-sm group/link">
+              <span>Contatar</span>
+              <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3">
+                </path>
+              </svg>
             </a>
           </div>
         </div>
+      </div>
+      }
+
+      @if (items.length === 0) {
+      <div class="col-span-full text-center py-20 bg-white border border-stone-200 rounded-sm">
+        <div class="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+            </path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-stone-800 mb-2">Nenhum anúncio disponível</h3>
+        <p class="text-stone-500 mb-6">Seja o primeiro a anunciar algo!</p>
+        <button (click)="openMarketplaceModal()" class="text-primary font-medium hover:underline">
+          Criar Anúncio Agora
+        </button>
+      </div>
       }
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+@if (showMarketplaceModal) {
+<div class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+  <div class="bg-white rounded-sm shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+    <div class="p-8">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-serif font-bold text-stone-800">Criar Anúncio</h2>
+        <button (click)="closeMarketplaceModal()" class="text-stone-400 hover:text-stone-600 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="marketplaceForm" (ngSubmit)="onMarketplaceSubmit()">
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium text-stone-700 mb-2">Título</label>
+            <input type="text" formControlName="title"
+              class="w-full px-4 py-3 border border-stone-200 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-stone-800 placeholder-stone-400"
+              placeholder="Ex: Vendo Zebu reprodutor">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-stone-700 mb-2">Descrição</label>
+            <textarea formControlName="description" rows="4"
+              class="w-full px-4 py-3 border border-stone-200 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-stone-800 placeholder-stone-400"
+              placeholder="Descreva seu produto ou serviço..."></textarea>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-stone-700 mb-2">Preço (R$)</label>
+              <input type="number" formControlName="price"
+                class="w-full px-4 py-3 border border-stone-200 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-stone-800 placeholder-stone-400"
+                placeholder="0.00" step="0.01">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-stone-700 mb-2">Tipo</label>
+              <select formControlName="type"
+                class="w-full px-4 py-3 border border-stone-200 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-stone-800 bg-white">
+                <option value="0">Produto</option>
+                <option value="1">Serviço</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-stone-700 mb-2">WhatsApp para contato</label>
+            <input type="text" formControlName="contactInfo"
+              class="w-full px-4 py-3 border border-stone-200 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-stone-800 placeholder-stone-400"
+              placeholder="(38) 99134-1257">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-stone-700 mb-2">URL da Imagem (opcional)</label>
+            <input type="text" formControlName="imageUrl"
+              class="w-full px-4 py-3 border border-stone-200 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-stone-800 placeholder-stone-400"
+              placeholder="https://exemplo.com/imagem.jpg">
+          </div>
+        </div>
+
+        <div class="flex gap-4 mt-8 pt-6 border-t border-stone-100">
+          <button type="button" (click)="closeMarketplaceModal()"
+            class="flex-1 px-6 py-3 border border-stone-200 text-stone-600 font-medium rounded-sm hover:bg-stone-50 transition-colors">
+            Cancelar
+          </button>
+          <button type="submit" [disabled]="marketplaceForm.invalid || isSubmitting"
+            class="flex-1 px-6 py-3 bg-primary text-white font-medium rounded-sm hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ isSubmitting ? 'Criando...' : 'Criar Anúncio' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+}

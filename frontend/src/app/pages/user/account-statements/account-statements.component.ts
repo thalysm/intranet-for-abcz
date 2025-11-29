@@ -1,4 +1,4 @@
-import { Component, type OnInit } from "@angular/core"
+import { Component, inject, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { ApiService } from "../../../core/services/api.service"
 import { NavbarComponent } from "../../../shared/components/navbar/navbar.component"
@@ -10,9 +10,9 @@ import { NavbarComponent } from "../../../shared/components/navbar/navbar.compon
   templateUrl: "./account-statements.component.html",
 })
 export class AccountStatementsComponent implements OnInit {
-  statements: any[] = []
+  private apiService = inject(ApiService)
 
-  constructor(private apiService: ApiService) {}
+  statements: any[] = []
 
   ngOnInit(): void {
     this.loadStatements()
@@ -23,5 +23,11 @@ export class AccountStatementsComponent implements OnInit {
       next: (data) => (this.statements = data),
       error: (err) => console.error("Error loading statements:", err),
     })
+  }
+
+  viewDocument(url: string): void {
+    if (url) {
+      window.open(url, '_blank')
+    }
   }
 }

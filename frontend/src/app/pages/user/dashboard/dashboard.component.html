@@ -1,482 +1,173 @@
-<div class="min-h-screen bg-secondary">
+<div class="min-h-screen bg-stone-50">
   <app-navbar></app-navbar>
 
-  <!-- Header -->
-  <div class="bg-primary text-white">
-    <div class="container mx-auto px-4 py-6">
-      <h1 class="text-2xl font-bold">Olá, {{ currentUser?.name }}!</h1>
-      <p class="text-blue-100">Bem-vindo ao Na Sede - ABCZ</p>
+  <div class="container mx-auto px-4 py-12">
+    <!-- Greeting Section -->
+    <div class="mb-12">
+      <h1 class="text-4xl font-serif font-bold text-stone-800 mb-2">
+        Olá, {{ currentUser?.name }}
+      </h1>
+      <p class="text-stone-600 text-lg">
+        Bem-vindo de volta ao Na Sede
+      </p>
     </div>
-  </div>
 
-  <div class="container mx-auto px-4 py-8">
-    <!-- Navigation Tabs -->
-    <div class="flex gap-4 mb-8 overflow-x-auto">
-      <button (click)="activeTab = 'news'" [class.bg-primary]="activeTab === 'news'"
-        [class.text-white]="activeTab === 'news'" [class.bg-white]="activeTab !== 'news'"
-        [class.text-gray-700]="activeTab !== 'news'"
-        class="px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap">
+    <!-- Quick Access Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      <!-- Events Card -->
+      <a routerLink="/events"
+        class="bg-white border border-stone-200 p-6 hover:shadow-lg transition-all duration-200 group">
+        <div
+          class="w-12 h-12 bg-amber-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-6 h-6 text-amber-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-stone-800 mb-2">Eventos</h3>
+        <p class="text-stone-600 text-sm">Confira a programação e confirme sua presença</p>
+      </a>
+
+      <!-- Benefits Card -->
+      <a routerLink="/benefits"
+        class="bg-white border border-stone-200 p-6 hover:shadow-lg transition-all duration-200 group">
+        <div
+          class="w-12 h-12 bg-green-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7">
+            </path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-stone-800 mb-2">Benefícios</h3>
+        <p class="text-stone-600 text-sm">Acesse descontos e vantagens exclusivas</p>
+      </a>
+
+      <!-- Marketplace Card -->
+      <a routerLink="/marketplace"
+        class="bg-white border border-stone-200 p-6 hover:shadow-lg transition-all duration-200 group">
+        <div
+          class="w-12 h-12 bg-blue-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-6 h-6 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+            </path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-stone-800 mb-2">Marketplace</h3>
+        <p class="text-stone-600 text-sm">Compre e venda produtos e serviços</p>
+      </a>
+
+      <!-- Account Statements Card -->
+      <a routerLink="/account-statements"
+        class="bg-white border border-stone-200 p-6 hover:shadow-lg transition-all duration-200 group">
+        <div
+          class="w-12 h-12 bg-purple-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-6 h-6 text-purple-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+            </path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-stone-800 mb-2">Prestação de Contas</h3>
+        <p class="text-stone-600 text-sm">Transparência e documentos financeiros</p>
+      </a>
+    </div>
+
+    <!-- News Feed Section -->
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-2xl font-serif font-bold text-stone-800 mb-8 pb-4 border-b border-stone-200">
         Feed de Notícias
-      </button>
-      <button (click)="activeTab = 'events'" [class.bg-primary]="activeTab === 'events'"
-        [class.text-white]="activeTab === 'events'" [class.bg-white]="activeTab !== 'events'"
-        [class.text-gray-700]="activeTab !== 'events'"
-        class="px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap">
-        Eventos
-      </button>
-      <button (click)="activeTab = 'benefits'" [class.bg-primary]="activeTab === 'benefits'"
-        [class.text-white]="activeTab === 'benefits'" [class.bg-white]="activeTab !== 'benefits'"
-        [class.text-gray-700]="activeTab !== 'benefits'"
-        class="px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap">
-        Benefícios
-      </button>
-      <button (click)="activeTab = 'loans'" [class.bg-primary]="activeTab === 'loans'"
-        [class.text-white]="activeTab === 'loans'" [class.bg-white]="activeTab !== 'loans'"
-        [class.text-gray-700]="activeTab !== 'loans'"
-        class="px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap">
-        Empréstimos
-      </button>
-      <button (click)="activeTab = 'marketplace'" [class.bg-primary]="activeTab === 'marketplace'"
-        [class.text-white]="activeTab === 'marketplace'" [class.bg-white]="activeTab !== 'marketplace'"
-        [class.text-gray-700]="activeTab !== 'marketplace'"
-        class="px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap">
-        Marketplace
-      </button>
-      <button (click)="activeTab = 'statements'" [class.bg-primary]="activeTab === 'statements'"
-        [class.text-white]="activeTab === 'statements'" [class.bg-white]="activeTab !== 'statements'"
-        [class.text-gray-700]="activeTab !== 'statements'"
-        class="px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap">
-        Prestação de Contas
-      </button>
-    </div>
+      </h2>
 
-    <!-- News Feed Tab -->
-    @if (activeTab === 'news') {
-    <div class="max-w-3xl mx-auto space-y-6">
-      @for (news of newsList; track news.id) {
-      <div class="card">
-        @if (news.imageUrl) {
-        <img [src]="news.imageUrl" alt="{{ news.title }}" class="w-full h-64 object-cover rounded-lg mb-4">
-        }
-
-        <h2 class="text-2xl font-bold text-gray-900 mb-3">{{ news.title }}</h2>
-        <p class="text-gray-700 mb-4 whitespace-pre-line">{{ news.content }}</p>
-
-        <div class="flex items-center gap-4 text-sm text-gray-500 mb-4 pb-4 border-b border-gray-200">
-          <span>{{ news.publishedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-          <span>•</span>
-          <span>Por {{ news.createdByName }}</span>
-        </div>
-
-        <!-- Comments Section -->
-        <div>
-          <h3 class="font-semibold text-gray-900 mb-3">
-            Comentários ({{ news.comments?.length || 0 }})
-          </h3>
-
-          @if (news.comments && news.comments.length > 0) {
-          <div class="space-y-3 mb-4">
-            @for (comment of news.comments; track comment.id) {
-            <div class="bg-gray-50 rounded-lg p-3">
-              <div class="flex justify-between items-start mb-1">
-                <span class="font-medium text-gray-900">{{ comment.userName }}</span>
-                <span class="text-xs text-gray-500">{{ comment.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-              </div>
-              <p class="text-gray-700">{{ comment.content }}</p>
-            </div>
-            }
-          </div>
+      <div class="space-y-8">
+        @for (news of newsList; track news.id) {
+        <div
+          class="bg-white border border-stone-200 rounded-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
+          @if (news.imageUrl) {
+          <img [src]="news.imageUrl" alt="{{ news.title }}" class="w-full h-80 object-cover">
           }
 
-          <!-- Add Comment Form -->
-          <form (submit)="addComment(news.id, commentInputs[news.id]); $event.preventDefault()" class="flex gap-2">
-            <input type="text" [(ngModel)]="commentInputs[news.id]" [name]="'comment-' + news.id"
-              class="input-field flex-1" placeholder="Escreva um comentário...">
-            <button type="submit" class="btn-primary">Comentar</button>
-          </form>
-        </div>
-      </div>
-      }
+          <div class="p-8">
+            <div class="flex items-center gap-3 text-sm text-stone-500 mb-4">
+              <span class="font-medium text-primary">{{ news.createdByName }}</span>
+              <span>•</span>
+              <span>{{ news.publishedAt | date: 'dd ' }} de {{ news.publishedAt | date: 'MMMM' }} às {{ news.publishedAt
+                | date: 'HH:mm' }}</span>
+            </div>
 
-      @if (newsList.length === 0) {
-      <div class="card text-center py-12">
-        <p class="text-gray-500 text-lg">Nenhuma notícia disponível</p>
-      </div>
-      }
-    </div>
-    }
+            <h3 class="text-2xl font-bold text-stone-800 mb-4">{{ news.title }}</h3>
+            <p class="text-stone-600 leading-relaxed mb-6 whitespace-pre-line">{{ news.content }}</p>
 
-    <!-- Events Tab -->
-    @if (activeTab === 'events') {
-    <div class="max-w-4xl mx-auto">
-      <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Próximos Eventos</h2>
-        <p class="text-gray-600">Confira os eventos da ABCZ e confirme sua presença</p>
-      </div>
+            <!-- Comments Section -->
+            <div class="bg-stone-50 p-6 rounded-sm border border-stone-100">
+              <h4 class="font-bold text-stone-700 mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
+                  </path>
+                </svg>
+                Comentários ({{ news.comments?.length || 0 }})
+              </h4>
 
-      <div class="space-y-4">
-        @for (event of upcomingEvents; track event.id) {
-        <div class="card">
-          <div class="flex justify-between items-start mb-4">
-            <div class="flex-1">
-              <h3 class="text-xl font-bold text-gray-900 mb-2">{{ event.title }}</h3>
-              <p class="text-gray-700 mb-3">{{ event.description }}</p>
-
-              <div class="flex flex-wrap gap-4 text-sm text-gray-600">
-                <div class="flex items-center gap-2">
-                  <span class="font-medium">Data:</span>
-                  <span>{{ event.eventDate | date: 'dd/MM/yyyy HH:mm' }}</span>
+              @if (news.comments && news.comments.length > 0) {
+              <div class="space-y-4 mb-6">
+                @for (comment of news.comments; track comment.id) {
+                <div class="flex gap-3">
+                  <div
+                    class="w-8 h-8 bg-stone-200 rounded-full flex items-center justify-center flex-shrink-0 text-stone-600 font-bold text-xs">
+                    {{ comment.userName.charAt(0) }}
+                  </div>
+                  <div class="flex-1">
+                    <div class="bg-white p-3 rounded-br-lg rounded-bl-lg rounded-tr-lg border border-stone-200">
+                      <div class="flex justify-between items-baseline mb-1">
+                        <span class="font-bold text-stone-800 text-sm">{{ comment.userName }}</span>
+                        <span class="text-xs text-stone-400">{{ comment.createdAt | date: 'dd/MM HH:mm' }}</span>
+                      </div>
+                      <p class="text-stone-600 text-sm">{{ comment.content }}</p>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-center gap-2">
-                  <span class="font-medium">Local:</span>
-                  <span>{{ event.location }}</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Confirmation Status -->
-            <div>
-              @if (getUserConfirmation(event) === 1) {
-              <span class="px-4 py-2 bg-green-100 text-green-700 rounded-lg font-medium">
-                Confirmado
-              </span>
-              } @else if (getUserConfirmation(event) === 2) {
-              <span class="px-4 py-2 bg-red-100 text-red-700 rounded-lg font-medium">
-                Recusado
-              </span>
-              } @else {
-              <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium">
-                Pendente
-              </span>
-              }
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex gap-3 pt-4 border-t border-gray-200">
-            <button (click)="confirmEvent(event.id)" [disabled]="getUserConfirmation(event) === 1"
-              class="flex-1 px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium">
-              Confirmar Presença
-            </button>
-            <button (click)="declineEvent(event.id)" [disabled]="getUserConfirmation(event) === 2"
-              class="flex-1 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium">
-              Não Posso Ir
-            </button>
-          </div>
-        </div>
-        }
-
-        @if (upcomingEvents.length === 0) {
-        <div class="card text-center py-12">
-          <p class="text-gray-500 text-lg">Nenhum evento próximo</p>
-        </div>
-        }
-      </div>
-    </div>
-    }
-
-    <!-- Benefits Tab -->
-    @if (activeTab === 'benefits') {
-    <div class="max-w-6xl mx-auto">
-      <div class="flex justify-between items-center mb-6">
-        <div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">Benefícios Exclusivos</h2>
-          <p class="text-gray-600">Conheça e acesse os benefícios disponíveis para associados</p>
-        </div>
-        <a routerLink="/benefits" class="btn-secondary">
-          Ver Todos os Benefícios
-        </a>
-      </div>
-
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @for (benefit of benefits; track benefit.id) {
-        <div class="card cursor-pointer hover:shadow-lg transition-shadow duration-300" (click)="viewBenefit(benefit.id)">
-          @if (benefit.imageUrl) {
-          <img [src]="benefit.imageUrl" alt="{{ benefit.name }}" class="w-full h-48 object-cover rounded-lg mb-4">
-          } @else {
-          <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-            <span class="text-gray-400 text-4xl">🎁</span>
-          </div>
-          }
-
-          <h3 class="text-lg font-bold text-gray-900 mb-2">{{ benefit.name }}</h3>
-          <p class="text-gray-700 mb-4 text-sm line-clamp-3">{{ benefit.description }}</p>
-
-          <div class="flex justify-between items-center pt-3 border-t border-gray-200">
-            <button class="btn-primary text-sm">
-              Ver Detalhes
-            </button>
-            
-            @if (benefit.buttonAction) {
-            <button (click)="$event.stopPropagation(); executeButtonAction(benefit.buttonAction!)"
-              class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium">
-              Acessar
-            </button>
-            }
-          </div>
-        </div>
-        }
-
-        @if (benefits.length === 0) {
-        <div class="col-span-full card text-center py-12">
-          <div class="mb-4">
-            <span class="text-gray-400 text-6xl">🎁</span>
-          </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-2">Nenhum benefício disponível</h3>
-          <p class="text-gray-500">No momento não há benefícios ativos para visualização.</p>
-        </div>
-        }
-      </div>
-    </div>
-    }
-
-    <!-- Loans Tab -->
-    @if (activeTab === 'loans') {
-    <div class="max-w-6xl mx-auto">
-      <div class="flex justify-between items-center mb-6">
-        <div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">Simulação de Empréstimo</h2>
-          <p class="text-gray-600">Simule empréstimos e veja seu histórico de simulações</p>
-        </div>
-        <a routerLink="/loan-simulation" class="btn-primary">
-          Nova Simulação
-        </a>
-      </div>
-
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @for (simulation of loanSimulations; track simulation.id) {
-        <div class="card">
-          <div class="flex justify-between items-start mb-4">
-            <div>
-              <h3 class="text-lg font-bold text-gray-900 mb-1">
-                {{ (simulation.loanAmount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}
-              </h3>
-              <p class="text-sm text-gray-600">em {{ simulation.numberInstallments }}x</p>
-            </div>
-            <span [class]="simulation.isValidLoan ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'" 
-                  class="px-2 py-1 rounded-full text-xs font-medium">
-              {{ simulation.isValidLoan ? 'Aprovada' : 'Negada' }}
-            </span>
-          </div>
-
-          <div class="space-y-2 mb-4">
-            <div class="flex justify-between text-sm">
-              <span class="text-gray-600">Parcela:</span>
-              <span class="font-medium">{{ (simulation.installmentValue).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</span>
-            </div>
-            <div class="flex justify-between text-sm">
-              <span class="text-gray-600">Total:</span>
-              <span class="font-medium">{{ (simulation.totalAmount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</span>
-            </div>
-            <div class="flex justify-between text-sm">
-              <span class="text-gray-600">Juros:</span>
-              <span class="font-medium">{{ (simulation.interestRate * 100).toFixed(1) }}% a.m.</span>
-            </div>
-          </div>
-
-          <div class="pt-3 border-t border-gray-200">
-            <p class="text-xs text-gray-500">
-              {{ simulation.createdAt | date:'dd/MM/yyyy HH:mm' }}
-            </p>
-          </div>
-        </div>
-        }
-
-        @if (loanSimulations.length === 0) {
-        <div class="col-span-full card text-center py-12">
-          <div class="mb-4">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2z"/>
-            </svg>
-          </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-2">Nenhuma simulação realizada</h3>
-          <p class="text-gray-500 mb-4">Comece simulando seu primeiro empréstimo</p>
-          <a routerLink="/loan-simulation" class="btn-primary">
-            Simular Empréstimo
-          </a>
-        </div>
-        }
-      </div>
-    </div>
-    }
-
-    <!-- Marketplace Tab -->
-    @if (activeTab === 'marketplace') {
-    <div class="max-w-6xl mx-auto">
-      <div class="flex justify-between items-center mb-6">
-        <div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">Marketplace</h2>
-          <p class="text-gray-600">Anuncie produtos e serviços ou encontre o que precisa</p>
-        </div>
-        <button (click)="openMarketplaceModal()" class="btn-primary">
-          + Criar Anúncio
-        </button>
-      </div>
-
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @for (item of marketplaceItems; track item.id) {
-        <div class="card">
-          @if (item.imageUrl) {
-          <img [src]="item.imageUrl" alt="{{ item.title }}" class="w-full h-48 object-cover rounded-lg mb-4">
-          } @else {
-          <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-            <span class="text-gray-400 text-4xl">📦</span>
-          </div>
-          }
-
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="text-lg font-bold text-gray-900">{{ item.title }}</h3>
-            <span class="px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs font-medium">
-              {{ item.type === 0 ? 'Produto' : 'Serviço' }}
-            </span>
-          </div>
-
-          <p class="text-gray-700 mb-2 text-sm">{{ item.description }}</p>
-          <p class="text-xs text-gray-500 mb-3">Por {{ item.userName }}</p>
-
-          <div class="flex justify-between items-center pt-3 border-t border-gray-200">
-            <span class="text-2xl font-bold text-primary">
-              R$ {{ item.price.toFixed(2) }}
-            </span>
-            <div class="flex gap-2">
-              @if (isMyItem(item)) {
-              <button (click)="deleteMarketplaceItem(item.id)"
-                class="px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium">
-                Excluir
-              </button>
-              }
-              <a [href]="getWhatsAppLink(item.contactInfo)" target="_blank"
-                class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium">
-                Contatar
-              </a>
-            </div>
-          </div>
-        </div>
-        }
-
-        @if (marketplaceItems.length === 0) {
-        <div class="col-span-full card text-center py-12">
-          <p class="text-gray-500 text-lg mb-4">Nenhum anúncio disponível</p>
-          <button (click)="openMarketplaceModal()" class="btn-primary">
-            Criar Primeiro Anúncio
-          </button>
-        </div>
-        }
-      </div>
-    </div>
-    }
-
-    <!-- Account Statements Tab -->
-    @if (activeTab === 'statements') {
-    <div class="max-w-4xl mx-auto">
-      <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Prestação de Contas</h2>
-        <p class="text-gray-600">Documentos de prestação de contas da associação</p>
-      </div>
-
-      <div class="space-y-4">
-        @for (statement of statements; track statement.id) {
-        <div class="card">
-          <div class="flex justify-between items-start">
-            <div class="flex-1">
-              <div class="flex items-center gap-3 mb-2">
-                <h3 class="text-xl font-semibold text-gray-900">{{ statement.title }}</h3>
-                @if (statement.type === 0) {
-                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">Individual</span>
-                } @else {
-                <span
-                  class="px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-full text-xs font-medium">Associação</span>
                 }
               </div>
-              <p class="text-gray-600 mb-3">{{ statement.description }}</p>
-              <p class="text-sm text-gray-500">
-                Publicado em {{ statement.createdAt | date: 'dd/MM/yyyy HH:mm' }}
-              </p>
-            </div>
+              }
 
-            <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors">
-              Visualizar
-            </button>
+              <!-- Add Comment Form -->
+              <form (submit)="addComment(news.id, commentInputs[news.id]); $event.preventDefault()" class="flex gap-2">
+                <input type="text" [(ngModel)]="commentInputs[news.id]" [name]="'comment-' + news.id"
+                  class="flex-1 px-4 py-2 border border-stone-300 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm"
+                  placeholder="Escreva um comentário...">
+                <button type="submit"
+                  class="px-4 py-2 bg-primary text-white font-medium rounded-sm hover:bg-primary/90 transition-colors text-sm">
+                  Enviar
+                </button>
+              </form>
+            </div>
           </div>
         </div>
         }
 
-        @if (statements.length === 0) {
-        <div class="card text-center py-12">
-          <p class="text-gray-500 text-lg">Nenhum documento disponível</p>
+        @if (newsList.length === 0) {
+        <div class="text-center py-16 bg-white border border-stone-200 rounded-sm">
+          <div class="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+              </path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-stone-800 mb-2">Nenhuma notícia</h3>
+          <p class="text-stone-500">Não há atualizações no momento.</p>
         </div>
         }
       </div>
     </div>
-    }
   </div>
 
   <!-- Ouvidoria Button (Fixed) -->
   <a href="https://wa.me/553891341257" target="_blank"
-    class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-colors z-50"
+    class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-colors z-50 hover:scale-110 duration-200"
     title="Ouvidoria - Entre em contato">
     <span class="text-2xl">💬</span>
   </a>
 </div>
-
-<!-- Marketplace Modal -->
-@if (showMarketplaceModal) {
-<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-  <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-    <div class="p-6">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Criar Anúncio</h2>
-
-      <form [formGroup]="marketplaceForm" (ngSubmit)="onMarketplaceSubmit()">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Título</label>
-            <input type="text" formControlName="title" class="input-field" placeholder="Ex: Vendo Zebu reprodutor">
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
-            <textarea formControlName="description" rows="4" class="input-field"
-              placeholder="Descreva seu produto ou serviço..."></textarea>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Preço (R$)</label>
-              <input type="number" formControlName="price" class="input-field" placeholder="0.00" step="0.01">
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Tipo</label>
-              <select formControlName="type" class="input-field">
-                <option value="0">Produto</option>
-                <option value="1">Serviço</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">WhatsApp para contato</label>
-            <input type="text" formControlName="contactInfo" class="input-field" placeholder="(38) 99134-1257">
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">URL da Imagem (opcional)</label>
-            <input type="text" formControlName="imageUrl" class="input-field"
-              placeholder="https://exemplo.com/imagem.jpg">
-          </div>
-        </div>
-
-        <div class="flex gap-4 mt-6">
-          <button type="submit" [disabled]="marketplaceForm.invalid || isSubmitting"
-            class="btn-primary flex-1 disabled:opacity-50">
-            {{ isSubmitting ? 'Criando...' : 'Criar Anúncio' }}
-          </button>
-          <button type="button" (click)="closeMarketplaceModal()" class="btn-secondary flex-1">
-            Cancelar
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-}
