@@ -1,57 +1,84 @@
-<div class="min-h-screen bg-secondary">
+<div class="min-h-screen bg-stone-50">
   <app-navbar></app-navbar>
-  
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">Benefícios</h1>
+
+  <div class="container mx-auto px-4 py-12">
+    <div class="mb-12">
+      <h1 class="text-4xl font-serif font-bold text-stone-800 mb-4">Benefícios</h1>
+      <p class="text-stone-600 text-lg max-w-2xl">
+        Aproveite as vantagens exclusivas que preparamos para você.
+      </p>
+    </div>
 
     <!-- Loading State -->
-    <div *ngIf="isLoading" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div *ngFor="let i of [1,2,3,4,5,6]" class="card animate-pulse">
-        <div class="w-full h-48 bg-gray-200 rounded-lg mb-4"></div>
-        <div class="h-4 bg-gray-200 rounded mb-2"></div>
-        <div class="h-3 bg-gray-200 rounded mb-4"></div>
-        <div class="h-8 bg-gray-200 rounded"></div>
+    <div *ngIf="isLoading" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div *ngFor="let i of [1,2,3,4,5,6]" class="bg-white border border-stone-200 rounded-sm p-6 animate-pulse">
+        <div class="w-full h-48 bg-stone-200 rounded-sm mb-4"></div>
+        <div class="h-6 bg-stone-200 rounded w-3/4 mb-3"></div>
+        <div class="h-4 bg-stone-200 rounded w-full mb-2"></div>
+        <div class="h-4 bg-stone-200 rounded w-2/3 mb-6"></div>
+        <div class="h-10 bg-stone-200 rounded w-full"></div>
       </div>
     </div>
 
     <!-- Benefits Cards -->
-    <div *ngIf="!isLoading && benefits.length > 0" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div *ngFor="let benefit of benefits" class="card cursor-pointer hover:shadow-lg transition-shadow duration-300" (click)="viewBenefit(benefit.id)">
-        
+    <div *ngIf="!isLoading && benefits.length > 0" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div *ngFor="let benefit of benefits"
+        class="bg-white border border-stone-200 rounded-sm overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col cursor-pointer"
+        (click)="viewBenefit(benefit.id)">
+
         <!-- Benefit Image -->
-        <div *ngIf="benefit.imageUrl" class="w-full h-48 mb-4">
-          <img [src]="benefit.imageUrl" [alt]="benefit.name" class="w-full h-full object-cover rounded-lg">
-        </div>
-        <div *ngIf="!benefit.imageUrl" class="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-          <span class="text-gray-400 text-4xl">🎁</span>
+        <div class="relative h-56 overflow-hidden bg-stone-100">
+          <img *ngIf="benefit.imageUrl" [src]="benefit.imageUrl" [alt]="benefit.name"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <div *ngIf="!benefit.imageUrl" class="w-full h-full flex items-center justify-center text-stone-300">
+            <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7">
+              </path>
+            </svg>
+          </div>
         </div>
 
-        <!-- Benefit Content -->
-        <h3 class="text-lg font-bold text-gray-900 mb-2">{{ benefit.name }}</h3>
-        <p class="text-gray-700 mb-4 text-sm line-clamp-3">{{ benefit.description }}</p>
-        
-        <!-- Actions -->
-        <div class="flex justify-between items-center pt-3 border-t border-gray-200">
-          <button class="btn-primary text-sm">
-            Ver Detalhes
-          </button>
-          
-          <button *ngIf="benefit.buttonAction" 
-                  (click)="$event.stopPropagation(); executeButtonAction(benefit.buttonAction!)"
-                  class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium">
-            Acessar
-          </button>
+        <div class="p-6 flex-grow flex flex-col">
+          <h3 class="text-xl font-bold text-stone-800 mb-3 leading-tight group-hover:text-primary transition-colors">
+            {{ benefit.name }}
+          </h3>
+          <p class="text-stone-600 text-sm leading-relaxed mb-6 line-clamp-3 flex-grow">
+            {{ benefit.description }}
+          </p>
+
+          <div class="flex gap-3 mt-auto pt-6 border-t border-stone-100">
+            <button
+              class="flex-1 px-4 py-2 bg-stone-100 text-stone-700 font-medium rounded-sm hover:bg-stone-200 transition-colors text-sm">
+              Ver Detalhes
+            </button>
+
+            <button *ngIf="benefit.buttonAction"
+              (click)="$event.stopPropagation(); executeButtonAction(benefit.buttonAction!)"
+              class="flex-1 px-4 py-2 bg-primary text-white font-medium rounded-sm hover:bg-primary/90 transition-colors text-sm shadow-sm flex items-center justify-center gap-2">
+              <span>Acessar</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Empty State -->
-    <div *ngIf="!isLoading && benefits.length === 0" class="text-center py-12">
-      <div class="mb-4">
-        <span class="text-gray-400 text-6xl">🎁</span>
+    <div *ngIf="!isLoading && benefits.length === 0"
+      class="text-center py-20 bg-white border border-stone-200 rounded-sm">
+      <div class="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7">
+          </path>
+        </svg>
       </div>
-      <h3 class="text-lg font-medium text-gray-900 mb-2">Nenhum benefício disponível</h3>
-      <p class="text-gray-500">No momento não há benefícios ativos para visualização.</p>
+      <h3 class="text-lg font-bold text-stone-800 mb-2">Nenhum benefício disponível</h3>
+      <p class="text-stone-500">Fique atento para novidades em breve.</p>
     </div>
   </div>
 </div>
