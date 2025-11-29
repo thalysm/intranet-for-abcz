@@ -2,6 +2,7 @@ using NaSede.Application.Interfaces;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
+using Microsoft.Extensions.Configuration;
 
 namespace NaSede.Infrastructure.Services;
 
