@@ -1,0 +1,22 @@
+<div class="min-h-screen bg-gradient-to-br from-secondary via-white to-secondary flex items-center justify-center px-4">
+  <div class="card max-w-md w-full text-center">
+    @if (isLoading) {
+      <div class="py-8">
+        <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">Autenticando...</h2>
+        <p class="text-gray-600">Aguarde enquanto validamos seu acesso</p>
+      </div>
+    }
+
+    @if (errorMessage) {
+      <div class="py-8">
+        <div class="text-6xl mb-4">❌</div>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">Erro na autenticação</h2>
+        <p class="text-gray-600 mb-6">{{ errorMessage }}</p>
+        <a routerLink="/login" class="btn-primary inline-block">
+          Ir para login
+        </a>
+      </div>
+    }
+  </div>
+</div>

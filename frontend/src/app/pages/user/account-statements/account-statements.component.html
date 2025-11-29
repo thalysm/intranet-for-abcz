@@ -1,0 +1,24 @@
+<div class="min-h-screen bg-secondary">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Prestação de Contas</h1>
+
+    <div class="space-y-4">
+      @for (statement of statements; track statement.id) {
+        <div class="card">
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ statement.title }}</h3>
+              <p class="text-gray-600 mb-3">{{ statement.description }}</p>
+              <p class="text-sm text-gray-500">
+                Publicado em {{ statement.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+              </p>
+            </div>
+            <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors">
+              Visualizar
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

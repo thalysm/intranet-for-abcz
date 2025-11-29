@@ -1,0 +1,92 @@
+# Geral
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
+npm-debug.log*
+yarn-error.log
+
+# Node / Angular (raiz e frontend/)
+node_modules/
+dist/
+.angular/
+coverage/
+package-lock.json
+yarn.lock
+
+# Arquivos de ambiente (opcional)
+.env
+.env.local
+.env.*.local
+
+# Frontend específico (Angular)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.cache/
+frontend/.idea/
+frontend/.vscode/
+
+# .NET backend (raiz e backend/)
+# Bin/obj
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+backend/bin/
+backend/obj/
+backend/[Bb]in/
+backend/[Oo]bj/
+
+# Usuário/IDE/VS
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.vspscc
+*.vssscc
+.vs/
+.idea/
+*.userprefs
+
+# Build / pacotes / artefatos
+*.dll
+*.exe
+*.pdb
+*.cache
+*.trx
+*.bak
+*.nupkg
+*.snk
+*.zip
+*.tar
+*.gz
+*.webinfo
+
+# SQL / DB / logs
+*.mdf
+*.ldf
+*.ndf
+*.dbmdl
+
+# ReSharper / Rider
+_ReSharper.*/
+*.DotSettings.user
+*.sln.iml
+
+# Test / Temp
+[Tt]emp/
+[Tt]est[Rr]esults/
+[Dd]ebug/
+[Rr]elease/
+*.coverage
+*.coveragexml
+
+# Outros (opcionais)
+*.vsix
+*.vscode-test/
+
+# Padronizar caminhos específicos caso haja monorepo
+/frontend/node_modules/
+/backend/bin/
+/backend/obj/

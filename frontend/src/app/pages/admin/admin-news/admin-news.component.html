@@ -1,0 +1,123 @@
+<div class="min-h-screen bg-secondary">
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Gerenciar Notícias</h1>
+        <p class="text-gray-600 mt-2">Crie e publique notícias para os associados</p>
+      </div>
+      <button (click)="openCreateModal()" class="btn-primary">
+        + Nova Notícia
+      </button>
+    </div>
+
+    <div class="space-y-4">
+      @for (news of newsList; track news.id) {
+        <div class="card">
+          @if (news.imageUrl) {
+            <img [src]="news.imageUrl" alt="{{ news.title }}" class="w-full h-48 object-cover rounded-lg mb-4">
+          }
+          
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ news.title }}</h3>
+              <p class="text-gray-600 mb-4">{{ news.content }}</p>
+              <p class="text-sm text-gray-500">
+                Publicado em {{ news.publishedAt | date: 'dd/MM/yyyy HH:mm' }} por {{ news.createdByName }}
+              </p>
+            </div>
+
+            <div class="flex gap-2">
+              <button (click)="editNews(news)" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                Editar
+              </button>
+              <button (click)="deleteNews(news.id)" class="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors">
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (newsList.length === 0) {
+        <div class="card text-center py-12">
+          <p class="text-gray-500 text-lg">Nenhuma notícia publicada ainda</p>
+          <button (click)="openCreateModal()" class="btn-primary mt-4">
+            Publicar Primeira Notícia
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Create/Edit Modal -->
+@if (showModal) {
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">
+          {{ editingNews ? 'Editar Notícia' : 'Nova Notícia' }}
+        </h2>
+
+        <form [formGroup]="newsForm" (ngSubmit)="onSubmit()">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Título</label>
+              <input type="text" formControlName="title" class="input-field" placeholder="Título da notícia">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Conteúdo</label>
+              <textarea formControlName="content" rows="6" class="input-field" placeholder="Escreva o conteúdo da notícia..."></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">URL da Imagem (opcional)</label>
+              <input type="text" formControlName="imageUrl" class="input-field" placeholder="https://exemplo.com/imagem.jpg">
+            </div>
+
+            @if (!editingNews) {
+              <div class="border-t pt-4">
+                <h3 class="font-semibold text-gray-900 mb-4">Notificar via WhatsApp</h3>
+                
+                <div class="mb-4">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" formControlName="notifyAll" class="w-5 h-5 text-primary rounded">
+                    <span class="text-gray-700">Enviar para todos os associados</span>
+                  </label>
+                </div>
+
+                @if (!newsForm.get('notifyAll')?.value) {
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Selecionar associados</label>
+                    <div class="border border-gray-300 rounded-lg p-4 max-h-60 overflow-y-auto">
+                      @for (user of users; track user.id) {
+                        <label class="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            [checked]="isUserSelected(user.id)"
+                            (change)="toggleUserSelection(user.id)"
+                            class="w-4 h-4 text-primary rounded">
+                          <span class="text-gray-700">{{ user.name }} ({{ user.matricula }})</span>
+                        </label>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="flex gap-4 mt-6">
+            <button type="submit" [disabled]="newsForm.invalid || isSubmitting" class="btn-primary flex-1 disabled:opacity-50">
+              {{ isSubmitting ? 'Salvando...' : (editingNews ? 'Atualizar' : 'Publicar') }}
+            </button>
+            <button type="button" (click)="closeModal()" class="btn-secondary flex-1">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}

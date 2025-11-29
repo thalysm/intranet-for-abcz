@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="NaSede.Api/NaSede.Api.csproj" />
+  <Project Path="NaSede.Application/NaSede.Application.csproj" />
+  <Project Path="NaSede.Domain/NaSede.Domain.csproj" />
+  <Project Path="NaSede.Infrastructure/NaSede.Infrastructure.csproj" />
+</Solution>
