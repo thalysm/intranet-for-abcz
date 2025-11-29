@@ -90,5 +90,403 @@
       </a>
 
     </div>
+
+    <!-- Analytics Section -->
+    <div class="mt-16">
+
+
+      <!-- Controls -->
+      <div class="flex flex-col md:flex-row gap-4 mb-8 justify-between items-end">
+        <div class="flex gap-4 items-end w-full md:w-auto">
+          <div>
+            <label class="block text-sm font-medium text-stone-600 mb-1">Início</label>
+            <input type="date" [value]="startDate" (change)="onDateChange($event, 'start')"
+              class="px-4 py-2 border border-stone-300 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-stone-700">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-stone-600 mb-1">Fim</label>
+            <input type="date" [value]="endDate" (change)="onDateChange($event, 'end')"
+              class="px-4 py-2 border border-stone-300 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-stone-700">
+          </div>
+        </div>
+
+        <button (click)="exportData()"
+          class="px-6 py-2 bg-white border border-green-600 text-green-600 font-medium rounded-sm hover:bg-green-50 transition-colors flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+          </svg>
+          Exportar Dados
+        </button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex flex-wrap gap-4 mb-8 border-b border-stone-200 overflow-x-auto">
+        <button (click)="setTab('communication')"
+          [class]="selectedTab === 'communication' ? 'px-6 py-3 border-b-2 border-primary text-primary font-bold whitespace-nowrap' : 'px-6 py-3 text-stone-500 hover:text-stone-800 font-medium whitespace-nowrap'">
+          Comunicação
+        </button>
+        <button (click)="setTab('loans')"
+          [class]="selectedTab === 'loans' ? 'px-6 py-3 border-b-2 border-primary text-primary font-bold whitespace-nowrap' : 'px-6 py-3 text-stone-500 hover:text-stone-800 font-medium whitespace-nowrap'">
+          Simulações de Empréstimos
+        </button>
+        <button (click)="setTab('benefits')"
+          [class]="selectedTab === 'benefits' ? 'px-6 py-3 border-b-2 border-primary text-primary font-bold whitespace-nowrap' : 'px-6 py-3 text-stone-500 hover:text-stone-800 font-medium whitespace-nowrap'">
+          Solicitação de Benefícios
+        </button>
+      </div>
+
+      <!-- Communication Tab -->
+      <div *ngIf="selectedTab === 'communication'" class="space-y-8 animate-fade-in">
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-blue-50 border border-blue-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-blue-600 font-medium">Total Enviado</p>
+                <h3 class="text-3xl font-bold text-blue-900">380</h3>
+              </div>
+              <div class="p-2 bg-blue-100 rounded-full text-blue-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-blue-500">Mensagens enviadas</p>
+          </div>
+          <div class="bg-green-50 border border-green-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-green-600 font-medium">Taxa de Abertura</p>
+                <h3 class="text-3xl font-bold text-green-900">76.3%</h3>
+              </div>
+              <div class="p-2 bg-green-100 rounded-full text-green-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                  </path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-green-600 font-bold">↑ 5.2%</p>
+          </div>
+          <div class="bg-amber-50 border border-amber-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-amber-600 font-medium">Taxa de Clique</p>
+                <h3 class="text-3xl font-bold text-amber-900">59.2%</h3>
+              </div>
+              <div class="p-2 bg-amber-100 rounded-full text-amber-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+                  </path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-amber-500">Cliques em links</p>
+          </div>
+          <div class="bg-rose-50 border border-rose-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-rose-600 font-medium">Engajamento</p>
+                <h3 class="text-3xl font-bold text-rose-900">44.0%</h3>
+              </div>
+              <div class="p-2 bg-rose-100 rounded-full text-rose-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-rose-600 font-bold">↑ 8.3%</p>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
+            <apx-chart [series]="commFunnelChart.series!" [chart]="commFunnelChart.chart!"
+              [plotOptions]="commFunnelChart.plotOptions!" [dataLabels]="commFunnelChart.dataLabels!"
+              [title]="commFunnelChart.title!" [xaxis]="commFunnelChart.xaxis!"
+              [colors]="commFunnelChart.colors!"></apx-chart>
+          </div>
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
+            <apx-chart [series]="commPieChart.series!" [chart]="commPieChart.chart!" [labels]="commPieChart.labels!"
+              [title]="commPieChart.title!" [colors]="commPieChart.colors!"></apx-chart>
+          </div>
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
+            <apx-chart [series]="commLineChart.series!" [chart]="commLineChart.chart!" [stroke]="commLineChart.stroke!"
+              [title]="commLineChart.title!" [xaxis]="commLineChart.xaxis!"
+              [colors]="commLineChart.colors!"></apx-chart>
+          </div>
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
+            <apx-chart [series]="commBarChart.series!" [chart]="commBarChart.chart!"
+              [plotOptions]="commBarChart.plotOptions!" [dataLabels]="commBarChart.dataLabels!"
+              [title]="commBarChart.title!" [xaxis]="commBarChart.xaxis!" [colors]="commBarChart.colors!"></apx-chart>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loans Tab -->
+      <div *ngIf="selectedTab === 'loans'" class="space-y-8 animate-fade-in">
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-blue-50 border border-blue-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-blue-600 font-medium">Total Realizadas</p>
+                <h3 class="text-3xl font-bold text-blue-900">3.924</h3>
+              </div>
+              <div class="p-2 bg-blue-100 rounded-full text-blue-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+                  </path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-blue-500">Simulações solicitadas</p>
+          </div>
+          <div class="bg-amber-50 border border-amber-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-amber-600 font-medium">Taxa de Resposta</p>
+                <h3 class="text-3xl font-bold text-amber-900">70.9%</h3>
+              </div>
+              <div class="p-2 bg-amber-100 rounded-full text-amber-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-amber-600 font-bold">↑ 15.2%</p>
+          </div>
+          <div class="bg-green-50 border border-green-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-green-600 font-medium">Taxa de Aprovação</p>
+                <h3 class="text-3xl font-bold text-green-900">61.7%</h3>
+              </div>
+              <div class="p-2 bg-green-100 rounded-full text-green-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-green-600 font-bold">↑ 9.7%</p>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-emerald-600 font-medium">Total Aceitas</p>
+                <h3 class="text-3xl font-bold text-emerald-900">1.716</h3>
+              </div>
+              <div class="p-2 bg-emerald-100 rounded-full text-emerald-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                  </path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-emerald-500">Contratos fechados</p>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
+            <apx-chart [series]="loansFunnelChart.series!" [chart]="loansFunnelChart.chart!"
+              [plotOptions]="loansFunnelChart.plotOptions!" [dataLabels]="loansFunnelChart.dataLabels!"
+              [title]="loansFunnelChart.title!" [xaxis]="loansFunnelChart.xaxis!"
+              [colors]="loansFunnelChart.colors!"></apx-chart>
+          </div>
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
+            <apx-chart [series]="loansBarChart.series!" [chart]="loansBarChart.chart!" [title]="loansBarChart.title!"
+              [xaxis]="loansBarChart.xaxis!" [colors]="loansBarChart.colors!"></apx-chart>
+          </div>
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
+            <apx-chart [series]="loansLineChart.series!" [chart]="loansLineChart.chart!"
+              [stroke]="loansLineChart.stroke!" [title]="loansLineChart.title!" [xaxis]="loansLineChart.xaxis!"
+              [colors]="loansLineChart.colors!"></apx-chart>
+          </div>
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
+            <apx-chart [series]="loansAreaChart.series!" [chart]="loansAreaChart.chart!"
+              [stroke]="loansAreaChart.stroke!" [dataLabels]="loansAreaChart.dataLabels!"
+              [title]="loansAreaChart.title!" [xaxis]="loansAreaChart.xaxis!"
+              [colors]="loansAreaChart.colors!"></apx-chart>
+          </div>
+        </div>
+      </div>
+
+      <!-- Benefits Tab -->
+      <div *ngIf="selectedTab === 'benefits'" class="space-y-8 animate-fade-in">
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-blue-50 border border-blue-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-blue-600 font-medium">Total Realizadas</p>
+                <h3 class="text-3xl font-bold text-blue-900">3.250</h3>
+              </div>
+              <div class="p-2 bg-blue-100 rounded-full text-blue-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-blue-500">Solicitações enviadas</p>
+          </div>
+          <div class="bg-green-50 border border-green-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-green-600 font-medium">Taxa de Aceitação</p>
+                <h3 class="text-3xl font-bold text-green-900">66.0%</h3>
+              </div>
+              <div class="p-2 bg-green-100 rounded-full text-green-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-green-600 font-bold">↑ 11.4%</p>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-emerald-600 font-medium">Total Aceitas</p>
+                <h3 class="text-3xl font-bold text-emerald-900">2.144</h3>
+              </div>
+              <div class="p-2 bg-emerald-100 rounded-full text-emerald-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-emerald-500">Benefícios concedidos</p>
+          </div>
+          <div class="bg-red-50 border border-red-100 p-6 rounded-sm">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-sm text-red-600 font-medium">Total Recusadas</p>
+                <h3 class="text-3xl font-bold text-red-900">661</h3>
+              </div>
+              <div class="p-2 bg-red-100 rounded-full text-red-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-xs text-red-500">Solicitações negadas</p>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
+            <apx-chart [series]="benefitsPieChart.series!" [chart]="benefitsPieChart.chart!"
+              [labels]="benefitsPieChart.labels!" [title]="benefitsPieChart.title!"
+              [colors]="benefitsPieChart.colors!"></apx-chart>
+          </div>
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
+            <apx-chart [series]="benefitsFunnelChart.series!" [chart]="benefitsFunnelChart.chart!"
+              [plotOptions]="benefitsFunnelChart.plotOptions!" [dataLabels]="benefitsFunnelChart.dataLabels!"
+              [title]="benefitsFunnelChart.title!" [xaxis]="benefitsFunnelChart.xaxis!"
+              [colors]="benefitsFunnelChart.colors!"></apx-chart>
+          </div>
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
+            <apx-chart [series]="benefitsLineChart.series!" [chart]="benefitsLineChart.chart!"
+              [stroke]="benefitsLineChart.stroke!" [title]="benefitsLineChart.title!" [xaxis]="benefitsLineChart.xaxis!"
+              [colors]="benefitsLineChart.colors!"></apx-chart>
+          </div>
+          <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
+            <apx-chart [series]="benefitsBarChart.series!" [chart]="benefitsBarChart.chart!"
+              [title]="benefitsBarChart.title!" [xaxis]="benefitsBarChart.xaxis!"
+              [colors]="benefitsBarChart.colors!"></apx-chart>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+  <!-- Export Modal -->
+  <div *ngIf="showExportModal"
+    class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+    <div class="bg-white rounded-sm shadow-xl max-w-md w-full animate-slide-up">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-serif font-bold text-stone-800">Exportar Dados</h3>
+          <button (click)="closeExportModal()" class="text-stone-400 hover:text-stone-600 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium text-stone-700 mb-2">Formato do Arquivo</label>
+            <div class="grid grid-cols-3 gap-4">
+              <button (click)="exportFormat = 'CSV'"
+                [class]="exportFormat === 'CSV' ? 'px-4 py-3 border-2 border-primary bg-primary/5 text-primary font-bold rounded-sm transition-all' : 'px-4 py-3 border border-stone-200 text-stone-600 hover:border-stone-300 rounded-sm transition-all'">
+                CSV
+              </button>
+              <button (click)="exportFormat = 'XML'"
+                [class]="exportFormat === 'XML' ? 'px-4 py-3 border-2 border-primary bg-primary/5 text-primary font-bold rounded-sm transition-all' : 'px-4 py-3 border border-stone-200 text-stone-600 hover:border-stone-300 rounded-sm transition-all'">
+                XML
+              </button>
+              <button (click)="exportFormat = 'PDF'"
+                [class]="exportFormat === 'PDF' ? 'px-4 py-3 border-2 border-primary bg-primary/5 text-primary font-bold rounded-sm transition-all' : 'px-4 py-3 border border-stone-200 text-stone-600 hover:border-stone-300 rounded-sm transition-all'">
+                PDF
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-stone-50 p-4 rounded-sm border border-stone-200">
+            <h4 class="text-sm font-bold text-stone-800 mb-2">Resumo da Exportação</h4>
+            <ul class="text-sm text-stone-600 space-y-1">
+              <li class="flex justify-between">
+                <span>Módulo:</span>
+                <span class="font-medium text-stone-800">
+                  {{ selectedTab === 'communication' ? 'Comunicação' :
+                  selectedTab === 'loans' ? 'Simulações de Empréstimos' : 'Solicitação de Benefícios' }}
+                </span>
+              </li>
+              <li class="flex justify-between">
+                <span>Período:</span>
+                <span class="font-medium text-stone-800">{{ startDate | date:'dd/MM/yyyy' }} - {{ endDate |
+                  date:'dd/MM/yyyy' }}</span>
+              </li>
+              <li class="flex justify-between">
+                <span>Registros estimados:</span>
+                <span class="font-medium text-stone-800">~400</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="flex gap-4 pt-2">
+            <button (click)="closeExportModal()"
+              class="flex-1 px-6 py-3 border border-stone-200 text-stone-600 font-medium rounded-sm hover:bg-stone-50 transition-colors">
+              Cancelar
+            </button>
+            <button (click)="confirmExport()"
+              class="flex-1 px-6 py-3 bg-primary text-white font-medium rounded-sm hover:bg-primary/90 transition-colors shadow-sm flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+              </svg>
+              Confirmar Exportação
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
