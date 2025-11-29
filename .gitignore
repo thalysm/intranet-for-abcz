@@ -90,3 +90,4 @@ _ReSharper.*/
 /frontend/node_modules/
 /backend/bin/
 /backend/obj/
+appsettings-env.json
