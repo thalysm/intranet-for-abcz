@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } 
 import { Router } from "@angular/router"
 import { AuthService } from "../../../core/services/auth.service"
 import { ApiService } from "../../../core/services/api.service"
+import { BenefitService } from "../../../core/services/benefit.service"
+import { BenefitCard } from "../../../core/models/benefit.model"
 import { NavbarComponent } from "../../../shared/components/navbar/navbar.component"
 
 @Component({
@@ -15,10 +17,11 @@ import { NavbarComponent } from "../../../shared/components/navbar/navbar.compon
 export class DashboardComponent implements OnInit {
   private authService = inject(AuthService)
   private apiService = inject(ApiService)
+  private benefitService = inject(BenefitService)
   private router = inject(Router)
   private fb = inject(FormBuilder)
 
-  activeTab: "news" | "events" | "marketplace" | "statements" = "news"
+  activeTab: "news" | "events" | "marketplace" | "statements" | "benefits" = "news"
 
   get currentUser() {
     return this.authService.currentUser()
@@ -28,6 +31,7 @@ export class DashboardComponent implements OnInit {
   upcomingEvents: any[] = []
   marketplaceItems: any[] = []
   statements: any[] = []
+  benefits: BenefitCard[] = []
 
   commentInputs: { [key: string]: string } = {}
   showMarketplaceModal = false
@@ -46,6 +50,7 @@ export class DashboardComponent implements OnInit {
     this.loadEvents()
     this.loadMarketplace()
     this.loadStatements()
+    this.loadBenefits()
   }
 
   loadNews(): void {
@@ -76,6 +81,13 @@ export class DashboardComponent implements OnInit {
     this.apiService.get<any[]>("/accountstatements").subscribe({
       next: (data) => (this.statements = data),
       error: (err) => console.error("Error loading statements:", err),
+    })
+  }
+
+  loadBenefits(): void {
+    this.benefitService.getBenefitCards().subscribe({
+      next: (data) => (this.benefits = data),
+      error: (err) => console.error("Error loading benefits:", err),
     })
   }
 
@@ -164,6 +176,20 @@ export class DashboardComponent implements OnInit {
 
   getWhatsAppLink(contactInfo: string): string {
     return "https://wa.me/" + contactInfo.replace(/\D/g, "")
+  }
+
+  viewBenefit(benefitId: string): void {
+    this.router.navigate(['/benefits', benefitId])
+  }
+
+  executeButtonAction(buttonAction: string): void {
+    if (buttonAction) {
+      if (buttonAction.startsWith('http')) {
+        window.open(buttonAction, '_blank')
+      } else {
+        console.log('Executando ação:', buttonAction)
+      }
+    }
   }
 
   logout(): void {

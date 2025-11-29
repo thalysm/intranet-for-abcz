@@ -11,6 +11,128 @@
           <p class="text-sm text-stone-600">Portal exclusivo para associados da ASFA</p>
         </div>
       </div>
+<<<<<<< HEAD
+=======
+
+      <!-- Main title -->
+      <h1 class="text-5xl font-bold text-gray-900 mb-6">
+        Bem-vindo ao <span class="text-primary">Na Sede</span>
+      </h1>
+      
+      <p class="text-xl text-gray-700 mb-12 leading-relaxed">
+        A intranet exclusiva da Associação Brasileira de Criadores de Zebu.
+        Conecte-se com outros associados, acompanhe eventos e fique por dentro de todas as novidades.
+      </p>
+
+      <!-- Features -->
+      <div class="grid md:grid-cols-3 gap-8 mb-12">
+        <div class="card">
+          <div class="text-4xl mb-4">📅</div>
+          <h3 class="text-xl font-semibold mb-2">Eventos</h3>
+          <p class="text-gray-600">Acompanhe e confirme presença em eventos da associação</p>
+        </div>
+        
+        <div class="card">
+          <div class="text-4xl mb-4">📰</div>
+          <h3 class="text-xl font-semibold mb-2">Notícias</h3>
+          <p class="text-gray-600">Fique por dentro das últimas novidades do setor</p>
+        </div>
+        
+        <div class="card">
+          <div class="text-4xl mb-4">🏪</div>
+          <h3 class="text-xl font-semibold mb-2">Marketplace</h3>
+          <p class="text-gray-600">Anuncie produtos e serviços para outros associados</p>
+        </div>
+
+        <div class="card">
+          <div class="text-4xl mb-4">🎁</div>
+          <h3 class="text-xl font-semibold mb-2">Benefícios</h3>
+          <p class="text-gray-600">Acesse benefícios exclusivos para associados</p>
+        </div>
+      </div>
+
+      <!-- Benefits Section -->
+      <div *ngIf="!isLoadingBenefits && benefits.length > 0" class="mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Benefícios em Destaque</h2>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+          <div *ngFor="let benefit of benefits" 
+               class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+            
+            <!-- Benefit Image -->
+            <div class="h-32 bg-gradient-to-r from-blue-500 to-purple-600 relative overflow-hidden">
+              <img *ngIf="benefit.imageUrl" 
+                   [src]="benefit.imageUrl" 
+                   [alt]="benefit.name"
+                   class="w-full h-full object-cover">
+              <div *ngIf="!benefit.imageUrl" 
+                   class="w-full h-full flex items-center justify-center">
+                <svg class="w-12 h-12 text-white opacity-70" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Benefit Content -->
+            <div class="p-4">
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ benefit.name }}</h3>
+              <p class="text-gray-600 text-sm line-clamp-2 mb-3">{{ benefit.description }}</p>
+              
+              <!-- Actions -->
+              <div class="flex justify-between items-center">
+                <a routerLink="/benefits/{{ benefit.id }}" 
+                   class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                  Ver mais
+                </a>
+                
+                <button *ngIf="benefit.buttonAction" 
+                        (click)="executeButtonAction(benefit.buttonAction!)"
+                        class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition-colors duration-200">
+                  Acessar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <a routerLink="/benefits" 
+             class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+            Ver todos os benefícios
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Benefits Loading State -->
+      <div *ngIf="isLoadingBenefits" class="mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Benefícios em Destaque</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div *ngFor="let i of [1,2,3]" class="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+            <div class="h-32 bg-gray-200"></div>
+            <div class="p-4">
+              <div class="h-4 bg-gray-200 rounded mb-2"></div>
+              <div class="h-3 bg-gray-200 rounded mb-3"></div>
+              <div class="h-6 bg-gray-200 rounded w-20"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Button -->
+      <div>
+        <a routerLink="/login" class="btn-primary inline-block text-lg px-8 py-3">
+          Acessar Sistema
+        </a>
+      </div>
+
+      <!-- Info -->
+      <p class="mt-8 text-gray-600">
+        Acesse com sua matrícula ou número do WhatsApp
+      </p>
+>>>>>>> ce168915fc27c79018bd3fc16e011ac80daf2fe0
     </div>
   </div>
 

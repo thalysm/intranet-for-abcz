@@ -18,6 +18,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<NewsComment> NewsComments { get; set; }
     public DbSet<AccountStatement> AccountStatements { get; set; }
     public DbSet<MarketplaceItem> MarketplaceItems { get; set; }
+    public DbSet<Benefit> Benefits { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -133,6 +134,21 @@ public class ApplicationDbContext : DbContext
                 .WithMany(u => u.MarketplaceItems)
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Benefit configuration
+        modelBuilder.Entity<Benefit>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.Description).IsRequired();
+            entity.Property(e => e.ImageUrl).HasMaxLength(500);
+            entity.Property(e => e.ButtonAction).HasMaxLength(500);
+            
+            entity.HasOne(e => e.CreatedBy)
+                .WithMany()
+                .HasForeignKey(e => e.CreatedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

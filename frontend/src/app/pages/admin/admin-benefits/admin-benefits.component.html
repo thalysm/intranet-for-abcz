@@ -1,0 +1,154 @@
+<div class="min-h-screen bg-secondary">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Gerenciar Benefícios</h1>
+        <p class="text-gray-600 mt-2">Gerencie os benefícios disponíveis para os associados</p>
+      </div>
+      <button (click)="openCreateModal()" class="btn-primary">
+        + Criar Benefício
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="space-y-4">
+      <div *ngFor="let i of [1,2,3]" class="card animate-pulse">
+        <div class="flex items-center space-x-4">
+          <div class="h-16 w-16 bg-gray-200 rounded"></div>
+          <div class="flex-1 space-y-2">
+            <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+            <div class="h-3 bg-gray-200 rounded w-3/4"></div>
+          </div>
+          <div class="h-8 w-20 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Benefits List -->
+    <div *ngIf="!isLoading && benefits.length > 0" class="space-y-4">
+      <div *ngFor="let benefit of benefits" class="card">
+        <div class="flex justify-between items-start">
+          <div class="flex items-start gap-4 flex-1">
+            <!-- Benefit Image -->
+            <div class="h-16 w-16 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+              <img *ngIf="benefit.imageUrl" [src]="benefit.imageUrl" [alt]="benefit.name" class="h-full w-full object-cover rounded-lg">
+              <svg *ngIf="!benefit.imageUrl" class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"/>
+              </svg>
+            </div>
+
+            <!-- Benefit Info -->
+            <div class="flex-1">
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ benefit.name }}</h3>
+              <p class="text-gray-600 mb-4 line-clamp-2">{{ benefit.description }}</p>
+              
+              <div class="flex flex-wrap gap-4 text-sm text-gray-700">
+                <div class="flex items-center gap-2">
+                  <span class="font-medium">Status:</span>
+                  <button (click)="toggleStatus(benefit)" 
+                          [class]="benefit.isActive ? 'px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium cursor-pointer hover:bg-green-200' : 'px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium cursor-pointer hover:bg-red-200'">
+                    {{ benefit.isActive ? 'Ativo' : 'Inativo' }}
+                  </button>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="font-medium">Criado por:</span>
+                  <span>{{ benefit.createdByName }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="font-medium">Data:</span>
+                  <span>{{ benefit.createdAt | date: 'dd/MM/yyyy' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex gap-2">
+            <button (click)="editBenefit(benefit)" class="px-4 py-2 bg-blue-100 text-primary rounded-lg hover:bg-blue-200 transition-colors">
+              Editar
+            </button>
+            <button (click)="deleteBenefit(benefit)" class="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors">
+              Excluir
+            </button>
+          </div>
+        </div>
+
+        <!-- Button Action Info -->
+        <div *ngIf="benefit.buttonAction" class="mt-4 pt-4 border-t border-gray-200">
+          <div class="flex items-center gap-2 text-sm text-gray-600">
+            <span class="font-medium">Ação do botão:</span>
+            <span class="font-mono bg-gray-100 px-2 py-1 rounded text-xs">{{ benefit.buttonAction }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && benefits.length === 0" class="card text-center py-12">
+      <div class="mb-4">
+        <svg class="mx-auto h-24 w-24 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 0v2.01M12 8H9.01a2 2 0 11-2-2 2 2 0 012 2H12z"/>
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-gray-900 mb-2">Nenhum benefício criado</h3>
+      <p class="text-gray-500 text-lg mb-4">Comece criando o primeiro benefício para os associados</p>
+      <button (click)="openCreateModal()" class="btn-primary">
+        Criar Primeiro Benefício
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Create/Edit Modal -->
+<div *ngIf="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="p-6">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">
+        {{ editingBenefit ? 'Editar Benefício' : 'Criar Novo Benefício' }}
+      </h2>
+
+      <form [formGroup]="benefitForm" (ngSubmit)="onSubmit()">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nome do Benefício *</label>
+            <input type="text" formControlName="name" class="input-field" placeholder="Ex: Desconto em Consultorias">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Descrição *</label>
+            <textarea formControlName="description" rows="4" class="input-field" placeholder="Descreva detalhadamente o benefício..."></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">URL da Imagem</label>
+            <input type="url" formControlName="imageUrl" class="input-field" placeholder="https://exemplo.com/imagem.jpg">
+            <p class="text-xs text-gray-500 mt-1">Opcional: Adicione uma imagem para ilustrar o benefício</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Ação do Botão</label>
+            <input type="text" formControlName="buttonAction" class="input-field" placeholder="https://site.com/beneficio ou texto da ação">
+            <p class="text-xs text-gray-500 mt-1">Opcional: URL ou ação a ser executada quando o usuário clicar no botão</p>
+          </div>
+
+          <div>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" formControlName="isActive" class="w-5 h-5 text-primary rounded">
+              <span class="text-gray-700">Benefício ativo (visível para os usuários)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex gap-4 mt-6">
+          <button type="submit" [disabled]="benefitForm.invalid || isSubmitting" class="btn-primary flex-1 disabled:opacity-50">
+            {{ isSubmitting ? 'Salvando...' : (editingBenefit ? 'Atualizar Benefício' : 'Criar Benefício') }}
+          </button>
+          <button type="button" (click)="closeModal()" class="btn-secondary flex-1">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

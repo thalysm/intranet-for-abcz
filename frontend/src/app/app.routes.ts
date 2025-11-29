@@ -38,6 +38,16 @@ export const routes: Routes = [
       import("./pages/user/account-statements/account-statements.component").then((m) => m.AccountStatementsComponent),
   },
   {
+    path: "benefits",
+    canActivate: [authGuard],
+    loadComponent: () => import("./pages/user/benefits/benefits.component").then((m) => m.BenefitsComponent),
+  },
+  {
+    path: "benefits/:id",
+    canActivate: [authGuard],
+    loadComponent: () => import("./pages/user/benefit-detail/benefit-detail.component").then((m) => m.BenefitDetailComponent),
+  },
+  {
     path: "admin",
     canActivate: [authGuard, adminGuard],
     children: [
@@ -66,6 +76,11 @@ export const routes: Routes = [
           import("./pages/admin/admin-account-statements/admin-account-statements.component").then(
             (m) => m.AdminAccountStatementsComponent,
           ),
+      },
+      {
+        path: "benefits",
+        loadComponent: () =>
+          import("./pages/admin/admin-benefits/admin-benefits.component").then((m) => m.AdminBenefitsComponent),
       },
     ],
   },
