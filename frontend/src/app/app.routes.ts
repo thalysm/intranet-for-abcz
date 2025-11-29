@@ -48,6 +48,11 @@ export const routes: Routes = [
     loadComponent: () => import("./pages/user/benefit-detail/benefit-detail.component").then((m) => m.BenefitDetailComponent),
   },
   {
+    path: "loan-simulation",
+    canActivate: [authGuard],
+    loadComponent: () => import("./pages/user/loan-simulation/loan-simulation.component").then((m) => m.LoanSimulationComponent),
+  },
+  {
     path: "admin",
     canActivate: [authGuard, adminGuard],
     children: [

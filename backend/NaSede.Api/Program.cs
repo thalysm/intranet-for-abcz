@@ -146,6 +146,19 @@ using (var scope = app.Services.CreateScope())
             );
             
             CREATE INDEX IF NOT EXISTS ""IX_Benefits_CreatedByUserId"" ON ""Benefits"" (""CreatedByUserId"");
+
+            CREATE TABLE IF NOT EXISTS ""LoanSimulations"" (
+                ""Id"" uuid NOT NULL,
+                ""Wage"" bigint NOT NULL,
+                ""LoanAmount"" bigint NOT NULL,
+                ""NumberInstallments"" integer NOT NULL,
+                ""CreatedAt"" timestamp with time zone NOT NULL,
+                ""UserId"" uuid NOT NULL,
+                CONSTRAINT ""PK_LoanSimulations"" PRIMARY KEY (""Id""),
+                CONSTRAINT ""FK_LoanSimulations_Users_UserId"" FOREIGN KEY (""UserId"") REFERENCES ""Users"" (""Id"") ON DELETE CASCADE
+            );
+            
+            CREATE INDEX IF NOT EXISTS ""IX_LoanSimulations_UserId"" ON ""LoanSimulations"" (""UserId"");
         ";
         
         await command.ExecuteNonQueryAsync();
