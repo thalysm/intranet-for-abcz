@@ -1,0 +1,32 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: nasede-backend
+    restart: always
+    ports:
+      - "8019:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
+      - Frontend__Url=${FRONTEND_URL:-http://localhost:80}
+      - Twilio__AccountSid=${TWILIO_ACCOUNT_SID}
+      - Twilio__AuthToken=${TWILIO_AUTH_TOKEN}
+      - Twilio__PhoneNumber=${TWILIO_PHONE_NUMBER}
+      - Jwt__Key=${JWT_KEY}
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: nasede-frontend
+    restart: always
+    ports:
+      - "8020:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
