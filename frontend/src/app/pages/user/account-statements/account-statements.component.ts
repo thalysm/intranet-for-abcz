@@ -1,11 +1,12 @@
 import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { ApiService } from "../../../core/services/api.service"
+import { NavbarComponent } from "../../../shared/components/navbar/navbar.component"
 
 @Component({
   selector: "app-account-statements",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NavbarComponent],
   templateUrl: "./account-statements.component.html",
 })
 export class AccountStatementsComponent implements OnInit {
