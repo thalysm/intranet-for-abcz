@@ -1,50 +1,66 @@
-<nav class="bg-white shadow-md">
+<nav class="bg-white border-b border-stone-200">
   <div class="container mx-auto px-4">
-    <div class="flex justify-between items-center h-16">
+    <div class="flex justify-between items-center h-20">
       <!-- Logo -->
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-          <span class="text-white text-lg font-bold">ABCZ</span>
+      <a routerLink="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 flex items-center justify-center">
+          <img src="/logo.png" alt="ASFA Logo"
+            class="w-full h-full object-contain group-hover:scale-105 transition-transform">
         </div>
-        <span class="text-xl font-bold text-gray-900">Na Sede</span>
-      </div>
+        <div class="flex flex-col">
+          <span class="text-lg font-bold text-stone-800 leading-none">Na Sede</span>
+          <span class="text-xs text-stone-500">Intranet ASFA</span>
+        </div>
+      </a>
 
       <!-- Navigation Links -->
-      <div class="hidden md:flex items-center gap-6">
+      <div class="hidden md:flex items-center gap-8">
         @if (currentUser) {
-          <a routerLink="/dashboard" routerLinkActive="nav-link-active" class="nav-link">
-            Dashboard
-          </a>
-          <a routerLink="/events" routerLinkActive="nav-link-active" class="nav-link">
-            Eventos
-          </a>
-          <a routerLink="/benefits" routerLinkActive="nav-link-active" class="nav-link">
-            Benefícios
-          </a>
-          <a routerLink="/marketplace" routerLinkActive="nav-link-active" class="nav-link">
-            Marketplace
-          </a>
-          <a routerLink="/account-statements" routerLinkActive="nav-link-active" class="nav-link">
-            Prestação de Contas
-          </a>
-          
-          @if (isAdmin) {
-            <a routerLink="/admin" routerLinkActive="nav-link-active" class="nav-link text-primary">
-              Admin
-            </a>
-          }
+        <a routerLink="/dashboard" routerLinkActive="text-primary font-semibold"
+          class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+          Início
+        </a>
+        <a routerLink="/events" routerLinkActive="text-primary font-semibold"
+          class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+          Eventos
+        </a>
+        <a routerLink="/benefits" routerLinkActive="text-primary font-semibold"
+          class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+          Benefícios
+        </a>
+        <a routerLink="/marketplace" routerLinkActive="text-primary font-semibold"
+          class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+          Marketplace
+        </a>
+        <a routerLink="/account-statements" routerLinkActive="text-primary font-semibold"
+          class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+          Prestação de Contas
+        </a>
 
-          <div class="flex items-center gap-4 ml-4 pl-4 border-l border-gray-200">
-            <span class="text-sm text-gray-600">{{ currentUser.name }}</span>
-            <button (click)="logout()" class="btn-secondary text-sm py-1">
-              Sair
-            </button>
+        @if (isAdmin) {
+        <a routerLink="/admin" routerLinkActive="text-amber-800 font-semibold"
+          class="text-amber-700 hover:text-amber-900 transition-colors text-sm font-medium">
+          Admin
+        </a>
+        }
+
+        <div class="flex items-center gap-4 ml-4 pl-8 border-l border-stone-200">
+          <div class="text-right hidden lg:block">
+            <p class="text-sm font-medium text-stone-800">{{ currentUser.name }}</p>
+            <p class="text-xs text-stone-500">Associado</p>
           </div>
+          <button (click)="logout()" class="text-stone-400 hover:text-red-600 transition-colors" title="Sair">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+          </button>
+        </div>
         }
       </div>
 
       <!-- Mobile Menu Button -->
-      <button (click)="mobileMenuOpen = !mobileMenuOpen" class="md:hidden">
+      <button (click)="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-stone-600 hover:text-stone-900">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
@@ -53,33 +69,45 @@
 
     <!-- Mobile Menu -->
     @if (mobileMenuOpen && currentUser) {
-      <div class="md:hidden pb-4 space-y-2">
-        <a routerLink="/dashboard" (click)="mobileMenuOpen = false" class="block py-2 nav-link">
-          Dashboard
-        </a>
-        <a routerLink="/events" (click)="mobileMenuOpen = false" class="block py-2 nav-link">
-          Eventos
-        </a>
-        <a routerLink="/benefits" (click)="mobileMenuOpen = false" class="block py-2 nav-link">
-          Benefícios
-        </a>
-        <a routerLink="/marketplace" (click)="mobileMenuOpen = false" class="block py-2 nav-link">
-          Marketplace
-        </a>
-        <a routerLink="/account-statements" (click)="mobileMenuOpen = false" class="block py-2 nav-link">
-          Prestação de Contas
-        </a>
-        
-        @if (isAdmin) {
-          <a routerLink="/admin" (click)="mobileMenuOpen = false" class="block py-2 nav-link text-primary">
-            Admin
-          </a>
-        }
-        
-        <button (click)="logout()" class="w-full text-left py-2 text-red-600">
-          Sair
-        </button>
+    <div class="md:hidden py-4 border-t border-stone-100 space-y-2">
+      <div class="px-4 py-2 bg-stone-50 rounded-lg mb-4">
+        <p class="font-medium text-stone-800">{{ currentUser.name }}</p>
+        <p class="text-xs text-stone-500">Associado</p>
       </div>
+
+      <a routerLink="/dashboard" (click)="mobileMenuOpen = false"
+        class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+        Início
+      </a>
+      <a routerLink="/events" (click)="mobileMenuOpen = false"
+        class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+        Eventos
+      </a>
+      <a routerLink="/benefits" (click)="mobileMenuOpen = false"
+        class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+        Benefícios
+      </a>
+      <a routerLink="/marketplace" (click)="mobileMenuOpen = false"
+        class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+        Marketplace
+      </a>
+      <a routerLink="/account-statements" (click)="mobileMenuOpen = false"
+        class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+        Prestação de Contas
+      </a>
+
+      @if (isAdmin) {
+      <a routerLink="/admin" (click)="mobileMenuOpen = false"
+        class="block px-4 py-2 text-amber-700 hover:bg-amber-50 rounded-lg transition-colors">
+        Admin
+      </a>
+      }
+
+      <button (click)="logout()"
+        class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors mt-4">
+        Sair do Sistema
+      </button>
+    </div>
     }
   </div>
 </nav>
