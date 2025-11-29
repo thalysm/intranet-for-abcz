@@ -53,6 +53,16 @@ export const routes: Routes = [
     loadComponent: () => import("./pages/user/loan-simulation/loan-simulation.component").then((m) => m.LoanSimulationComponent),
   },
   {
+    path: "news",
+    canActivate: [authGuard],
+    loadComponent: () => import("./pages/user/news/news.component").then((m) => m.NewsComponent),
+  },
+  {
+    path: "news/:id",
+    canActivate: [authGuard],
+    loadComponent: () => import("./pages/user/news-detail/news-detail.component").then((m) => m.NewsDetailComponent),
+  },
+  {
     path: "admin",
     canActivate: [authGuard, adminGuard],
     children: [
