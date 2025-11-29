@@ -1,0 +1,113 @@
+<nav class="bg-white border-b border-stone-200">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <a routerLink="/admin" class="flex items-center gap-3 group">
+                <div
+                    class="w-10 h-10 flex items-center justify-center bg-stone-100 rounded-sm group-hover:bg-stone-200 transition-colors">
+                    <span class="text-xl">🛡️</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-lg font-bold text-stone-800 leading-none">Na Sede</span>
+                    <span class="text-xs text-stone-500 font-medium uppercase tracking-wider">Administrativo</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <div class="hidden lg:flex items-center gap-6">
+                <a routerLink="/admin" routerLinkActive="text-primary font-semibold"
+                    [routerLinkActiveOptions]="{exact: true}"
+                    class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+                    Dashboard
+                </a>
+                <a routerLink="/admin/events" routerLinkActive="text-primary font-semibold"
+                    class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+                    Eventos
+                </a>
+                <a routerLink="/admin/news" routerLinkActive="text-primary font-semibold"
+                    class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+                    Notícias
+                </a>
+                <a routerLink="/admin/messages" routerLinkActive="text-primary font-semibold"
+                    class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+                    Mensagens
+                </a>
+                <a routerLink="/admin/account-statements" routerLinkActive="text-primary font-semibold"
+                    class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+                    Prestação de Contas
+                </a>
+                <a routerLink="/admin/benefits" routerLinkActive="text-primary font-semibold"
+                    class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+                    Benefícios
+                </a>
+
+                <div class="flex items-center gap-4 ml-4 pl-6 border-l border-stone-200">
+                    <a routerLink="/dashboard"
+                        class="text-sm font-medium text-stone-500 hover:text-stone-800 transition-colors">
+                        Voltar ao Site
+                    </a>
+                    <button (click)="logout()" class="text-stone-400 hover:text-red-600 transition-colors" title="Sair">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button (click)="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden text-stone-600 hover:text-stone-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        @if (mobileMenuOpen) {
+        <div class="lg:hidden py-4 border-t border-stone-100 space-y-2">
+            <div class="px-4 py-2 bg-stone-50 rounded-lg mb-4">
+                <p class="font-medium text-stone-800">{{ currentUser()?.name }}</p>
+                <p class="text-xs text-stone-500">Administrador</p>
+            </div>
+
+            <a routerLink="/admin" (click)="mobileMenuOpen = false"
+                class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+                Dashboard
+            </a>
+            <a routerLink="/admin/events" (click)="mobileMenuOpen = false"
+                class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+                Eventos
+            </a>
+            <a routerLink="/admin/news" (click)="mobileMenuOpen = false"
+                class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+                Notícias
+            </a>
+            <a routerLink="/admin/messages" (click)="mobileMenuOpen = false"
+                class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+                Mensagens
+            </a>
+            <a routerLink="/admin/account-statements" (click)="mobileMenuOpen = false"
+                class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+                Prestação de Contas
+            </a>
+            <a routerLink="/admin/benefits" (click)="mobileMenuOpen = false"
+                class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+                Benefícios
+            </a>
+
+            <div class="border-t border-stone-100 mt-4 pt-4">
+                <a routerLink="/dashboard" (click)="mobileMenuOpen = false"
+                    class="block px-4 py-2 text-stone-500 hover:text-stone-800 transition-colors">
+                    Voltar ao Site
+                </a>
+                <button (click)="logout()"
+                    class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors mt-2">
+                    Sair do Sistema
+                </button>
+            </div>
+        </div>
+        }
+    </div>
+</nav>
