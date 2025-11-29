@@ -16,8 +16,6 @@ services:
       - Twilio__PhoneNumber=${TWILIO_PHONE_NUMBER}
       - Jwt__Key=${JWT_KEY}
       - ASPNETCORE_ENVIRONMENT=Production
-    depends_on:
-      - db
 
   frontend:
     build:
