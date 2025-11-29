@@ -19,6 +19,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<AccountStatement> AccountStatements { get; set; }
     public DbSet<MarketplaceItem> MarketplaceItems { get; set; }
     public DbSet<Benefit> Benefits { get; set; }
+    public DbSet<LoanSimulation> LoanSimulations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -149,6 +150,29 @@ public class ApplicationDbContext : DbContext
                 .WithMany()
                 .HasForeignKey(e => e.CreatedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // LoanSimulation configuration
+        modelBuilder.Entity<LoanSimulation>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Wage).IsRequired();
+            entity.Property(e => e.LoanAmount).IsRequired();
+            entity.Property(e => e.NumberInstallments).IsRequired();
+            
+            entity.HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
+            // Ignora as propriedades calculadas do mapeamento
+            entity.Ignore(e => e.WageInReais);
+            entity.Ignore(e => e.LoanAmountInReais);
+            entity.Ignore(e => e.InterestRate);
+            entity.Ignore(e => e.InstallmentValue);
+            entity.Ignore(e => e.TotalAmount);
+            entity.Ignore(e => e.MaxAllowedLoan);
+            entity.Ignore(e => e.IsValidLoan);
         });
     }
 }

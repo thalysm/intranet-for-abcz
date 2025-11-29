@@ -1,27 +1,30 @@
 import { Component, inject, OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from "@angular/forms"
-import { Router } from "@angular/router"
+import { Router, RouterModule } from "@angular/router"
 import { AuthService } from "../../../core/services/auth.service"
 import { ApiService } from "../../../core/services/api.service"
 import { BenefitService } from "../../../core/services/benefit.service"
+import { LoanSimulationService } from "../../../core/services/loan-simulation.service"
 import { BenefitCard } from "../../../core/models/benefit.model"
+import { LoanSimulation } from "../../../core/models/loan-simulation.model"
 import { NavbarComponent } from "../../../shared/components/navbar/navbar.component"
 
 @Component({
   selector: "app-dashboard",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, NavbarComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, NavbarComponent],
   templateUrl: "./dashboard.component.html",
 })
 export class DashboardComponent implements OnInit {
   private authService = inject(AuthService)
   private apiService = inject(ApiService)
   private benefitService = inject(BenefitService)
+  private loanSimulationService = inject(LoanSimulationService)
   private router = inject(Router)
   private fb = inject(FormBuilder)
 
-  activeTab: "news" | "events" | "marketplace" | "statements" | "benefits" = "news"
+  activeTab: "news" | "events" | "marketplace" | "statements" | "benefits" | "loans" = "news"
 
   get currentUser() {
     return this.authService.currentUser()
@@ -32,6 +35,7 @@ export class DashboardComponent implements OnInit {
   marketplaceItems: any[] = []
   statements: any[] = []
   benefits: BenefitCard[] = []
+  loanSimulations: LoanSimulation[] = []
 
   commentInputs: { [key: string]: string } = {}
   showMarketplaceModal = false
@@ -51,6 +55,7 @@ export class DashboardComponent implements OnInit {
     this.loadMarketplace()
     this.loadStatements()
     this.loadBenefits()
+    this.loadLoanSimulations()
   }
 
   loadNews(): void {
@@ -88,6 +93,13 @@ export class DashboardComponent implements OnInit {
     this.benefitService.getBenefitCards().subscribe({
       next: (data) => (this.benefits = data),
       error: (err) => console.error("Error loading benefits:", err),
+    })
+  }
+
+  loadLoanSimulations(): void {
+    this.loanSimulationService.getLoanSimulations().subscribe({
+      next: (data) => (this.loanSimulations = data),
+      error: (err) => console.error("Error loading loan simulations:", err),
     })
   }
 
