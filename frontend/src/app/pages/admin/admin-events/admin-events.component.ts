@@ -3,10 +3,12 @@ import { CommonModule } from "@angular/common"
 import { FormBuilder, type FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
 import { ApiService } from "../../../core/services/api.service"
 
+import { AdminNavbarComponent } from "../components/admin-navbar/admin-navbar.component"
+
 @Component({
   selector: "app-admin-events",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AdminNavbarComponent],
   templateUrl: "./admin-events.component.html",
 })
 export class AdminEventsComponent implements OnInit {

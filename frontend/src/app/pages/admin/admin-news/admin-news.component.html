@@ -1,50 +1,93 @@
-<div class="min-h-screen bg-secondary">
-  <div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-8">
+<div class="min-h-screen bg-stone-50">
+  <app-admin-navbar></app-admin-navbar>
+
+  <div class="container mx-auto px-4 py-12">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">Gerenciar Notícias</h1>
-        <p class="text-gray-600 mt-2">Crie e publique notícias para os associados</p>
+        <h1 class="text-4xl font-serif font-bold text-stone-800 mb-2">Gerenciar Notícias</h1>
+        <p class="text-stone-600 text-lg">Crie e publique notícias para os associados</p>
       </div>
-      <button (click)="openCreateModal()" class="btn-primary">
-        + Nova Notícia
+      <button (click)="openCreateModal()"
+        class="px-6 py-3 bg-primary text-white font-medium rounded-sm hover:bg-primary/90 transition-colors shadow-sm flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Nova Notícia
       </button>
     </div>
 
-    <div class="space-y-4">
+    <!-- News list -->
+    <div class="space-y-6">
       @for (news of newsList; track news.id) {
-        <div class="card">
+      <div
+        class="bg-white border border-stone-200 rounded-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
+        <div class="flex flex-col md:flex-row">
+          <!-- Image -->
           @if (news.imageUrl) {
-            <img [src]="news.imageUrl" alt="{{ news.title }}" class="w-full h-48 object-cover rounded-lg mb-4">
+          <div class="w-full md:w-64 h-48 md:h-auto relative bg-stone-100">
+            <img [src]="news.imageUrl" [alt]="news.title" class="w-full h-full object-cover">
+          </div>
+          } @else {
+          <div class="w-full md:w-64 h-48 md:h-auto bg-stone-100 flex items-center justify-center">
+            <svg class="w-12 h-12 text-stone-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            </svg>
+          </div>
           }
-          
-          <div class="flex justify-between items-start">
+
+          <!-- Content -->
+          <div class="flex-1 p-6 flex flex-col">
             <div class="flex-1">
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ news.title }}</h3>
-              <p class="text-gray-600 mb-4">{{ news.content }}</p>
-              <p class="text-sm text-gray-500">
-                Publicado em {{ news.publishedAt | date: 'dd/MM/yyyy HH:mm' }} por {{ news.createdByName }}
-              </p>
+              <div class="flex items-center gap-2 text-xs text-stone-500 mb-3">
+                <span class="font-medium text-primary">{{ news.createdByName }}</span>
+                <span>•</span>
+                <span>{{ news.publishedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+
+              <h3 class="text-2xl font-bold text-stone-800 mb-3 leading-tight">{{ news.title }}</h3>
+              <p class="text-stone-600 mb-4 line-clamp-2 leading-relaxed">{{ news.content }}</p>
             </div>
 
-            <div class="flex gap-2">
-              <button (click)="editNews(news)" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-stone-100">
+              <button (click)="editNews(news)"
+                class="px-4 py-2 bg-stone-100 text-stone-700 font-medium rounded-sm hover:bg-stone-200 transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
                 Editar
               </button>
-              <button (click)="deleteNews(news.id)" class="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors">
+              <button (click)="deleteNews(news.id)"
+                class="px-4 py-2 bg-red-50 text-red-700 font-medium rounded-sm hover:bg-red-100 transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
                 Excluir
               </button>
             </div>
           </div>
         </div>
+      </div>
       }
 
       @if (newsList.length === 0) {
-        <div class="card text-center py-12">
-          <p class="text-gray-500 text-lg">Nenhuma notícia publicada ainda</p>
-          <button (click)="openCreateModal()" class="btn-primary mt-4">
-            Publicar Primeira Notícia
-          </button>
+      <div class="bg-white border border-stone-200 rounded-sm p-12 text-center">
+        <div class="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+          </svg>
         </div>
+        <h3 class="text-lg font-bold text-stone-800 mb-2">Nenhuma notícia publicada</h3>
+        <p class="text-stone-500 mb-6">Comece publicando a primeira notícia para os associados.</p>
+        <button (click)="openCreateModal()"
+          class="px-6 py-3 bg-primary text-white font-medium rounded-sm hover:bg-primary/90 transition-colors">
+          Publicar Primeira Notícia
+        </button>
+      </div>
       }
     </div>
   </div>
@@ -52,72 +95,86 @@
 
 <!-- Create/Edit Modal -->
 @if (showModal) {
-  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-      <div class="p-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">
-          {{ editingNews ? 'Editar Notícia' : 'Nova Notícia' }}
-        </h2>
+<div class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-sm shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="p-8">
+      <h2 class="text-2xl font-serif font-bold text-stone-800 mb-8 pb-4 border-b border-stone-100">
+        {{ editingNews ? 'Editar Notícia' : 'Nova Notícia' }}
+      </h2>
 
-        <form [formGroup]="newsForm" (ngSubmit)="onSubmit()">
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Título</label>
-              <input type="text" formControlName="title" class="input-field" placeholder="Título da notícia">
+      <form [formGroup]="newsForm" (ngSubmit)="onSubmit()">
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium text-stone-700 mb-2">Título</label>
+            <input type="text" formControlName="title"
+              class="w-full px-4 py-3 border border-stone-300 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              placeholder="Título da notícia">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-stone-700 mb-2">Conteúdo</label>
+            <textarea formControlName="content" rows="8"
+              class="w-full px-4 py-3 border border-stone-300 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              placeholder="Escreva o conteúdo da notícia..."></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-stone-700 mb-2">URL da Imagem (opcional)</label>
+            <input type="text" formControlName="imageUrl"
+              class="w-full px-4 py-3 border border-stone-300 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              placeholder="https://exemplo.com/imagem.jpg">
+          </div>
+
+          @if (!editingNews) {
+          <div class="bg-stone-50 p-6 rounded-sm border border-stone-100">
+            <h3 class="font-bold text-stone-800 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+              Notificar via WhatsApp
+            </h3>
+
+            <div class="mb-4">
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" formControlName="notifyAll"
+                  class="w-5 h-5 text-primary rounded border-stone-300 focus:ring-primary">
+                <span class="text-stone-700 font-medium">Enviar para todos os associados</span>
+              </label>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Conteúdo</label>
-              <textarea formControlName="content" rows="6" class="input-field" placeholder="Escreva o conteúdo da notícia..."></textarea>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">URL da Imagem (opcional)</label>
-              <input type="text" formControlName="imageUrl" class="input-field" placeholder="https://exemplo.com/imagem.jpg">
-            </div>
-
-            @if (!editingNews) {
-              <div class="border-t pt-4">
-                <h3 class="font-semibold text-gray-900 mb-4">Notificar via WhatsApp</h3>
-                
-                <div class="mb-4">
-                  <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" formControlName="notifyAll" class="w-5 h-5 text-primary rounded">
-                    <span class="text-gray-700">Enviar para todos os associados</span>
-                  </label>
-                </div>
-
-                @if (!newsForm.get('notifyAll')?.value) {
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Selecionar associados</label>
-                    <div class="border border-gray-300 rounded-lg p-4 max-h-60 overflow-y-auto">
-                      @for (user of users; track user.id) {
-                        <label class="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            [checked]="isUserSelected(user.id)"
-                            (change)="toggleUserSelection(user.id)"
-                            class="w-4 h-4 text-primary rounded">
-                          <span class="text-gray-700">{{ user.name }} ({{ user.matricula }})</span>
-                        </label>
-                      }
-                    </div>
-                  </div>
+            @if (!newsForm.get('notifyAll')?.value) {
+            <div class="mt-4">
+              <label class="block text-sm font-medium text-stone-700 mb-2">Selecionar associados</label>
+              <div class="bg-white border border-stone-300 rounded-sm p-2 max-h-60 overflow-y-auto">
+                @for (user of users; track user.id) {
+                <label
+                  class="flex items-center gap-3 p-3 hover:bg-stone-50 rounded-sm cursor-pointer transition-colors border-b border-stone-100 last:border-0">
+                  <input type="checkbox" [checked]="isUserSelected(user.id)" (change)="toggleUserSelection(user.id)"
+                    class="w-4 h-4 text-primary rounded border-stone-300 focus:ring-primary">
+                  <span class="text-stone-700">{{ user.name }} <span class="text-stone-400 text-sm">({{ user.matricula
+                      }})</span></span>
+                </label>
                 }
               </div>
+            </div>
             }
           </div>
+          }
+        </div>
 
-          <div class="flex gap-4 mt-6">
-            <button type="submit" [disabled]="newsForm.invalid || isSubmitting" class="btn-primary flex-1 disabled:opacity-50">
-              {{ isSubmitting ? 'Salvando...' : (editingNews ? 'Atualizar' : 'Publicar') }}
-            </button>
-            <button type="button" (click)="closeModal()" class="btn-secondary flex-1">
-              Cancelar
-            </button>
-          </div>
-        </form>
-      </div>
+        <div class="flex gap-4 mt-8 pt-6 border-t border-stone-100">
+          <button type="button" (click)="closeModal()"
+            class="px-6 py-3 bg-stone-100 text-stone-700 font-medium rounded-sm hover:bg-stone-200 transition-colors flex-1">
+            Cancelar
+          </button>
+          <button type="submit" [disabled]="newsForm.invalid || isSubmitting"
+            class="px-6 py-3 bg-primary text-white font-medium rounded-sm hover:bg-primary/90 transition-colors flex-1 disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ isSubmitting ? 'Salvando...' : (editingNews ? 'Atualizar Notícia' : 'Publicar') }}
+          </button>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 }
