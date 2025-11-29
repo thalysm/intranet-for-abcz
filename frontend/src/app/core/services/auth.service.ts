@@ -1,6 +1,6 @@
 import { Injectable, signal } from "@angular/core"
-import type { HttpClient } from "@angular/common/http"
-import type { Router } from "@angular/router"
+import { HttpClient } from "@angular/common/http"
+import { Router } from "@angular/router"
 import { type Observable, tap } from "rxjs"
 import type { User } from "../models/user.model"
 import { environment } from "../../../environments/environment"

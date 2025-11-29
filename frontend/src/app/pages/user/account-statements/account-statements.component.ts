@@ -1,6 +1,6 @@
 import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import type { ApiService } from "../../../core/services/api.service"
+import { ApiService } from "../../../core/services/api.service"
 
 @Component({
   selector: "app-account-statements",

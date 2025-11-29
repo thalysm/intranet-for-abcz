@@ -1,7 +1,7 @@
-import { Component, type OnInit } from "@angular/core"
+import { Component, inject, OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { type ActivatedRoute, type Router, RouterLink } from "@angular/router"
-import type { AuthService } from "../../../core/services/auth.service"
+import { ActivatedRoute, Router, RouterLink } from "@angular/router"
+import { AuthService } from "../../../core/services/auth.service"
 
 @Component({
   selector: "app-whatsapp-auth",
@@ -10,14 +10,12 @@ import type { AuthService } from "../../../core/services/auth.service"
   templateUrl: "./whatsapp-auth.component.html",
 })
 export class WhatsappAuthComponent implements OnInit {
+  private route = inject(ActivatedRoute)
+  private router = inject(Router)
+  private authService = inject(AuthService)
+
   isLoading = true
   errorMessage = ""
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService,
-  ) {}
 
   ngOnInit(): void {
     const token = this.route.snapshot.paramMap.get("token")

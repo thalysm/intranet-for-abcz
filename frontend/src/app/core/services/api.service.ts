@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core"
-import { type HttpClient, HttpParams } from "@angular/common/http"
+import { HttpClient, HttpParams } from "@angular/common/http"
 import type { Observable } from "rxjs"
 import { environment } from "../../../environments/environment"
 
@@ -9,7 +9,7 @@ import { environment } from "../../../environments/environment"
 export class ApiService {
   private readonly API_URL = environment.apiUrl
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   get<T>(endpoint: string, params?: any): Observable<T> {
     let httpParams = new HttpParams()

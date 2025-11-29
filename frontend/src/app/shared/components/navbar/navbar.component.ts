@@ -1,7 +1,7 @@
-import { Component } from "@angular/core"
+import { Component, inject } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { RouterLink, RouterLinkActive, type Router } from "@angular/router"
-import type { AuthService } from "../../../core/services/auth.service"
+import { RouterLink, RouterLinkActive, Router } from "@angular/router"
+import { AuthService } from "../../../core/services/auth.service"
 
 @Component({
   selector: "app-navbar",
@@ -10,14 +10,18 @@ import type { AuthService } from "../../../core/services/auth.service"
   templateUrl: "./navbar.component.html",
 })
 export class NavbarComponent {
-  currentUser = this.authService.currentUser()
-  isAdmin = this.authService.isAdmin()
+  private authService = inject(AuthService)
+  private router = inject(Router)
+
   mobileMenuOpen = false
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-  ) {}
+  get currentUser() {
+    return this.authService.currentUser()
+  }
+
+  get isAdmin() {
+    return this.authService.isAdmin()
+  }
 
   logout(): void {
     this.authService.logout()

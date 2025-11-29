@@ -1,6 +1,6 @@
 import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import type { ApiService } from "../../../core/services/api.service"
+import { ApiService } from "../../../core/services/api.service"
 
 @Component({
   selector: "app-marketplace",
@@ -11,7 +11,7 @@ import type { ApiService } from "../../../core/services/api.service"
 export class MarketplaceComponent implements OnInit {
   items: any[] = []
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.loadItems()
@@ -22,5 +22,9 @@ export class MarketplaceComponent implements OnInit {
       next: (data) => (this.items = data),
       error: (err) => console.error("Error loading marketplace:", err),
     })
+  }
+
+  getWhatsAppLink(contactInfo: string): string {
+    return "https://wa.me/" + contactInfo.replace(/\D/g, "")
   }
 }

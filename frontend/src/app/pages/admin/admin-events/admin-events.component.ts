@@ -1,7 +1,7 @@
 import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { type FormBuilder, type FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
-import type { ApiService } from "../../../core/services/api.service"
+import { FormBuilder, type FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
+import { ApiService } from "../../../core/services/api.service"
 
 @Component({
   selector: "app-admin-events",

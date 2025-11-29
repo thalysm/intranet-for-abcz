@@ -1,9 +1,9 @@
-import { Component, type OnInit } from "@angular/core"
+import { Component, inject, OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { type FormBuilder, type FormGroup, Validators, ReactiveFormsModule, FormsModule } from "@angular/forms"
-import type { Router } from "@angular/router"
-import type { AuthService } from "../../../core/services/auth.service"
-import type { ApiService } from "../../../core/services/api.service"
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from "@angular/forms"
+import { Router } from "@angular/router"
+import { AuthService } from "../../../core/services/auth.service"
+import { ApiService } from "../../../core/services/api.service"
 import { NavbarComponent } from "../../../shared/components/navbar/navbar.component"
 
 @Component({
@@ -13,8 +13,16 @@ import { NavbarComponent } from "../../../shared/components/navbar/navbar.compon
   templateUrl: "./dashboard.component.html",
 })
 export class DashboardComponent implements OnInit {
+  private authService = inject(AuthService)
+  private apiService = inject(ApiService)
+  private router = inject(Router)
+  private fb = inject(FormBuilder)
+
   activeTab: "news" | "events" | "marketplace" | "statements" = "news"
-  currentUser = this.authService.currentUser()
+
+  get currentUser() {
+    return this.authService.currentUser()
+  }
 
   newsList: any[] = []
   upcomingEvents: any[] = []
@@ -23,24 +31,15 @@ export class DashboardComponent implements OnInit {
 
   commentInputs: { [key: string]: string } = {}
   showMarketplaceModal = false
-  marketplaceForm: FormGroup
+  marketplaceForm: FormGroup = this.fb.group({
+    title: ["", Validators.required],
+    description: ["", Validators.required],
+    price: [0, [Validators.required, Validators.min(0)]],
+    type: [0, Validators.required],
+    contactInfo: ["", Validators.required],
+    imageUrl: [""],
+  })
   isSubmitting = false
-
-  constructor(
-    private authService: AuthService,
-    private apiService: ApiService,
-    private router: Router,
-    private fb: FormBuilder,
-  ) {
-    this.marketplaceForm = this.fb.group({
-      title: ["", Validators.required],
-      description: ["", Validators.required],
-      price: [0, [Validators.required, Validators.min(0)]],
-      type: [0, Validators.required],
-      contactInfo: ["", Validators.required],
-      imageUrl: [""],
-    })
-  }
 
   ngOnInit(): void {
     this.loadNews()
@@ -161,6 +160,10 @@ export class DashboardComponent implements OnInit {
 
   isMyItem(item: any): boolean {
     return item.userId === this.currentUser?.id
+  }
+
+  getWhatsAppLink(contactInfo: string): string {
+    return "https://wa.me/" + contactInfo.replace(/\D/g, "")
   }
 
   logout(): void {
