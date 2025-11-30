@@ -1,122 +1,99 @@
-<div class="min-h-screen bg-secondary">
-  <app-toast></app-toast>
-  
-  <div class="container mx-auto px-4 py-8">
+<div class="min-h-screen bg-stone-50">
+  <app-admin-navbar></app-admin-navbar>
+
+  <div class="container mx-auto px-4 py-12">
+    <!-- Header -->
     <div class="mb-12">
-      <h1 class="text-4xl font-serif font-bold text-stone-800 mb-4">Painel Administrativo</h1>
-      <p class="text-stone-600 text-lg">Gerencie todos os aspectos da plataforma Na Sede</p>
+      <h1 class="text-4xl font-serif font-bold text-stone-800 mb-2">
+        Painel Administrativo
+      </h1>
+      <p class="text-stone-600 text-lg">
+        Gerencie o conteúdo e as configurações do sistema.
+      </p>
     </div>
 
-    <!-- Grid com 4 colunas organizadas em pipelines -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-12">
-      
-      <!-- Pipeline 1: Conteúdo -->
-      <div class="space-y-6">
-        <div class="text-center mb-4">
-          <h2 class="text-lg font-bold text-stone-700 uppercase tracking-wide">Conteúdo</h2>
-          <div class="w-16 h-0.5 bg-primary mx-auto mt-2"></div>
+    <!-- Admin Grid -->
+    <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
+
+      <!-- Events -->
+      <a routerLink="/admin/events"
+        class="bg-white border border-stone-200 p-6 hover:shadow-lg transition-all duration-200 group">
+        <div
+          class="w-12 h-12 bg-amber-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-6 h-6 text-amber-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
         </div>
-        
-        <a routerLink="/admin/events" class="block bg-white border border-stone-200 rounded-sm p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
-          <div class="text-center">
-            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
-              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-stone-800 mb-2">Eventos</h3>
-            <p class="text-sm text-stone-600">Gerenciar eventos e notificações</p>
-          </div>
-        </a>
+        <h3 class="text-xl font-bold text-stone-800 mb-2">Eventos</h3>
+        <p class="text-stone-600 text-sm">Gerenciar agenda e inscrições</p>
+      </a>
 
-        <a routerLink="/admin/news" class="block bg-white border border-stone-200 rounded-sm p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
-          <div class="text-center">
-            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
-              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-stone-800 mb-2">Notícias</h3>
-            <p class="text-sm text-stone-600">Publicar e editar notícias</p>
-          </div>
-        </a>
-      </div>
-
-      <!-- Pipeline 2: Comunicação -->
-      <div class="space-y-6">
-        <div class="text-center mb-4">
-          <h2 class="text-lg font-bold text-stone-700 uppercase tracking-wide">Comunicação</h2>
-          <div class="w-16 h-0.5 bg-primary mx-auto mt-2"></div>
+      <!-- News -->
+      <a routerLink="/admin/news"
+        class="bg-white border border-stone-200 p-6 hover:shadow-lg transition-all duration-200 group">
+        <div
+          class="w-12 h-12 bg-blue-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-6 h-6 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+            </path>
+          </svg>
         </div>
-        
-        <a routerLink="/admin/messages" class="block bg-white border border-stone-200 rounded-sm p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
-          <div class="text-center">
-            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors">
-              <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-stone-800 mb-2">Mensagens</h3>
-            <p class="text-sm text-stone-600">Enviar mensagens via WhatsApp</p>
-          </div>
-        </a>
+        <h3 class="text-xl font-bold text-stone-800 mb-2">Notícias</h3>
+        <p class="text-stone-600 text-sm">Publicar e editar notícias</p>
+      </a>
 
-        <a routerLink="/admin/requests" class="block bg-white border border-stone-200 rounded-sm p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
-          <div class="text-center">
-            <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-200 transition-colors">
-              <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-stone-800 mb-2">Solicitações</h3>
-            <p class="text-sm text-stone-600">Administrar solicitações dos usuários</p>
-          </div>
-        </a>
-      </div>
-
-      <!-- Pipeline 3: Benefícios -->
-      <div class="space-y-6">
-        <div class="text-center mb-4">
-          <h2 class="text-lg font-bold text-stone-700 uppercase tracking-wide">Benefícios</h2>
-          <div class="w-16 h-0.5 bg-primary mx-auto mt-2"></div>
+      <!-- Messages -->
+      <a routerLink="/admin/messages"
+        class="bg-white border border-stone-200 p-6 hover:shadow-lg transition-all duration-200 group">
+        <div
+          class="w-12 h-12 bg-green-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+            </path>
+          </svg>
         </div>
-        
-        <a routerLink="/admin/benefits" class="block bg-white border border-stone-200 rounded-sm p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
-          <div class="text-center">
-            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-rose-200 transition-colors">
-              <svg class="w-8 h-8 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-stone-800 mb-2">Benefícios</h3>
-            <p class="text-sm text-stone-600">Gerenciar benefícios dos associados</p>
-          </div>
-        </a>
-      </div>
+        <h3 class="text-xl font-bold text-stone-800 mb-2">Mensagens</h3>
+        <p class="text-stone-600 text-sm">Disparos via WhatsApp</p>
+      </a>
 
-      <!-- Pipeline 4: Relatórios -->
-      <div class="space-y-6">
-        <div class="text-center mb-4">
-          <h2 class="text-lg font-bold text-stone-700 uppercase tracking-wide">Relatórios</h2>
-          <div class="w-16 h-0.5 bg-primary mx-auto mt-2"></div>
+      <!-- Account Statements -->
+      <a routerLink="/admin/account-statements"
+        class="bg-white border border-stone-200 p-6 hover:shadow-lg transition-all duration-200 group">
+        <div
+          class="w-12 h-12 bg-purple-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-6 h-6 text-purple-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+            </path>
+          </svg>
         </div>
-        
-        <a routerLink="/admin/account-statements" class="block bg-white border border-stone-200 rounded-sm p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
-          <div class="text-center">
-            <div class="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-cyan-200 transition-colors">
-              <svg class="w-8 h-8 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-stone-800 mb-2">Prestação de Contas</h3>
-            <p class="text-sm text-stone-600">Gerenciar documentos financeiros</p>
-          </div>
-        </a>
-      </div>
+        <h3 class="text-xl font-bold text-stone-800 mb-2">Prestação de Contas</h3>
+        <p class="text-stone-600 text-sm">Upload de documentos</p>
+      </a>
+
+      <!-- Benefits -->
+      <a routerLink="/admin/benefits"
+        class="bg-white border border-stone-200 p-6 hover:shadow-lg transition-all duration-200 group">
+        <div
+          class="w-12 h-12 bg-rose-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <svg class="w-6 h-6 text-rose-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7">
+            </path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-stone-800 mb-2">Benefícios</h3>
+        <p class="text-stone-600 text-sm">Gerenciar parceiros e ofertas</p>
+      </a>
+
     </div>
 
     <!-- Analytics Section -->
     <div class="mt-16">
+
 
       <!-- Controls -->
       <div class="flex flex-col md:flex-row gap-4 mb-8 justify-between items-end">
@@ -231,24 +208,24 @@
         <!-- Charts Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
-            <apx-chart [series]="safeCommFunnelChart.series" [chart]="safeCommFunnelChart.chart"
-              [plotOptions]="safeCommFunnelChart.plotOptions" [dataLabels]="safeCommFunnelChart.dataLabels"
-              [title]="safeCommFunnelChart.title" [xaxis]="safeCommFunnelChart.xaxis"
-              [colors]="safeCommFunnelChart.colors"></apx-chart>
+            <apx-chart [series]="commFunnelChart.series!" [chart]="commFunnelChart.chart!"
+              [plotOptions]="commFunnelChart.plotOptions!" [dataLabels]="commFunnelChart.dataLabels!"
+              [title]="commFunnelChart.title!" [xaxis]="commFunnelChart.xaxis!"
+              [colors]="commFunnelChart.colors!"></apx-chart>
           </div>
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
-            <apx-chart [series]="safeCommPieChart.series" [chart]="safeCommPieChart.chart" [labels]="safeCommPieChart.labels"
-              [title]="safeCommPieChart.title" [colors]="safeCommPieChart.colors"></apx-chart>
+            <apx-chart [series]="commPieChart.series!" [chart]="commPieChart.chart!" [labels]="commPieChart.labels!"
+              [title]="commPieChart.title!" [colors]="commPieChart.colors!"></apx-chart>
           </div>
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
-            <apx-chart [series]="safeCommLineChart.series" [chart]="safeCommLineChart.chart" [stroke]="safeCommLineChart.stroke"
-              [title]="safeCommLineChart.title" [xaxis]="safeCommLineChart.xaxis"
-              [colors]="safeCommLineChart.colors"></apx-chart>
+            <apx-chart [series]="commLineChart.series!" [chart]="commLineChart.chart!" [stroke]="commLineChart.stroke!"
+              [title]="commLineChart.title!" [xaxis]="commLineChart.xaxis!"
+              [colors]="commLineChart.colors!"></apx-chart>
           </div>
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
-            <apx-chart [series]="safeCommBarChart.series" [chart]="safeCommBarChart.chart"
-              [plotOptions]="safeCommBarChart.plotOptions" [dataLabels]="safeCommBarChart.dataLabels"
-              [title]="safeCommBarChart.title" [xaxis]="safeCommBarChart.xaxis" [colors]="safeCommBarChart.colors"></apx-chart>
+            <apx-chart [series]="commBarChart.series!" [chart]="commBarChart.chart!"
+              [plotOptions]="commBarChart.plotOptions!" [dataLabels]="commBarChart.dataLabels!"
+              [title]="commBarChart.title!" [xaxis]="commBarChart.xaxis!" [colors]="commBarChart.colors!"></apx-chart>
           </div>
         </div>
       </div>
@@ -324,25 +301,25 @@
         <!-- Charts Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
-            <apx-chart [series]="safeLoansFunnelChart.series" [chart]="safeLoansFunnelChart.chart"
-              [plotOptions]="safeLoansFunnelChart.plotOptions" [dataLabels]="safeLoansFunnelChart.dataLabels"
-              [title]="safeLoansFunnelChart.title" [xaxis]="safeLoansFunnelChart.xaxis"
-              [colors]="safeLoansFunnelChart.colors"></apx-chart>
+            <apx-chart [series]="loansFunnelChart.series!" [chart]="loansFunnelChart.chart!"
+              [plotOptions]="loansFunnelChart.plotOptions!" [dataLabels]="loansFunnelChart.dataLabels!"
+              [title]="loansFunnelChart.title!" [xaxis]="loansFunnelChart.xaxis!"
+              [colors]="loansFunnelChart.colors!"></apx-chart>
           </div>
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
-            <apx-chart [series]="safeLoansBarChart.series" [chart]="safeLoansBarChart.chart" [title]="safeLoansBarChart.title"
-              [xaxis]="safeLoansBarChart.xaxis" [colors]="safeLoansBarChart.colors"></apx-chart>
+            <apx-chart [series]="loansBarChart.series!" [chart]="loansBarChart.chart!" [title]="loansBarChart.title!"
+              [xaxis]="loansBarChart.xaxis!" [colors]="loansBarChart.colors!"></apx-chart>
           </div>
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
-            <apx-chart [series]="safeLoansLineChart.series" [chart]="safeLoansLineChart.chart"
-              [stroke]="safeLoansLineChart.stroke" [title]="safeLoansLineChart.title" [xaxis]="safeLoansLineChart.xaxis"
-              [colors]="safeLoansLineChart.colors"></apx-chart>
+            <apx-chart [series]="loansLineChart.series!" [chart]="loansLineChart.chart!"
+              [stroke]="loansLineChart.stroke!" [title]="loansLineChart.title!" [xaxis]="loansLineChart.xaxis!"
+              [colors]="loansLineChart.colors!"></apx-chart>
           </div>
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
-            <apx-chart [series]="safeLoansAreaChart.series" [chart]="safeLoansAreaChart.chart"
-              [stroke]="safeLoansAreaChart.stroke" [dataLabels]="safeLoansAreaChart.dataLabels"
-              [title]="safeLoansAreaChart.title" [xaxis]="safeLoansAreaChart.xaxis"
-              [colors]="safeLoansAreaChart.colors"></apx-chart>
+            <apx-chart [series]="loansAreaChart.series!" [chart]="loansAreaChart.chart!"
+              [stroke]="loansAreaChart.stroke!" [dataLabels]="loansAreaChart.dataLabels!"
+              [title]="loansAreaChart.title!" [xaxis]="loansAreaChart.xaxis!"
+              [colors]="loansAreaChart.colors!"></apx-chart>
           </div>
         </div>
       </div>
@@ -416,25 +393,25 @@
         <!-- Charts Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
-            <apx-chart [series]="safeBenefitsPieChart.series" [chart]="safeBenefitsPieChart.chart"
-              [labels]="safeBenefitsPieChart.labels" [title]="safeBenefitsPieChart.title"
-              [colors]="safeBenefitsPieChart.colors"></apx-chart>
+            <apx-chart [series]="benefitsPieChart.series!" [chart]="benefitsPieChart.chart!"
+              [labels]="benefitsPieChart.labels!" [title]="benefitsPieChart.title!"
+              [colors]="benefitsPieChart.colors!"></apx-chart>
           </div>
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm">
-            <apx-chart [series]="safeBenefitsFunnelChart.series" [chart]="safeBenefitsFunnelChart.chart"
-              [plotOptions]="safeBenefitsFunnelChart.plotOptions" [dataLabels]="safeBenefitsFunnelChart.dataLabels"
-              [title]="safeBenefitsFunnelChart.title" [xaxis]="safeBenefitsFunnelChart.xaxis"
-              [colors]="safeBenefitsFunnelChart.colors"></apx-chart>
+            <apx-chart [series]="benefitsFunnelChart.series!" [chart]="benefitsFunnelChart.chart!"
+              [plotOptions]="benefitsFunnelChart.plotOptions!" [dataLabels]="benefitsFunnelChart.dataLabels!"
+              [title]="benefitsFunnelChart.title!" [xaxis]="benefitsFunnelChart.xaxis!"
+              [colors]="benefitsFunnelChart.colors!"></apx-chart>
           </div>
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
-            <apx-chart [series]="safeBenefitsLineChart.series" [chart]="safeBenefitsLineChart.chart"
-              [stroke]="safeBenefitsLineChart.stroke" [title]="safeBenefitsLineChart.title" [xaxis]="safeBenefitsLineChart.xaxis"
-              [colors]="safeBenefitsLineChart.colors"></apx-chart>
+            <apx-chart [series]="benefitsLineChart.series!" [chart]="benefitsLineChart.chart!"
+              [stroke]="benefitsLineChart.stroke!" [title]="benefitsLineChart.title!" [xaxis]="benefitsLineChart.xaxis!"
+              [colors]="benefitsLineChart.colors!"></apx-chart>
           </div>
           <div class="bg-white border border-stone-200 p-6 rounded-sm shadow-sm col-span-1 lg:col-span-2">
-            <apx-chart [series]="safeBenefitsBarChart.series" [chart]="safeBenefitsBarChart.chart"
-              [title]="safeBenefitsBarChart.title" [xaxis]="safeBenefitsBarChart.xaxis"
-              [colors]="safeBenefitsBarChart.colors"></apx-chart>
+            <apx-chart [series]="benefitsBarChart.series!" [chart]="benefitsBarChart.chart!"
+              [title]="benefitsBarChart.title!" [xaxis]="benefitsBarChart.xaxis!"
+              [colors]="benefitsBarChart.colors!"></apx-chart>
           </div>
         </div>
       </div>
@@ -513,4 +490,3 @@
       </div>
     </div>
   </div>
-</div>

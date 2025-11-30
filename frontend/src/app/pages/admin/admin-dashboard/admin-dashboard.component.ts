@@ -1,5 +1,3 @@
-import { RouterLink } from "@angular/router"
-import { ToastComponent } from "../../../shared/components/toast/toast.component"
 import { Component, inject, ViewChild } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
@@ -20,6 +18,7 @@ import {
   ApexLegend,
   ApexPlotOptions,
   ApexGrid,
+  ChartComponent
 } from "ng-apexcharts"
 
 export type ChartOptions = {
@@ -42,7 +41,7 @@ export type ChartOptions = {
 @Component({
   selector: "app-admin-dashboard",
   standalone: true,
-  imports: [CommonModule, RouterModule, NgApexchartsModule, FormsModule, RouterLink, ToastComponent],
+  imports: [CommonModule, RouterModule, AdminNavbarComponent, NgApexchartsModule, FormsModule],
   templateUrl: "./admin-dashboard.component.html",
 })
 export class AdminDashboardComponent {
@@ -54,162 +53,28 @@ export class AdminDashboardComponent {
   startDate: string = '2025-11-01';
   endDate: string = '2025-11-30';
 
-  // Communication Charts - Removendo os ! para evitar erros de tipagem
-  commFunnelChart: Partial<ChartOptions> = {};
-  commPieChart: Partial<ChartOptions> = {};
-  commLineChart: Partial<ChartOptions> = {};
-  commBarChart: Partial<ChartOptions> = {};
+  // Communication Charts
+  commFunnelChart!: Partial<ChartOptions>;
+  commPieChart!: Partial<ChartOptions>;
+  commLineChart!: Partial<ChartOptions>;
+  commBarChart!: Partial<ChartOptions>;
 
-  // Loans Charts - Removendo os ! para evitar erros de tipagem
-  loansFunnelChart: Partial<ChartOptions> = {};
-  loansBarChart: Partial<ChartOptions> = {};
-  loansLineChart: Partial<ChartOptions> = {};
-  loansAreaChart: Partial<ChartOptions> = {};
+  // Loans Charts
+  loansFunnelChart!: Partial<ChartOptions>;
+  loansBarChart!: Partial<ChartOptions>;
+  loansLineChart!: Partial<ChartOptions>;
+  loansAreaChart!: Partial<ChartOptions>;
 
-  // Benefits Charts - Removendo os ! para evitar erros de tipagem
-  benefitsPieChart: Partial<ChartOptions> = {};
-  benefitsFunnelChart: Partial<ChartOptions> = {};
-  benefitsLineChart: Partial<ChartOptions> = {};
-  benefitsBarChart: Partial<ChartOptions> = {};
+  // Benefits Charts
+  benefitsPieChart!: Partial<ChartOptions>;
+  benefitsFunnelChart!: Partial<ChartOptions>;
+  benefitsLineChart!: Partial<ChartOptions>;
+  benefitsBarChart!: Partial<ChartOptions>;
 
   constructor() {
     this.initCommunicationCharts();
     this.initLoansCharts();
     this.initBenefitsCharts();
-  }
-
-  // Getters para garantir que sempre retornamos valores válidos
-  get safeCommFunnelChart() {
-    return {
-      series: this.commFunnelChart.series ?? [],
-      chart: this.commFunnelChart.chart ?? { type: 'bar', height: 350 },
-      plotOptions: this.commFunnelChart.plotOptions ?? {},
-      dataLabels: this.commFunnelChart.dataLabels ?? { enabled: true },
-      title: this.commFunnelChart.title ?? { text: '' },
-      xaxis: this.commFunnelChart.xaxis ?? { categories: [] },
-      colors: this.commFunnelChart.colors ?? []
-    };
-  }
-
-  get safeCommPieChart() {
-    return {
-      series: this.commPieChart.series ?? [],
-      chart: this.commPieChart.chart ?? { type: 'donut', height: 350 },
-      labels: this.commPieChart.labels ?? [],
-      title: this.commPieChart.title ?? { text: '' },
-      colors: this.commPieChart.colors ?? []
-    };
-  }
-
-  get safeCommLineChart() {
-    return {
-      series: this.commLineChart.series ?? [],
-      chart: this.commLineChart.chart ?? { type: 'line', height: 350 },
-      stroke: this.commLineChart.stroke ?? {},
-      title: this.commLineChart.title ?? { text: '' },
-      xaxis: this.commLineChart.xaxis ?? { categories: [] },
-      colors: this.commLineChart.colors ?? []
-    };
-  }
-
-  get safeCommBarChart() {
-    return {
-      series: this.commBarChart.series ?? [],
-      chart: this.commBarChart.chart ?? { type: 'bar', height: 350 },
-      plotOptions: this.commBarChart.plotOptions ?? {},
-      dataLabels: this.commBarChart.dataLabels ?? { enabled: true },
-      title: this.commBarChart.title ?? { text: '' },
-      xaxis: this.commBarChart.xaxis ?? { categories: [] },
-      colors: this.commBarChart.colors ?? []
-    };
-  }
-
-  get safeLoansFunnelChart() {
-    return {
-      series: this.loansFunnelChart.series ?? [],
-      chart: this.loansFunnelChart.chart ?? { type: 'bar', height: 350 },
-      plotOptions: this.loansFunnelChart.plotOptions ?? {},
-      dataLabels: this.loansFunnelChart.dataLabels ?? { enabled: true },
-      title: this.loansFunnelChart.title ?? { text: '' },
-      xaxis: this.loansFunnelChart.xaxis ?? { categories: [] },
-      colors: this.loansFunnelChart.colors ?? []
-    };
-  }
-
-  get safeLoansBarChart() {
-    return {
-      series: this.loansBarChart.series ?? [],
-      chart: this.loansBarChart.chart ?? { type: 'bar', height: 350 },
-      title: this.loansBarChart.title ?? { text: '' },
-      xaxis: this.loansBarChart.xaxis ?? { categories: [] },
-      colors: this.loansBarChart.colors ?? []
-    };
-  }
-
-  get safeLoansLineChart() {
-    return {
-      series: this.loansLineChart.series ?? [],
-      chart: this.loansLineChart.chart ?? { type: 'line', height: 350 },
-      stroke: this.loansLineChart.stroke ?? {},
-      title: this.loansLineChart.title ?? { text: '' },
-      xaxis: this.loansLineChart.xaxis ?? { categories: [] },
-      colors: this.loansLineChart.colors ?? []
-    };
-  }
-
-  get safeLoansAreaChart() {
-    return {
-      series: this.loansAreaChart.series ?? [],
-      chart: this.loansAreaChart.chart ?? { type: 'area', height: 350 },
-      stroke: this.loansAreaChart.stroke ?? {},
-      dataLabels: this.loansAreaChart.dataLabels ?? { enabled: true },
-      title: this.loansAreaChart.title ?? { text: '' },
-      xaxis: this.loansAreaChart.xaxis ?? { categories: [] },
-      colors: this.loansAreaChart.colors ?? []
-    };
-  }
-
-  get safeBenefitsPieChart() {
-    return {
-      series: this.benefitsPieChart.series ?? [],
-      chart: this.benefitsPieChart.chart ?? { type: 'pie', height: 350 },
-      labels: this.benefitsPieChart.labels ?? [],
-      title: this.benefitsPieChart.title ?? { text: '' },
-      colors: this.benefitsPieChart.colors ?? []
-    };
-  }
-
-  get safeBenefitsFunnelChart() {
-    return {
-      series: this.benefitsFunnelChart.series ?? [],
-      chart: this.benefitsFunnelChart.chart ?? { type: 'bar', height: 350 },
-      plotOptions: this.benefitsFunnelChart.plotOptions ?? {},
-      dataLabels: this.benefitsFunnelChart.dataLabels ?? { enabled: true },
-      title: this.benefitsFunnelChart.title ?? { text: '' },
-      xaxis: this.benefitsFunnelChart.xaxis ?? { categories: [] },
-      colors: this.benefitsFunnelChart.colors ?? []
-    };
-  }
-
-  get safeBenefitsLineChart() {
-    return {
-      series: this.benefitsLineChart.series ?? [],
-      chart: this.benefitsLineChart.chart ?? { type: 'line', height: 350 },
-      stroke: this.benefitsLineChart.stroke ?? {},
-      title: this.benefitsLineChart.title ?? { text: '' },
-      xaxis: this.benefitsLineChart.xaxis ?? { categories: [] },
-      colors: this.benefitsLineChart.colors ?? []
-    };
-  }
-
-  get safeBenefitsBarChart() {
-    return {
-      series: this.benefitsBarChart.series ?? [],
-      chart: this.benefitsBarChart.chart ?? { type: 'bar', height: 350 },
-      title: this.benefitsBarChart.title ?? { text: '' },
-      xaxis: this.benefitsBarChart.xaxis ?? { categories: [] },
-      colors: this.benefitsBarChart.colors ?? []
-    };
   }
 
   get currentUser() {
