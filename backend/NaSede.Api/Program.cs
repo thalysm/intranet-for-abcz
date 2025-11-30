@@ -86,6 +86,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<ITwilioService, TwilioService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAIService, SemanticKernelService>();
 
 // CORS configuration
 builder.Services.AddCors(options =>

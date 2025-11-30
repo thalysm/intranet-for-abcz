@@ -17,17 +17,20 @@ public class EventsController : ControllerBase
     private readonly ApplicationDbContext _context;
     private readonly ITwilioService _twilioService;
     private readonly IAuthService _authService;
+    private readonly IAIService _aiService;
     private readonly IConfiguration _configuration;
 
     public EventsController(
         ApplicationDbContext context, 
         ITwilioService twilioService,
         IAuthService authService,
+        IAIService aiService,
         IConfiguration configuration)
     {
         _context = context;
         _twilioService = twilioService;
         _authService = authService;
+        _aiService = aiService;
         _configuration = configuration;
     }
 
@@ -346,6 +349,13 @@ public class EventsController : ControllerBase
 
         return Ok(users);
     }
+    [HttpPost("generate")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<CreateEventRequest>> GenerateEvent([FromBody] GenerateEventRequest request)
+    {
+        var eventDetails = await _aiService.GenerateEventDetailsAsync(request.Prompt);
+        return Ok(eventDetails);
+    }
 }
 
 public class UserSelectionDto
@@ -354,4 +364,9 @@ public class UserSelectionDto
     public string Name { get; set; } = string.Empty;
     public string Matricula { get; set; } = string.Empty;
     public string WhatsAppNumber { get; set; } = string.Empty;
+}
+
+public class GenerateEventRequest
+{
+    public string Prompt { get; set; } = string.Empty;
 }

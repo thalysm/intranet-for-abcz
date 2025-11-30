@@ -5,6 +5,7 @@ import {
   type FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormsModule,
 } from "@angular/forms";
 import { ApiService } from "../../../core/services/api.service";
 
@@ -13,7 +14,7 @@ import { AdminNavbarComponent } from "../components/admin-navbar/admin-navbar.co
 @Component({
   selector: "app-admin-events",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AdminNavbarComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, AdminNavbarComponent],
   templateUrl: "./admin-events.component.html",
 })
 export class AdminEventsComponent implements OnInit {
@@ -26,6 +27,9 @@ export class AdminEventsComponent implements OnInit {
   selectedReport: any = null;
   isSubmitting = false;
   selectedUserIds: Set<string> = new Set();
+
+  aiPrompt = '';
+  isGenerating = false;
 
   constructor(private fb: FormBuilder, private apiService: ApiService) {
     this.eventForm = this.fb.group({
@@ -61,6 +65,7 @@ export class AdminEventsComponent implements OnInit {
     this.editingEvent = null;
     this.selectedUserIds.clear();
     this.eventForm.reset({ notifyAll: true });
+    this.aiPrompt = '';
     this.showModal = true;
   }
 
@@ -101,6 +106,27 @@ export class AdminEventsComponent implements OnInit {
 
   isUserSelected(userId: string): boolean {
     return this.selectedUserIds.has(userId);
+  }
+
+  generateWithAI(): void {
+    if (!this.aiPrompt.trim()) return;
+
+    this.isGenerating = true;
+    this.apiService.post<any>('/events/generate', { prompt: this.aiPrompt }).subscribe({
+      next: (data) => {
+        this.eventForm.patchValue({
+          title: data.title,
+          description: data.description,
+          location: data.location,
+          eventDate: data.eventDate ? data.eventDate.slice(0, 16) : ''
+        });
+        this.isGenerating = false;
+      },
+      error: (err) => {
+        console.error('Error generating event:', err);
+        this.isGenerating = false;
+      }
+    });
   }
 
   onSubmit(): void {
