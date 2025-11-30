@@ -40,15 +40,4 @@ export class BenefitsComponent implements OnInit {
   viewBenefit(benefitId: string): void {
     this.router.navigate(['/benefits', benefitId])
   }
-
-  executeButtonAction(buttonAction: string): void {
-    if (buttonAction) {
-      if (buttonAction.startsWith('http')) {
-        window.open(buttonAction, '_blank')
-      } else {
-        // Outras ações customizadas podem ser implementadas aqui
-        console.log('Executando ação:', buttonAction)
-      }
-    }
-  }
 }

@@ -140,9 +140,9 @@ export class BenefitDetailComponent implements OnInit {
       next: (request) => {
         this.toastService.success('Solicitação de benefício criada com sucesso! Aguarde a aprovação do administrador.');
         
-        // Redireciona para a página de solicitações após 2 segundos
+        // Redireciona para a página de benefícios após 2 segundos
         setTimeout(() => {
-          this.router.navigate(['/user-requests']);
+          this.router.navigate(['/benefits']);
         }, 2000);
       },
       error: (err) => {
