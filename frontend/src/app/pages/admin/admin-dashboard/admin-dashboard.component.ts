@@ -42,7 +42,7 @@ export type ChartOptions = {
 @Component({
   selector: "app-admin-dashboard",
   standalone: true,
-  imports: [CommonModule, RouterModule, AdminNavbarComponent, NgApexchartsModule, FormsModule, RouterLink, ToastComponent],
+  imports: [CommonModule, RouterModule, NgApexchartsModule, FormsModule, RouterLink, ToastComponent],
   templateUrl: "./admin-dashboard.component.html",
 })
 export class AdminDashboardComponent {
