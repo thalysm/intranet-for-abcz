@@ -9,7 +9,10 @@ public class RequestDto
     public string StatusName { get; set; } = string.Empty;
     public Guid UserId { get; set; }
     public string UserName { get; set; } = string.Empty;
+    public string? Title { get; set; }
+    public string? Description { get; set; }
     public string? Response { get; set; }
+    public Guid? SimulationId { get; set; } // ID da simulação específica
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 }
@@ -17,6 +20,9 @@ public class RequestDto
 public class CreateRequestRequest
 {
     public Guid TypeId { get; set; }
+    public string? Title { get; set; }
+    public string? Description { get; set; }
+    public Guid? SimulationId { get; set; } // Para empréstimos
 }
 
 public class UpdateRequestStatusRequest

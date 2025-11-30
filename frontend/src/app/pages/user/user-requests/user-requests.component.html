@@ -29,6 +29,43 @@
                 </span>
               </div>
 
+              <!-- Detalhes da Solicitação -->
+              <div *ngIf="request.title || request.description" class="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-3">
+                <div *ngIf="request.title" class="mb-2">
+                  <span class="text-sm font-medium text-gray-700">Título:</span>
+                  <p class="text-gray-900 mt-1">{{ request.title }}</p>
+                </div>
+                <div *ngIf="request.description">
+                  <span class="text-sm font-medium text-gray-700">Descrição:</span>
+                  <p class="text-gray-900 mt-1 leading-relaxed">{{ request.description }}</p>
+                </div>
+              </div>
+
+              <!-- Detalhes específicos para empréstimo -->
+              <div *ngIf="request.loanDetails && (request.typeName.toLowerCase().includes('empréstimo') || request.typeName.toLowerCase().includes('emprestimo'))" 
+                   class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+                <h4 class="text-sm font-medium text-blue-700 mb-2 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Detalhes do Empréstimo
+                </h4>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <span class="text-blue-600">Valor Solicitado:</span>
+                    <p class="font-medium text-blue-900">{{ formatCurrency(request.loanDetails.loanAmount) }}</p>
+                  </div>
+                  <div>
+                    <span class="text-blue-600">Parcelas:</span>
+                    <p class="font-medium text-blue-900">{{ request.loanDetails.numberInstallments }}x</p>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="text-blue-600">Salário Declarado:</span>
+                    <p class="font-medium text-blue-900">{{ formatCurrency(request.loanDetails.wage) }}</p>
+                  </div>
+                </div>
+              </div>
+
               <div class="grid md:grid-cols-2 gap-4 mb-3">
                 <div>
                   <span class="text-sm text-gray-500">Criado em:</span>

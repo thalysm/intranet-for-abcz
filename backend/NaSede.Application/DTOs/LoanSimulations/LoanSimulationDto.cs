@@ -25,6 +25,7 @@ public class CreateLoanSimulationRequest
 
 public class LoanSimulationResultDto
 {
+    public Guid Id { get; set; } // ID da simulação criada
     public decimal RequestedAmount { get; set; }
     public decimal InstallmentValue { get; set; }
     public decimal TotalAmount { get; set; }

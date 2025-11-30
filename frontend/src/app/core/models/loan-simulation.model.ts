@@ -20,6 +20,7 @@ export interface CreateLoanSimulationRequest {
 }
 
 export interface LoanSimulationResult {
+  id: string; // ID da simulação criada
   requestedAmount: number;
   installmentValue: number;
   totalAmount: number;
