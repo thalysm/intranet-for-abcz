@@ -83,18 +83,12 @@
         <div *ngIf="benefit.buttonAction" class="mb-6">
           <button (click)="executeButtonAction(benefit.buttonAction!)"
                   class="btn-primary text-lg px-8 py-3">
-            <ng-container *ngIf="isRequestAction(benefit.buttonAction); else linkAction">
+            <ng-container *ngIf="isRequestAction(benefit.buttonAction);">
               <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               Solicitar Benefício
             </ng-container>
-            <ng-template #linkAction>
-              <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-              </svg>
-              Acessar Benefício
-            </ng-template>
           </button>
           
           <!-- Info text for request actions -->
@@ -108,19 +102,6 @@
           <!-- Description -->
           <div class="prose prose-stone prose-lg max-w-none mb-10">
             <p class="text-stone-600 leading-relaxed whitespace-pre-line">{{ benefit.description }}</p>
-          </div>
-
-          <!-- Action Button -->
-          <div *ngIf="benefit.buttonAction" class="flex justify-start">
-            <button (click)="executeButtonAction(benefit.buttonAction!)"
-              class="px-8 py-4 bg-primary text-white text-lg font-medium rounded-sm hover:bg-primary/90 transition-all shadow-sm hover:shadow-md flex items-center gap-3 group">
-              <span>Acessar Benefício</span>
-              <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </button>
           </div>
         </div>
       </div>

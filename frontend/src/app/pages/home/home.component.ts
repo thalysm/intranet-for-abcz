@@ -38,8 +38,6 @@ export class HomeComponent implements OnInit {
     if (buttonAction) {
       if (buttonAction.startsWith('http')) {
         window.open(buttonAction, '_blank')
-      } else {
-        console.log('Executando ação:', buttonAction)
       }
     }
   }
