@@ -18,7 +18,7 @@
       <div *ngFor="let request of requests" class="card">
         <div class="flex items-start justify-between">
           <div class="flex items-start gap-4 flex-1">
-            <div class="text-3xl">{{ getStatusIcon(request.status) }}</div>
+            <div class="text-3xl">{{ getStatusEmoji(request.status) }}</div>
             
             <div class="flex-1">
               <div class="flex items-center gap-3 mb-2">
