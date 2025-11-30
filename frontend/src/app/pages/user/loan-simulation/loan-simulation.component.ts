@@ -2,13 +2,17 @@ import { Component, type OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormBuilder, type FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
 import { LoanSimulationService } from "../../../core/services/loan-simulation.service"
+import { RequestService } from "../../../core/services/request.service"
+import { ToastService } from "../../../core/services/toast.service"
 import { LoanSimulation, CreateLoanSimulationRequest, LoanSimulationResult } from "../../../core/models/loan-simulation.model"
+import { CreateRequestRequest } from "../../../core/models/request.model"
 import { NavbarComponent } from "../../../shared/components/navbar/navbar.component"
+import { ToastComponent } from "../../../shared/components/toast/toast.component"
 
 @Component({
   selector: "app-loan-simulation",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NavbarComponent],
+  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, ToastComponent],
   templateUrl: "./loan-simulation.component.html",
 })
 export class LoanSimulationComponent implements OnInit {
@@ -18,6 +22,7 @@ export class LoanSimulationComponent implements OnInit {
   isSubmitting = false
   showResultModal = false
   simulationResult: LoanSimulationResult | null = null
+  isRequestingCredit = false
 
   // Valores formatados para exibição
   wageDisplay: string = ''
@@ -25,7 +30,9 @@ export class LoanSimulationComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private loanSimulationService: LoanSimulationService
+    private loanSimulationService: LoanSimulationService,
+    private requestService: RequestService,
+    private toastService: ToastService
   ) {
     this.simulationForm = this.fb.group({
       wage: ['', [Validators.required, Validators.min(0.01)]],
@@ -117,7 +124,7 @@ export class LoanSimulationComponent implements OnInit {
       },
       error: (err) => {
         console.error("Error simulating loan:", err)
-        alert("Erro ao simular empréstimo. Tente novamente.")
+        this.toastService.error("Erro ao simular empréstimo. Tente novamente.")
         this.isSubmitting = false
       },
     })
@@ -146,5 +153,55 @@ export class LoanSimulationComponent implements OnInit {
       minimumFractionDigits: 1,
       maximumFractionDigits: 1
     }).format(value)
+  }
+
+  requestCredit(): void {
+    if (!this.simulationResult) return
+
+    this.isRequestingCredit = true
+
+    // Busca o tipo de solicitação "Empréstimo"
+    this.requestService.getRequestTypes().subscribe({
+      next: (types) => {
+        const loanType = types.find(type => 
+          type.name.toLowerCase().includes('empréstimo') || 
+          type.name.toLowerCase().includes('crédito')
+        )
+        
+        if (!loanType) {
+          this.toastService.error("Tipo de solicitação de empréstimo não encontrado. Contate o administrador.")
+          this.isRequestingCredit = false
+          return
+        }
+
+        // Cria a solicitação com os dados da simulação
+        const createRequest: CreateRequestRequest = {
+          typeId: loanType.id
+        }
+
+        this.requestService.createRequest(createRequest).subscribe({
+          next: (newRequest) => {
+            this.toastService.success("Solicitação de crédito enviada com sucesso! Você pode acompanhar o status na página de Solicitações.")
+            this.closeResultModal()
+            this.isRequestingCredit = false
+            
+            // Limpa o formulário após sucesso
+            this.simulationForm.reset()
+            this.wageDisplay = ''
+            this.loanAmountDisplay = ''
+          },
+          error: (err) => {
+            console.error("Error creating credit request:", err)
+            this.toastService.error("Erro ao enviar solicitação de crédito. Tente novamente.")
+            this.isRequestingCredit = false
+          }
+        })
+      },
+      error: (err) => {
+        console.error("Error loading request types:", err)
+        this.toastService.error("Erro ao carregar tipos de solicitação. Tente novamente.")
+        this.isRequestingCredit = false
+      }
+    })
   }
 }

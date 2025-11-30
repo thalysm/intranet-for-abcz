@@ -53,6 +53,11 @@ export const routes: Routes = [
     loadComponent: () => import("./pages/user/loan-simulation/loan-simulation.component").then((m) => m.LoanSimulationComponent),
   },
   {
+    path: "requests",
+    canActivate: [authGuard],
+    loadComponent: () => import("./pages/user/user-requests/user-requests.component").then((m) => m.UserRequestsComponent),
+  },
+  { 
     path: "news",
     canActivate: [authGuard],
     loadComponent: () => import("./pages/user/news/news.component").then((m) => m.NewsComponent),
@@ -96,6 +101,11 @@ export const routes: Routes = [
         path: "benefits",
         loadComponent: () =>
           import("./pages/admin/admin-benefits/admin-benefits.component").then((m) => m.AdminBenefitsComponent),
+      },
+      {
+        path: "requests",
+        loadComponent: () =>
+          import("./pages/admin/admin-requests/admin-requests.component").then((m) => m.AdminRequestsComponent),
       },
     ],
   },

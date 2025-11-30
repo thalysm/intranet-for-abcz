@@ -79,6 +79,32 @@
             </div>
           </div>
 
+        <!-- Action Button -->
+        <div *ngIf="benefit.buttonAction" class="mb-6">
+          <button (click)="executeButtonAction(benefit.buttonAction!)"
+                  class="btn-primary text-lg px-8 py-3">
+            <ng-container *ngIf="isRequestAction(benefit.buttonAction); else linkAction">
+              <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Solicitar Benefício
+            </ng-container>
+            <ng-template #linkAction>
+              <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+              </svg>
+              Acessar Benefício
+            </ng-template>
+          </button>
+          
+          <!-- Info text for request actions -->
+          <p *ngIf="isRequestAction(benefit.buttonAction)" class="mt-2 text-sm text-gray-600">
+            <svg class="w-4 h-4 mr-1 inline-block" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+            </svg>
+            Ao clicar, uma solicitação será enviada para aprovação do administrador.
+          </p>
+        </div>
           <!-- Description -->
           <div class="prose prose-stone prose-lg max-w-none mb-10">
             <p class="text-stone-600 leading-relaxed whitespace-pre-line">{{ benefit.description }}</p>

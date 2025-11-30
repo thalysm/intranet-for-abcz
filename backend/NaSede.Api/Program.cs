@@ -159,6 +159,41 @@ using (var scope = app.Services.CreateScope())
             );
             
             CREATE INDEX IF NOT EXISTS ""IX_LoanSimulations_UserId"" ON ""LoanSimulations"" (""UserId"");
+
+            CREATE TABLE IF NOT EXISTS ""RequestTypes"" (
+                ""Id"" uuid NOT NULL,
+                ""Name"" character varying(100) NOT NULL,
+                ""CreatedAt"" timestamp with time zone NOT NULL,
+                ""UpdatedAt"" timestamp with time zone,
+                CONSTRAINT ""PK_RequestTypes"" PRIMARY KEY (""Id"")
+            );
+            
+            CREATE UNIQUE INDEX IF NOT EXISTS ""IX_RequestTypes_Name"" ON ""RequestTypes"" (""Name"");
+
+            CREATE TABLE IF NOT EXISTS ""Requests"" (
+                ""Id"" uuid NOT NULL,
+                ""TypeId"" uuid NOT NULL,
+                ""Status"" integer NOT NULL DEFAULT 0,
+                ""UserId"" uuid NOT NULL,
+                ""Response"" character varying(1000),
+                ""CreatedAt"" timestamp with time zone NOT NULL,
+                ""UpdatedAt"" timestamp with time zone,
+                CONSTRAINT ""PK_Requests"" PRIMARY KEY (""Id""),
+                CONSTRAINT ""FK_Requests_RequestTypes_TypeId"" FOREIGN KEY (""TypeId"") REFERENCES ""RequestTypes"" (""Id"") ON DELETE RESTRICT,
+                CONSTRAINT ""FK_Requests_Users_UserId"" FOREIGN KEY (""UserId"") REFERENCES ""Users"" (""Id"") ON DELETE CASCADE
+            );
+            
+            CREATE INDEX IF NOT EXISTS ""IX_Requests_TypeId"" ON ""Requests"" (""TypeId"");
+            CREATE INDEX IF NOT EXISTS ""IX_Requests_UserId"" ON ""Requests"" (""UserId"");
+
+            -- Insert default request types
+            INSERT INTO ""RequestTypes"" (""Id"", ""Name"", ""CreatedAt"")
+            SELECT gen_random_uuid(), 'Empréstimo', NOW()
+            WHERE NOT EXISTS (SELECT 1 FROM ""RequestTypes"" WHERE ""Name"" = 'Empréstimo');
+
+            INSERT INTO ""RequestTypes"" (""Id"", ""Name"", ""CreatedAt"")
+            SELECT gen_random_uuid(), 'Benefício', NOW()
+            WHERE NOT EXISTS (SELECT 1 FROM ""RequestTypes"" WHERE ""Name"" = 'Benefício');
         ";
         
         await command.ExecuteNonQueryAsync();
