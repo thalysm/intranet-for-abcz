@@ -57,33 +57,6 @@ export class UserRequestsComponent implements OnInit {
     return this.requestService.getStatusColor(status)
   }
 
-  openCreateModal(): void {
-    this.createForm.reset()
-    this.showCreateModal = true
-  }
-
-  closeCreateModal(): void {
-    this.showCreateModal = false
-    this.createForm.reset()
-  }
-
-  onCreateSubmit(): void {
-    if (this.createForm.invalid) return
-
-    const formValue = this.createForm.value
-    this.requestService.createRequest(formValue).subscribe({
-      next: () => {
-        this.loadRequests()
-        this.closeCreateModal()
-        alert("Solicitação criada com sucesso!")
-      },
-      error: (err) => {
-        console.error("Error creating request:", err)
-        alert("Erro ao criar solicitação. Tente novamente.")
-      }
-    })
-  }
-
   formatDate(date: string): string {
     return new Date(date).toLocaleString('pt-BR')
   }
