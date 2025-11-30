@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NaSede.Infrastructure.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NaSede.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251130063535_AddWhatsAppTokens")]
+    partial class AddWhatsAppTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,26 +337,9 @@ namespace NaSede.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<Guid?>("LoanSimulationId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Response")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
-
-                    b.Property<Guid?>("SimulationId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -368,8 +354,6 @@ namespace NaSede.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LoanSimulationId");
 
                     b.HasIndex("TypeId");
 
@@ -608,10 +592,6 @@ namespace NaSede.Infrastructure.Migrations
 
             modelBuilder.Entity("NaSede.Domain.Entities.Request", b =>
                 {
-                    b.HasOne("NaSede.Domain.Entities.LoanSimulation", "LoanSimulation")
-                        .WithMany()
-                        .HasForeignKey("LoanSimulationId");
-
                     b.HasOne("NaSede.Domain.Entities.RequestType", "Type")
                         .WithMany("Requests")
                         .HasForeignKey("TypeId")
@@ -623,8 +603,6 @@ namespace NaSede.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("LoanSimulation");
 
                     b.Navigation("Type");
 

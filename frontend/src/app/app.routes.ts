@@ -17,6 +17,14 @@ export const routes: Routes = [
       import("./pages/auth/whatsapp-auth/whatsapp-auth.component").then((m) => m.WhatsappAuthComponent),
   },
   {
+    path: "events/confirm/:id",
+    loadComponent: () => import("./pages/events/confirm/confirm.component").then((m) => m.EventsConfirmComponent),
+  },
+  {
+    path: "events/decline/:id",
+    loadComponent: () => import("./pages/events/decline/decline.component").then((m) => m.EventsDeclineComponent),
+  },
+  {
     path: "dashboard",
     canActivate: [authGuard],
     loadComponent: () => import("./pages/user/dashboard/dashboard.component").then((m) => m.DashboardComponent),

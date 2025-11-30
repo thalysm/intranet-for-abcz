@@ -22,6 +22,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<LoanSimulation> LoanSimulations { get; set; }
     public DbSet<Request> Requests { get; set; }
     public DbSet<RequestType> RequestTypes { get; set; }
+    public DbSet<WhatsAppToken> WhatsAppTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -198,6 +199,18 @@ public class ApplicationDbContext : DbContext
                 .WithMany(t => t.Requests)
                 .HasForeignKey(e => e.TypeId)
                 .OnDelete(DeleteBehavior.Restrict);
+            
+            entity.HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // WhatsAppToken configuration
+        modelBuilder.Entity<WhatsAppToken>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Token).IsUnique();
             
             entity.HasOne(e => e.User)
                 .WithMany()
