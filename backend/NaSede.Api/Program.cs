@@ -176,6 +176,8 @@ using (var scope = app.Services.CreateScope())
                 ""TypeId"" uuid NOT NULL,
                 ""Status"" integer NOT NULL DEFAULT 0,
                 ""UserId"" uuid NOT NULL,
+                ""Title"" text,
+                ""Description"" text,
                 ""Response"" character varying(1000),
                 ""CreatedAt"" timestamp with time zone NOT NULL,
                 ""UpdatedAt"" timestamp with time zone,
@@ -187,6 +189,11 @@ using (var scope = app.Services.CreateScope())
             CREATE INDEX IF NOT EXISTS ""IX_Requests_TypeId"" ON ""Requests"" (""TypeId"");
             CREATE INDEX IF NOT EXISTS ""IX_Requests_UserId"" ON ""Requests"" (""UserId"");
 
+            -- Adicionar campos Title e Description se não existirem
+            ALTER TABLE ""Requests"" 
+            ADD COLUMN IF NOT EXISTS ""Title"" text,
+            ADD COLUMN IF NOT EXISTS ""Description"" text;
+
             -- Insert default request types
             INSERT INTO ""RequestTypes"" (""Id"", ""Name"", ""CreatedAt"")
             SELECT gen_random_uuid(), 'Empréstimo', NOW()
@@ -195,6 +202,10 @@ using (var scope = app.Services.CreateScope())
             INSERT INTO ""RequestTypes"" (""Id"", ""Name"", ""CreatedAt"")
             SELECT gen_random_uuid(), 'Benefício', NOW()
             WHERE NOT EXISTS (SELECT 1 FROM ""RequestTypes"" WHERE ""Name"" = 'Benefício');
+
+            INSERT INTO ""RequestTypes"" (""Id"", ""Name"", ""CreatedAt"")
+            SELECT '550e8400-e29b-41d4-a716-446655440000', 'Sugestões', NOW()
+            WHERE NOT EXISTS (SELECT 1 FROM ""RequestTypes"" WHERE ""Name"" = 'Sugestões');
         ";
         
         await command.ExecuteNonQueryAsync();
@@ -205,6 +216,57 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         Console.WriteLine($"❌ Error creating database/table: {ex.Message}");
+    }
+
+    // Execute SQL to add SimulationId column if needed
+    try
+    {
+        // Check if columns exist by trying to query them
+        await dbContext.Database.ExecuteSqlRawAsync(
+            "SELECT \"SimulationId\", \"LoanSimulationId\" FROM \"Requests\" LIMIT 1");
+        Console.WriteLine("✅ Both SimulationId and LoanSimulationId columns already exist");
+    }
+    catch
+    {
+        Console.WriteLine("⚡ Adding SimulationId and LoanSimulationId columns to Requests table...");
+        
+        try
+        {
+            // Add SimulationId column
+            await dbContext.Database.ExecuteSqlRawAsync(
+                "ALTER TABLE \"Requests\" ADD COLUMN IF NOT EXISTS \"SimulationId\" uuid NULL");
+            
+            // Add LoanSimulationId column (for EF navigation property)
+            await dbContext.Database.ExecuteSqlRawAsync(
+                "ALTER TABLE \"Requests\" ADD COLUMN IF NOT EXISTS \"LoanSimulationId\" uuid NULL");
+            
+            // Add foreign key constraints (with proper PostgreSQL syntax)
+            try 
+            {
+                await dbContext.Database.ExecuteSqlRawAsync(
+                    "ALTER TABLE \"Requests\" ADD CONSTRAINT \"FK_Requests_LoanSimulations_SimulationId\" FOREIGN KEY (\"SimulationId\") REFERENCES \"LoanSimulations\" (\"Id\") ON DELETE SET NULL");
+            }
+            catch 
+            {
+                // Constraint might already exist, ignore
+            }
+            
+            try 
+            {
+                await dbContext.Database.ExecuteSqlRawAsync(
+                    "ALTER TABLE \"Requests\" ADD CONSTRAINT \"FK_Requests_LoanSimulations_LoanSimulationId\" FOREIGN KEY (\"LoanSimulationId\") REFERENCES \"LoanSimulations\" (\"Id\") ON DELETE SET NULL");
+            }
+            catch 
+            {
+                // Constraint might already exist, ignore
+            }
+            
+            Console.WriteLine("✅ SimulationId and LoanSimulationId columns added successfully!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error adding columns: {ex.Message}");
+        }
     }
 }
 

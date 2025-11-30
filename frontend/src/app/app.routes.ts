@@ -66,6 +66,11 @@ export const routes: Routes = [
     loadComponent: () => import("./pages/user/user-requests/user-requests.component").then((m) => m.UserRequestsComponent),
   },
   {
+    path: "suggestions",
+    canActivate: [authGuard],
+    loadComponent: () => import("./pages/user/suggestions/suggestions.component").then((m) => m.SuggestionsComponent),
+  },
+  { 
     path: "news",
     canActivate: [authGuard],
     loadComponent: () => import("./pages/user/news/news.component").then((m) => m.NewsComponent),

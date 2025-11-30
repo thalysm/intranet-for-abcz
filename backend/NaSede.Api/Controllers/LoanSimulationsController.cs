@@ -50,6 +50,34 @@ public class LoanSimulationsController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("user/{userId}")]
+    public async Task<ActionResult<List<LoanSimulationDto>>> GetLoanSimulationsByUserId(Guid userId)
+    {
+        var simulations = await _context.LoanSimulations
+            .Include(ls => ls.User)
+            .Where(ls => ls.UserId == userId)
+            .OrderByDescending(ls => ls.CreatedAt)
+            .ToListAsync();
+
+        var result = simulations.Select(ls => new LoanSimulationDto
+        {
+            Id = ls.Id,
+            Wage = ls.WageInReais,
+            LoanAmount = ls.LoanAmountInReais,
+            NumberInstallments = ls.NumberInstallments,
+            InterestRate = ls.InterestRate,
+            InstallmentValue = ls.InstallmentValue,
+            TotalAmount = ls.TotalAmount,
+            MaxAllowedLoan = ls.MaxAllowedLoan,
+            IsValidLoan = ls.IsValidLoan,
+            CreatedAt = ls.CreatedAt,
+            UserId = ls.UserId,
+            UserName = ls.User?.Name
+        }).ToList();
+
+        return Ok(result);
+    }
+
     [HttpPost("simulate")]
     public async Task<ActionResult<LoanSimulationResultDto>> SimulateLoan([FromBody] CreateLoanSimulationRequest request)
     {
@@ -84,6 +112,7 @@ public class LoanSimulationsController : ControllerBase
         // Prepara o resultado
         var result = new LoanSimulationResultDto
         {
+            Id = tempSimulation.Id, // Incluir o ID da simulação criada
             RequestedAmount = tempSimulation.LoanAmountInReais,
             InstallmentValue = tempSimulation.InstallmentValue,
             TotalAmount = tempSimulation.TotalAmount,
@@ -110,32 +139,63 @@ public class LoanSimulationsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<LoanSimulationDto>> GetLoanSimulationById(Guid id)
     {
-        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
-        var simulation = await _context.LoanSimulations
-            .Include(ls => ls.User)
-            .FirstOrDefaultAsync(ls => ls.Id == id && ls.UserId == userId);
-
-        if (simulation == null)
-            return NotFound();
-
-        var result = new LoanSimulationDto
+        try
         {
-            Id = simulation.Id,
-            Wage = simulation.WageInReais,
-            LoanAmount = simulation.LoanAmountInReais,
-            NumberInstallments = simulation.NumberInstallments,
-            InterestRate = simulation.InterestRate,
-            InstallmentValue = simulation.InstallmentValue,
-            TotalAmount = simulation.TotalAmount,
-            MaxAllowedLoan = simulation.MaxAllowedLoan,
-            IsValidLoan = simulation.IsValidLoan,
-            CreatedAt = simulation.CreatedAt,
-            UserId = simulation.UserId,
-            UserName = simulation.User?.Name
-        };
+            var currentUserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            
+            // Busca o usuário atual para verificar a role
+            var currentUser = await _context.Users.FindAsync(currentUserId);
+            if (currentUser == null)
+                return Unauthorized("Usuário não encontrado.");
 
-        return Ok(result);
+            // Primeiro tenta buscar a simulação
+            var simulation = await _context.LoanSimulations
+                .Include(ls => ls.User)
+                .FirstOrDefaultAsync(ls => ls.Id == id);
+
+            if (simulation == null)
+                return NotFound($"Simulação com ID {id} não encontrada.");
+
+            // Verifica se o usuário tem permissão para acessar esta simulação
+            // Permitir acesso se:
+            // 1. É o próprio usuário que criou a simulação
+            // 2. Ou se é um admin (Role == 1)
+            var isOwner = simulation.UserId == currentUserId;
+            var isAdmin = currentUser.Role == UserRole.Admin; // Role 1 = Admin
+
+            if (!isOwner && !isAdmin)
+            {
+                return Forbid("Você não tem permissão para acessar esta simulação.");
+            }
+
+            var result = new LoanSimulationDto
+            {
+                Id = simulation.Id,
+                Wage = simulation.WageInReais,
+                LoanAmount = simulation.LoanAmountInReais,
+                NumberInstallments = simulation.NumberInstallments,
+                InterestRate = simulation.InterestRate,
+                InstallmentValue = simulation.InstallmentValue,
+                TotalAmount = simulation.TotalAmount,
+                MaxAllowedLoan = simulation.MaxAllowedLoan,
+                IsValidLoan = simulation.IsValidLoan,
+                CreatedAt = simulation.CreatedAt,
+                UserId = simulation.UserId,
+                UserName = simulation.User?.Name
+            };
+
+            return Ok(result);
+        }
+        catch (FormatException)
+        {
+            return BadRequest("ID de usuário inválido no token.");
+        }
+        catch (Exception ex)
+        {
+            // Log do erro (em produção, use um logger adequado)
+            Console.WriteLine($"Erro ao buscar simulação {id}: {ex.Message}");
+            return StatusCode(500, "Erro interno do servidor.");
+        }
     }
 
     [HttpDelete("{id}")]

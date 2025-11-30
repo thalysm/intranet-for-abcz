@@ -234,17 +234,23 @@
 
       <!-- Ações -->
       <div class="flex gap-4 pt-6 border-t border-stone-100">
-        <button (click)="simulateAgain()"
-          class="flex-1 px-6 py-3 border border-stone-200 text-stone-600 font-medium rounded-sm hover:bg-stone-50 transition-colors">
-          Nova Simulação
-        </button>
-        <button (click)="requestCredit()" 
-          [disabled]="!simulationResult.isValidLoan || isRequestingCredit"
-          [class]="simulationResult.isValidLoan 
-            ? 'flex-1 px-6 py-3 bg-primary text-white font-medium rounded-sm hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed'
-            : 'flex-1 px-6 py-3 bg-gray-300 text-gray-500 font-medium rounded-sm cursor-not-allowed'">
-          {{ isRequestingCredit ? 'Enviando...' : 'Solicitar Crédito' }}
-        </button>
+        <div *ngIf="simulationResult.isValidLoan" class="w-full">
+          <button (click)="requestCredit()" [disabled]="isRequestingCredit"
+            class="w-full px-6 py-3 bg-green-600 text-white font-medium rounded-sm hover:bg-green-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ isRequestingCredit ? 'Enviando...' : 'Solicitar Crédito' }}
+          </button>
+        </div>
+        
+        <div *ngIf="!simulationResult.isValidLoan" class="flex gap-4 w-full">
+          <button (click)="closeResultModal()"
+            class="flex-1 px-6 py-3 border border-stone-200 text-stone-600 font-medium rounded-sm hover:bg-stone-50 transition-colors">
+            Fechar
+          </button>
+          <button (click)="simulateAgain()"
+            class="flex-1 px-6 py-3 bg-primary text-white font-medium rounded-sm hover:bg-primary/90 transition-colors shadow-sm">
+            Tentar Novamente
+          </button>
+        </div>
       </div>
     </div>
   </div>

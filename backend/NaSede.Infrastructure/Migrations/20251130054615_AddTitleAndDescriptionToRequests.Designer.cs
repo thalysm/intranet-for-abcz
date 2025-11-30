@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NaSede.Infrastructure.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NaSede.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251130054615_AddTitleAndDescriptionToRequests")]
+    partial class AddTitleAndDescriptionToRequests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -338,15 +341,9 @@ namespace NaSede.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
-                    b.Property<Guid?>("LoanSimulationId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Response")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
-
-                    b.Property<Guid?>("SimulationId")
-                        .HasColumnType("uuid");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -354,9 +351,6 @@ namespace NaSede.Infrastructure.Migrations
                     b.Property<string>("Title")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
 
                     b.Property<Guid>("TypeId")
                         .HasColumnType("uuid");
@@ -368,8 +362,6 @@ namespace NaSede.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LoanSimulationId");
 
                     b.HasIndex("TypeId");
 
@@ -453,35 +445,6 @@ namespace NaSede.Infrastructure.Migrations
                     b.HasIndex("WhatsAppNumber");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("NaSede.Domain.Entities.WhatsAppToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("Expiry")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Token")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("WhatsAppTokens");
                 });
 
             modelBuilder.Entity("NaSede.Domain.Entities.AccountStatement", b =>
@@ -608,10 +571,6 @@ namespace NaSede.Infrastructure.Migrations
 
             modelBuilder.Entity("NaSede.Domain.Entities.Request", b =>
                 {
-                    b.HasOne("NaSede.Domain.Entities.LoanSimulation", "LoanSimulation")
-                        .WithMany()
-                        .HasForeignKey("LoanSimulationId");
-
                     b.HasOne("NaSede.Domain.Entities.RequestType", "Type")
                         .WithMany("Requests")
                         .HasForeignKey("TypeId")
@@ -624,20 +583,7 @@ namespace NaSede.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("LoanSimulation");
-
                     b.Navigation("Type");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("NaSede.Domain.Entities.WhatsAppToken", b =>
-                {
-                    b.HasOne("NaSede.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });

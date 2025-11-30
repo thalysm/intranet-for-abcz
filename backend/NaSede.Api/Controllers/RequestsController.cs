@@ -23,12 +23,13 @@ public class RequestsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<RequestDto>>> GetRequests()
     {
-        var isAdmin = User.IsInRole("Admin");
+        var isAdmin = User.IsInRole("Admin"); 
         var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
         var query = _context.Requests
             .Include(r => r.Type)
             .Include(r => r.User)
+            .Include(r => r.LoanSimulation) // Incluir a simulação relacionada
             .AsQueryable();
 
         if (!isAdmin)
@@ -47,7 +48,10 @@ public class RequestsController : ControllerBase
             StatusName = GetStatusName(r.Status),
             UserId = r.UserId,
             UserName = r.User?.Name ?? string.Empty,
+            Title = r.Title,
+            Description = r.Description,
             Response = r.Response,
+            SimulationId = r.SimulationId, // Incluir o ID da simulação
             CreatedAt = r.CreatedAt,
             UpdatedAt = r.UpdatedAt
         }).ToList();
@@ -81,6 +85,8 @@ public class RequestsController : ControllerBase
             StatusName = GetStatusName(request.Status),
             UserId = request.UserId,
             UserName = request.User?.Name ?? string.Empty,
+            Title = request.Title,
+            Description = request.Description,
             Response = request.Response,
             CreatedAt = request.CreatedAt,
             UpdatedAt = request.UpdatedAt
@@ -98,11 +104,24 @@ public class RequestsController : ControllerBase
         if (requestType == null)
             return BadRequest("Tipo de solicitação não encontrado.");
 
+        // Validar se a simulação existe e pertence ao usuário (se fornecida)
+        if (requestDto.SimulationId.HasValue)
+        {
+            var simulation = await _context.LoanSimulations
+                .FirstOrDefaultAsync(s => s.Id == requestDto.SimulationId.Value && s.UserId == userId);
+            
+            if (simulation == null)
+                return BadRequest("Simulação não encontrada ou não pertence ao usuário.");
+        }
+
         var request = new Request
         {
             Id = Guid.NewGuid(),
             TypeId = requestDto.TypeId,
             UserId = userId,
+            Title = requestDto.Title,
+            Description = requestDto.Description,
+            SimulationId = requestDto.SimulationId, // Salvar o ID da simulação
             Status = RequestStatus.Criado,
             CreatedAt = DateTime.UtcNow
         };
@@ -119,7 +138,10 @@ public class RequestsController : ControllerBase
             StatusName = GetStatusName(request.Status),
             UserId = request.UserId,
             UserName = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty,
+            Title = request.Title,
+            Description = request.Description,
             Response = request.Response,
+            SimulationId = request.SimulationId, // Retornar o ID da simulação
             CreatedAt = request.CreatedAt,
             UpdatedAt = request.UpdatedAt
         };
@@ -157,6 +179,8 @@ public class RequestsController : ControllerBase
             StatusName = GetStatusName(request.Status),
             UserId = request.UserId,
             UserName = request.User?.Name ?? string.Empty,
+            Title = request.Title,
+            Description = request.Description,
             Response = request.Response,
             CreatedAt = request.CreatedAt,
             UpdatedAt = request.UpdatedAt

@@ -23,6 +23,7 @@ export class LoanSimulationComponent implements OnInit {
   showResultModal = false
   simulationResult: LoanSimulationResult | null = null
   isRequestingCredit = false
+  currentSimulationId: string | null = null 
 
   wageDisplay: string = ''
   loanAmountDisplay: string = ''
@@ -147,6 +148,7 @@ export class LoanSimulationComponent implements OnInit {
     if (!this.simulationResult) return
 
     this.isRequestingCredit = true
+    const simulationResult = this.simulationResult // Criar uma referência local para evitar erros de null
 
     this.requestService.getRequestTypes().subscribe({
       next: (types) => {
@@ -162,8 +164,12 @@ export class LoanSimulationComponent implements OnInit {
         }
 
         const createRequest: CreateRequestRequest = {
-          typeId: loanType.id
+          typeId: loanType.id,
+          simulationId: simulationResult.id, 
+          title: `Solicitação de Empréstimo - ${this.formatCurrency(simulationResult.requestedAmount)}`,
+          description: `Empréstimo solicitado no valor de ${this.formatCurrency(simulationResult.requestedAmount)} em ${simulationResult.numberInstallments}x parcelas de R$ ${this.formatCurrency(simulationResult.installmentValue)}.`
         }
+
 
         this.requestService.createRequest(createRequest).subscribe({
           next: (newRequest) => {
