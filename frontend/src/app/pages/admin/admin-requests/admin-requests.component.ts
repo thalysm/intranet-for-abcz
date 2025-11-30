@@ -5,13 +5,12 @@ import { DragDropModule, CdkDragDrop, moveItemInArray, transferArrayItem } from 
 import { RequestService } from "../../../core/services/request.service"
 import { Request, RequestType } from "../../../core/models/request.model"
 import { AdminNavbarComponent } from "../components/admin-navbar/admin-navbar.component"
-import { ModalComponent } from "../../../shared/components/modal/modal.component"
 import { ToastService } from "../../../core/services/toast.service"
 
 @Component({
   selector: "app-admin-requests",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DragDropModule, AdminNavbarComponent, ModalComponent],
+  imports: [CommonModule, ReactiveFormsModule, DragDropModule, AdminNavbarComponent],
   templateUrl: "./admin-requests.component.html",
   styles: [`
     .cdk-drag-preview {
@@ -41,20 +40,17 @@ export class AdminRequestsComponent implements OnInit {
   requestTypes: RequestType[] = []
   isLoading = true
 
-  // Pipeline de status organizados
   requestsPipeline = {
-    pending: [] as Request[],      // Status 0 - Em Aberto
-    inProgress: [] as Request[],   // Status 1 - Em Andamento  
-    approved: [] as Request[],     // Status 2 - Aprovadas
-    rejected: [] as Request[]      // Status 3 - Reprovadas
+    pending: [] as Request[],
+    inProgress: [] as Request[],
+    approved: [] as Request[],
+    rejected: [] as Request[]
   }
 
-  // Modal states
   showStatusModal = false
   showTypeModal = false
   selectedRequest: Request | null = null
 
-  // Forms
   statusForm: FormGroup = this.fb.group({
     status: ['', Validators.required],
     response: ['']
@@ -111,13 +107,11 @@ export class AdminRequestsComponent implements OnInit {
       const request = event.previousContainer.data[event.previousIndex];
       const newStatus = this.getContainerStatus(event.container.id);
 
-      // Se for mover para reprovado, precisamos de justificativa, então abrimos o modal
       if (newStatus === 3) {
         this.openStatusModal(request, 3);
         return;
       }
 
-      // Otimistic update
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -125,7 +119,6 @@ export class AdminRequestsComponent implements OnInit {
         event.currentIndex,
       );
 
-      // Atualizar status no backend
       this.updateRequestStatus(request.id, newStatus);
     }
   }
@@ -145,17 +138,16 @@ export class AdminRequestsComponent implements OnInit {
 
     this.requestService.updateRequestStatus(requestId, updateData).subscribe({
       next: (updatedRequest) => {
-        // Atualizar a solicitação na lista principal
         const index = this.requests.findIndex(r => r.id === updatedRequest.id);
         if (index !== -1) {
           this.requests[index] = updatedRequest;
         }
-        this.toastService.success('Status atualizado com sucesso!');
+        this.toastService.success('Status atualizado!');
       },
       error: (error) => {
         console.error('Erro ao atualizar status:', error);
-        this.toastService.error('Erro ao atualizar status. Recarregando...');
-        this.loadRequests(); // Reverter mudanças em caso de erro
+        this.toastService.error('Erro ao atualizar status.');
+        this.loadRequests();
       }
     });
   }
@@ -173,7 +165,6 @@ export class AdminRequestsComponent implements OnInit {
     this.showStatusModal = false
     this.selectedRequest = null
     this.statusForm.reset()
-    // Recarregar para garantir consistência se o modal foi fechado após um drag cancelado (reprovado sem justificativa)
     this.organizePipeline();
   }
 
@@ -182,20 +173,14 @@ export class AdminRequestsComponent implements OnInit {
 
     const formData = this.statusForm.value;
 
-    // Validar se reprovação tem justificativa
     if (formData.status == 3 && !formData.response?.trim()) {
-      this.toastService.error('Justificativa é obrigatória para reprovações');
+      this.toastService.error('Justificativa obrigatória para reprovações');
       return;
     }
-
-    // Se o modal foi aberto via drag and drop (status mudou), o item pode já ter sido movido visualmente?
-    // Não, porque no drop() se for status 3 a gente retorna antes de mover.
 
     this.updateRequestStatus(this.selectedRequest.id, Number(formData.status), formData.response);
     this.closeStatusModal();
 
-    // Precisamos recarregar o pipeline visualmente pois o updateRequestStatus só atualiza a lista 'requests'
-    // mas não move os itens nos arrays do pipeline se não foi feito via drag and drop
     setTimeout(() => this.organizePipeline(), 100);
   }
 
@@ -216,11 +201,11 @@ export class AdminRequestsComponent implements OnInit {
         next: () => {
           this.loadRequestTypes()
           this.closeTypeModal()
-          this.toastService.success('Tipo de solicitação criado com sucesso!');
+          this.toastService.success('Tipo criado com sucesso!');
         },
         error: (err) => {
           console.error("Erro ao criar tipo de solicitação:", err)
-          this.toastService.error('Erro ao criar tipo de solicitação. Tente novamente.');
+          this.toastService.error('Erro ao criar tipo.');
         }
       })
     }
