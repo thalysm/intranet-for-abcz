@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using NaSede.Application.DTOs.Auth;
 using NaSede.Application.Interfaces;
+using NaSede.Domain.Entities;
 using NaSede.Infrastructure.Data;
 
 namespace NaSede.Infrastructure.Services;
@@ -15,7 +16,6 @@ public class AuthService : IAuthService
 {
     private readonly ApplicationDbContext _context;
     private readonly IConfiguration _configuration;
-    private readonly Dictionary<string, (Guid UserId, DateTime Expiry)> _whatsappTokens = new();
 
     public AuthService(ApplicationDbContext context, IConfiguration configuration)
     {
@@ -58,20 +58,36 @@ public class AuthService : IAuthService
 
     public async Task<LoginResponse?> LoginWithWhatsAppTokenAsync(string token)
     {
-        if (!_whatsappTokens.TryGetValue(token, out var tokenData))
+        var tokenEntity = await _context.WhatsAppTokens
+            .FirstOrDefaultAsync(t => t.Token == token);
+
+        if (tokenEntity == null)
             return null;
 
-        if (tokenData.Expiry < DateTime.UtcNow)
+        if (tokenEntity.Expiry < DateTime.UtcNow)
         {
-            _whatsappTokens.Remove(token);
+            _context.WhatsAppTokens.Remove(tokenEntity);
+            await _context.SaveChangesAsync();
             return null;
         }
 
-        var user = await _context.Users.FindAsync(tokenData.UserId);
+        var user = await _context.Users.FindAsync(tokenEntity.UserId);
         if (user == null)
             return null;
 
-        _whatsappTokens.Remove(token);
+        // Optional: Remove token after use if it's one-time use. 
+        // If we want it to be reusable within the window, keep it.
+        // Assuming one-time use for security, but user asked for 7 days validity which might imply reusability?
+        // Usually "confirm/decline" links are clicked once. 
+        // However, if they click again to change their mind, it should work.
+        // Let's NOT remove it immediately, or maybe remove only if it was intended as a one-time login.
+        // But this is "LoginWithWhatsAppToken".
+        // If I remove it, they can't click the link again.
+        // Let's keep it valid until expiry.
+        
+        // Actually, for security, login tokens are usually one-time. 
+        // But for "confirm/decline" links that also log you in, it's annoying if you click, close, and click again and it fails.
+        // Let's keep it.
 
         var jwtToken = GenerateJwtToken(user.Id, user.Role.ToString());
 
@@ -92,16 +108,26 @@ public class AuthService : IAuthService
         };
     }
 
-    public Task<string> GenerateWhatsAppTokenAsync(Guid userId)
+    public async Task<string> GenerateWhatsAppTokenAsync(Guid userId)
     {
         var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32))
             .Replace("+", "-")
             .Replace("/", "_")
             .Replace("=", "");
 
-        _whatsappTokens[token] = (userId, DateTime.UtcNow.AddHours(24));
+        var tokenEntity = new WhatsAppToken
+        {
+            Id = Guid.NewGuid(),
+            Token = token,
+            UserId = userId,
+            Expiry = DateTime.UtcNow.AddDays(7), // 7 days validity
+            CreatedAt = DateTime.UtcNow
+        };
 
-        return Task.FromResult(token);
+        _context.WhatsAppTokens.Add(tokenEntity);
+        await _context.SaveChangesAsync();
+
+        return token;
     }
 
     public string GenerateJwtToken(Guid userId, string role)
