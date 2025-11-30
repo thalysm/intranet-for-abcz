@@ -16,8 +16,8 @@ public class TwilioService : ITwilioService
     {
         _accountSid = configuration["Twilio:AccountSid"] ?? "";
         _authToken = configuration["Twilio:AuthToken"] ?? "";
-        _fromNumber = configuration["Twilio:FromNumber"] ?? "";
-        
+        _fromNumber = configuration["Twilio:FromNumber"] ?? "whatsapp:+14155238886";
+
         TwilioClient.Init(_accountSid, _authToken);
     }
 
@@ -25,8 +25,8 @@ public class TwilioService : ITwilioService
     {
         try
         {
-            var formattedNumber = toPhoneNumber.StartsWith("whatsapp:") 
-                ? toPhoneNumber 
+            var formattedNumber = toPhoneNumber.StartsWith("whatsapp:")
+                ? toPhoneNumber
                 : $"whatsapp:{toPhoneNumber}";
 
             var messageResource = await MessageResource.CreateAsync(
@@ -44,10 +44,10 @@ public class TwilioService : ITwilioService
     }
 
     public async Task<bool> SendEventNotificationAsync(
-        string toPhoneNumber, 
-        string eventTitle, 
-        DateTime eventDate, 
-        string confirmationLink, 
+        string toPhoneNumber,
+        string eventTitle,
+        DateTime eventDate,
+        string confirmationLink,
         string declineLink)
     {
         var message = $"🗓️ *Novo Evento - ABCZ*\n\n" +
