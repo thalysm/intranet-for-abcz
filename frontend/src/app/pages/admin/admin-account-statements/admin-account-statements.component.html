@@ -100,9 +100,16 @@
 <div class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
   <div class="bg-white rounded-sm shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
     <div class="p-8">
-      <h2 class="text-2xl font-serif font-bold text-stone-800 mb-8 pb-4 border-b border-stone-100">
-        Novo Documento
-      </h2>
+      <div class="flex justify-between items-center mb-8 pb-4 border-b border-stone-100">
+        <h2 class="text-2xl font-serif font-bold text-stone-800">
+          Novo Documento
+        </h2>
+        <button (click)="closeModal()" class="text-stone-400 hover:text-stone-600 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
 
       <form [formGroup]="statementForm" (ngSubmit)="onSubmit()">
         <div class="space-y-6">
@@ -145,17 +152,28 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-stone-700 mb-2">Arquivo (Caminho)</label>
-            <input type="text" formControlName="filePath"
-              class="w-full px-4 py-3 border border-stone-300 rounded-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-              placeholder="Ex: /uploads/statements/documento.pdf">
-            <p class="text-xs text-stone-500 mt-2 flex items-center gap-1">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Os arquivos devem ser salvos na pasta do frontend. Informe o caminho relativo.
-            </p>
+            <label class="block text-sm font-medium text-stone-700 mb-2">Comprovante</label>
+
+            <div class="flex items-center gap-4">
+              <label class="flex-1 cursor-pointer group">
+                <div
+                  class="w-full px-4 py-3 border-2 border-dashed border-stone-300 rounded-sm hover:border-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2">
+                  <svg class="w-5 h-5 text-stone-400 group-hover:text-primary transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                  </svg>
+                  <span class="text-stone-600 group-hover:text-primary font-medium transition-colors">
+                    {{ selectedFile ? selectedFile.name : 'Clique para selecionar um arquivo' }}
+                  </span>
+                </div>
+                <input type="file" class="hidden" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.xls,.xlsx">
+              </label>
+            </div>
+
+            <input type="hidden" formControlName="filePath">
+
+
           </div>
         </div>
 

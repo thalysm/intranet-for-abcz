@@ -50,13 +50,29 @@ export class AdminAccountStatementsComponent implements OnInit {
     })
   }
 
+  selectedFile: File | null = null
+
   openCreateModal(): void {
     this.statementForm.reset({ type: "1" })
+    this.selectedFile = null
     this.showModal = true
   }
 
   closeModal(): void {
     this.showModal = false
+    this.selectedFile = null
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0]
+    if (file) {
+      this.selectedFile = file
+      // Simulate path generation - in a real app with backend upload, this would be the returned path
+      // For this "local storage" simulation, we assume the file will be placed in assets/documents
+      this.statementForm.patchValue({
+        filePath: `/assets/documents/${file.name}`
+      })
+    }
   }
 
   onSubmit(): void {
