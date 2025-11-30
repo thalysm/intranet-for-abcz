@@ -61,12 +61,12 @@ export class UserRequestsComponent implements OnInit {
     return new Date(date).toLocaleString('pt-BR')
   }
 
-  getStatusIcon(status: number): string {
+  getStatusEmoji(status: number): string {
     switch (status) {
-      case 0: return "⏳" // Criado
-      case 1: return "🔄" // Em Andamento
-      case 2: return "✅" // Aprovado
-      case 3: return "❌" // Reprovado
+      case 0: return "⏳"
+      case 1: return "🔄"
+      case 2: return "✅"
+      case 3: return "❌"
       default: return "❓"
     }
   }

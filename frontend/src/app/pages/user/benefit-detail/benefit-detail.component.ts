@@ -54,10 +54,8 @@ export class BenefitDetailComponent implements OnInit {
   isRequestAction(buttonAction: string): boolean {
     if (!buttonAction) return false;
     
-    // Se for um link HTTP, não é uma solicitação
     if (buttonAction.startsWith('http')) return false;
     
-    // Qualquer valor que não seja um link HTTP será tratado como solicitação
     return true;
   }
 
@@ -66,49 +64,41 @@ export class BenefitDetailComponent implements OnInit {
       return;
     }
 
-    // Se a ação é um link HTTP, abre em nova aba
     if (buttonAction.startsWith('http')) {
       window.open(buttonAction, '_blank');
       return;
     }
 
-    // Para qualquer valor que não seja HTTP, cria uma solicitação
     this.createBenefitRequest();
   }
 
   private createBenefitRequest(): void {
     if (!this.benefit) return;
 
-    // Primeiro, carrega os tipos de solicitação disponíveis
     this.requestService.getRequestTypes().subscribe({
       next: (requestTypes) => {
-        // Procura por um tipo específico de benefício
         let benefitRequestType = requestTypes.find(type => 
           type.name.toLowerCase().includes('beneficio') || 
           type.name.toLowerCase().includes('benefit')
         );
 
         if (benefitRequestType) {
-          // Se encontrou o tipo de benefício, usa ele
           this.submitBenefitRequest(benefitRequestType.id);
         } else if (requestTypes.length > 0) {
-          // Se não encontrou mas tem outros tipos, cria um novo tipo "Benefício"
           this.createBenefitType().then(typeId => {
             if (typeId) {
               this.submitBenefitRequest(typeId);
             } else {
-              // Se falhar ao criar, usa o primeiro tipo disponível
               this.submitBenefitRequest(requestTypes[0].id);
             }
           });
         } else {
-          // Se não há nenhum tipo de solicitação
-          this.toastService.error('Nenhum tipo de solicitação encontrado. Entre em contato com o administrador.');
+          this.toastService.error('Tipos de solicitação não encontrados.');
         }
       },
       error: (err) => {
         console.error('Erro ao carregar tipos de solicitação:', err);
-        this.toastService.error('Erro ao conectar com o servidor. Tente novamente.');
+        this.toastService.error('Erro de conexão.');
       }
     });
   }
@@ -138,9 +128,8 @@ export class BenefitDetailComponent implements OnInit {
 
     this.requestService.createRequest(requestData).subscribe({
       next: (request) => {
-        this.toastService.success('Solicitação de benefício criada com sucesso! Aguarde a aprovação do administrador.');
+        this.toastService.success('Solicitação criada com sucesso!');
         
-        // Redireciona para a página de benefícios após 2 segundos
         setTimeout(() => {
           this.router.navigate(['/benefits']);
         }, 2000);
@@ -148,13 +137,12 @@ export class BenefitDetailComponent implements OnInit {
       error: (err) => {
         console.error('Erro ao criar solicitação:', err);
         
-        // Mostra erro específico baseado no status HTTP
         if (err.status === 401) {
-          this.toastService.error('Você precisa estar logado para fazer uma solicitação.');
+          this.toastService.error('Login necessário para solicitar.');
         } else if (err.status === 400) {
-          this.toastService.error('Dados inválidos para criar a solicitação.');
+          this.toastService.error('Dados inválidos na solicitação.');
         } else {
-          this.toastService.error('Erro ao criar solicitação. Tente novamente mais tarde.');
+          this.toastService.error('Erro ao criar solicitação.');
         }
       }
     });

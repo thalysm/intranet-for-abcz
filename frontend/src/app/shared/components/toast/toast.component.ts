@@ -8,10 +8,10 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 space-y-3">
+    <div class="fixed top-6 left-1/2 transform -translate-x-1/2 md:top-auto md:bottom-6 md:right-6 md:left-auto md:transform-none z-50 space-y-3">
       <div *ngFor="let toast of toasts; trackBy: trackByToastId" 
            [class]="getToastClasses(toast.type)"
-           class="toast-item max-w-md w-auto min-w-80 bg-white shadow-lg rounded-sm pointer-events-auto overflow-hidden border-l-4 animate-slide-in">
+           class="toast-item max-w-md w-auto min-w-80 bg-white shadow-lg rounded-sm pointer-events-auto overflow-hidden border-l-4 opacity-0 animate-fade-in">
         <div class="p-3">
           <div class="flex items-center">
             <div class="flex-shrink-0">
@@ -51,18 +51,22 @@ import { Subscription } from 'rxjs';
   `,
   styles: [`
     .toast-item {
-      transform: translateX(100%);
-      animation: slideIn 0.3s ease-out forwards;
+      transition: all 0.3s ease-in-out;
     }
 
-    @keyframes slideIn {
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
       to {
-        transform: translateX(0);
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
-    .animate-slide-in {
-      animation: slideIn 0.3s ease-out;
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-out forwards;
     }
   `]
 })
