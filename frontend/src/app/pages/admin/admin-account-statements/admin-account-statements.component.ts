@@ -3,10 +3,12 @@ import { CommonModule } from "@angular/common"
 import { FormBuilder, type FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
 import { ApiService } from "../../../core/services/api.service"
 
+import { AdminNavbarComponent } from "../components/admin-navbar/admin-navbar.component"
+
 @Component({
   selector: "app-admin-account-statements",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AdminNavbarComponent],
   templateUrl: "./admin-account-statements.component.html",
 })
 export class AdminAccountStatementsComponent implements OnInit {

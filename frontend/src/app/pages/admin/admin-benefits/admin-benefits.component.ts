@@ -4,10 +4,12 @@ import { FormBuilder, type FormGroup, Validators, ReactiveFormsModule } from "@a
 import { BenefitService } from "../../../core/services/benefit.service"
 import { Benefit } from "../../../core/models/benefit.model"
 
+import { AdminNavbarComponent } from "../components/admin-navbar/admin-navbar.component"
+
 @Component({
   selector: "app-admin-benefits",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AdminNavbarComponent],
   templateUrl: "./admin-benefits.component.html",
 })
 export class AdminBenefitsComponent implements OnInit {

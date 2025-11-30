@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core"
+import { Component, inject, OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms"
 import { Router, RouterLink } from "@angular/router"
@@ -10,7 +10,7 @@ import { AuthService } from "../../../core/services/auth.service"
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: "./login.component.html",
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private fb = inject(FormBuilder)
   private authService = inject(AuthService)
   private router = inject(Router)
@@ -21,6 +21,17 @@ export class LoginComponent {
   })
   isLoading = false
   errorMessage = ""
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      const user = this.authService.currentUser()
+      if (user?.role === 1) {
+        this.router.navigate(["/admin"])
+      } else {
+        this.router.navigate(["/dashboard"])
+      }
+    }
+  }
 
   onSubmit(): void {
     if (this.loginForm.invalid) return

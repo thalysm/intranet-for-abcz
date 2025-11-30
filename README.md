@@ -5,19 +5,28 @@ Sistema completo de intranet para a Associação Brasileira de Criadores de Zebu
 ## Funcionalidades
 
 ### Para Associados
-- Feed de notícias com comentários
-- Visualização e confirmação de eventos
-- Marketplace para anunciar produtos e serviços
-- Acesso à prestação de contas
-- Notificações via WhatsApp
-- Ouvidoria integrada
+- **Feed de Notícias**: Acompanhe as novidades com interações (curtidas e comentários).
+- **Eventos**: Visualização de agenda e confirmação de presença.
+- **Marketplace**: Compre e venda produtos e serviços entre associados.
+- **Prestação de Contas**: Transparência financeira com acesso a documentos.
+- **Simulação de Empréstimos**: Simule e solicite empréstimos consignados.
+- **Clube de Benefícios**: Acesse descontos e vantagens exclusivas de parceiros.
+- **Ouvidoria**: Canal direto via WhatsApp.
 
 ### Para Administradores
-- Gerenciamento de eventos com notificações automáticas
-- Criação e publicação de notícias
-- Envio de mensagens em massa via WhatsApp
-- Upload de prestação de contas
-- Relatórios de presença em eventos
+- **Dashboard Unificado**: Visão analítica com gráficos de comunicação, empréstimos e benefícios.
+- **Gestão de Conteúdo**: Publicação de notícias e eventos.
+- **Comunicação em Massa**: Disparos de mensagens via WhatsApp.
+- **Gestão de Benefícios**: Cadastro de parceiros e ofertas.
+- **Relatórios**: Acompanhamento de presença e engajamento.
+
+## Design System "Stone"
+
+O projeto utiliza um Design System moderno e minimalista, apelidado de "Stone", focado em:
+- **Estética Premium**: Uso de cores neutras (Stone/Cinza) com acentos elegantes.
+- **Tipografia**: Combinação de fontes serifadas (títulos) e sans-serif (corpo) para sofisticação.
+- **Componentes**: Cards, modais e formulários padronizados com sombras suaves e bordas arredondadas.
+- **Responsividade**: Layouts fluidos que se adaptam a qualquer dispositivo.
 
 ## Tecnologias
 
@@ -32,7 +41,8 @@ Sistema completo de intranet para a Associação Brasileira de Criadores de Zebu
 
 ### Frontend
 - Angular 20 (Standalone Components)
-- Tailwind CSS
+- Tailwind CSS (Estilização)
+- ApexCharts (Visualização de Dados)
 - TypeScript
 - RxJS
 - Responsive Design
@@ -74,6 +84,19 @@ npm start
 
 Acesse: `http://localhost:4200`
 
+### Docker (Recomendado)
+
+Para executar todo o ambiente (Frontend + Backend + Banco de Dados) via Docker:
+
+```bash
+docker-compose up --build
+```
+
+O sistema estará disponível em:
+- Frontend: `http://localhost:80`
+- Backend API: `http://localhost:8080`
+- Swagger: `http://localhost:8080/swagger`
+
 ## Configuração
 
 ### Banco de Dados
@@ -92,10 +115,10 @@ Configure suas credenciais do Twilio em `appsettings.json`:
 - Conversão automática de datas para o fuso do usuário
 - Notificações personalizadas por região
 
-### Autenticação
+### Autenticação Inteligente
 - Login por matrícula ou número de WhatsApp
+- Redirecionamento automático baseado no perfil (Admin -> Dashboard / User -> Home)
 - Autenticação automática via links do WhatsApp
-- Sistema de roles (Admin/Associado)
 
 ### Notificações WhatsApp
 - Notificações de eventos com links de confirmação

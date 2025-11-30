@@ -20,6 +20,10 @@
           class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
           Início
         </a>
+        <a routerLink="/news" routerLinkActive="text-primary font-semibold"
+          class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
+          Notícias
+        </a>
         <a routerLink="/events" routerLinkActive="text-primary font-semibold"
           class="text-stone-600 hover:text-primary transition-colors text-sm font-medium">
           Eventos
@@ -86,6 +90,10 @@
       <a routerLink="/dashboard" (click)="mobileMenuOpen = false"
         class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
         Início
+      </a>
+      <a routerLink="/news" (click)="mobileMenuOpen = false"
+        class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
+        Notícias
       </a>
       <a routerLink="/events" (click)="mobileMenuOpen = false"
         class="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-primary rounded-lg transition-colors">
